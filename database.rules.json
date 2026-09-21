@@ -1,0 +1,67 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "usuarios": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": false
+      }
+    },
+    "campanhas": {
+      "ato1": {
+        ".read": "auth != null && root.child('usuarios').child(auth.uid).child('ativo').val() === true && root.child('usuarios').child(auth.uid).child('bloqueado').val() !== true",
+        ".write": "auth != null && root.child('usuarios').child(auth.uid).child('ativo').val() === true && root.child('usuarios').child(auth.uid).child('bloqueado').val() !== true"
+      },
+      "$campanhaId": {
+        ".read": "auth != null && root.child('usuarios').child(auth.uid).child('ativo').val() === true && root.child('usuarios').child(auth.uid).child('bloqueado').val() !== true && (data.child('meta/ownerUid').val() === auth.uid || data.child('meta/membros').child(auth.uid).val() === true)",
+        ".write": "auth != null && root.child('usuarios').child(auth.uid).child('ativo').val() === true && root.child('usuarios').child(auth.uid).child('bloqueado').val() !== true && ((!data.exists() && newData.child('meta/ownerUid').val() === auth.uid && newData.child('meta/membros').child(auth.uid).val() === true) || data.child('meta/ownerUid').val() === auth.uid || data.child('meta/membros').child(auth.uid).val() === true)",
+        "meta": {
+          "ownerUid": {
+            ".validate": "newData.isString() && (!data.exists() || newData.val() === data.val())"
+          }
+        }
+      }
+    },
+    "tokens": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "status": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "mapa_atual": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "imagem_ativa": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "inimigo_ativo": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "rolagens": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "musica": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "efeitoGlobal": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "turnos": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "efeito_sonoro_sincronizado": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    }
+  }
+}
