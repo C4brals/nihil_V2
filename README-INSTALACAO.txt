@@ -1,3 +1,11 @@
+NIHIL COMERCIAL MVP V5.1 - MODO HIBRIDO SPARK
+================================================
+
+Esta versão foi adaptada para funcionar sem Cloud Functions/Blaze.
+A criação da credencial (email/senha) continua manual em Authentication. Depois disso, todo o perfil comercial é cadastrado e gerenciado pelo painel ADMIN do Portal usando o UID.
+
+PASSO OBRIGATORIO: publique database.rules.json desta versão antes de usar a área administrativa.
+
 NIHIL - MVP COMERCIAL
 =====================
 
@@ -87,3 +95,47 @@ ATUALIZAÇÃO V2 — CAMPANHAS ISOLADAS + COMPATIBILIDADE LEGADA
    As regras mantêm os nós legados autenticados e adicionam isolamento para campanhas novas.
 
 5. Não apague os nós globais antigos enquanto houver campanhas legadas em andamento.
+
+
+============================================================
+ATUALIZAÇÃO V3 — CONVITES + ASSINATURA OBRIGATÓRIA
+============================================================
+
+1. O Mestre cria uma campanha nova no Portal.
+2. O sistema gera um código no formato ID_DA_CAMPANHA.SEGREDO.
+3. O Mestre usa “Convidar jogadores” e compartilha o código.
+4. O convidado precisa possuir conta própria no Firebase Authentication e cadastro em usuarios/{uid}.
+5. O Portal valida ativo=true, bloqueado=false, validade e plano antes de tentar a entrada.
+6. As Rules também exigem ativo=true, bloqueado!=true e plano iniciante/experiente para gravar a associação de membro.
+7. Ao entrar, o usuário é registrado em campanhas/{id}/meta/membros/{uid} e campanhasPorUsuario/{uid}/{id}.
+8. O modo legado permanece intacto.
+
+IMPORTANTE SOBRE VALIDADE:
+A data validade (YYYY-MM-DD) é validada pelo Portal/ATO. As Rules do Realtime Database incluídas reforçam ativo, bloqueado e plano. Para validação de expiração totalmente server-side, a evolução recomendada é gravar também validadeTs (timestamp) por backend/Admin SDK e comparar com now nas Rules.
+
+MIGRAÇÃO DE CAMPANHAS V2 JÁ CRIADAS:
+Campanhas criadas na V2 podem não ter inviteSecret nem índice campanhasPorUsuario. Elas continuam acessíveis diretamente pela URL já existente. Para habilitar convites nelas, crie inviteSecret em meta e campanhasPorUsuario/{ownerUid}/{campanhaId}=true, ou crie uma nova campanha pela V3.
+
+
+============================================================
+V4 - ÁREA ADMINISTRATIVA E CADASTRO DE ASSINANTES
+============================================================
+
+O Portal identifica administradores pelo campo usuarios/UID/role = "admin".
+Para contas administrativas, aparece a seção "Administração de usuários".
+
+O formulário cria, em uma única operação segura:
+- conta no Firebase Authentication;
+- registro usuarios/UID no Realtime Database;
+- plano iniciante ou experiente;
+- ativo/bloqueado;
+- validade;
+- role=user.
+
+A criação usa a Cloud Function criarUsuarioAssinante, incluída em functions/index.js.
+Ela valida novamente no servidor se quem fez a chamada é administrador.
+
+Consulte CONFIGURAR-ADMIN.txt para ativar o primeiro administrador e implantar a função.
+
+
+V5: area administrativa ampliada com listagem, busca, alteracao de plano, renovacao de validade, bloqueio/desbloqueio e ativacao/desativacao de assinantes. Reimplante as Cloud Functions apos atualizar.

@@ -1,10 +1,539 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Portal do Jogador — Nihil</title><link rel="stylesheet" href="./site.css"></head><body><div class="frame"></div><nav class="nav"><a class="brand" href="./index.html">NIHIL</a><button id="sair" class="btn">Sair</button></nav><main class="portal"><div class="topbar"><div><h1 style="font-family:Cinzel;color:#c5a059">Portal do Jogador</h1><p id="usuario" class="muted">Carregando...</p></div><div id="plano" class="badge">...</div></div><div id="alerta" class="msg error"></div>
-<section class="section" style="padding-left:0;padding-right:0"><h2 style="text-align:left">Campanhas novas</h2><p class="muted">Cada nova campanha possui dados próprios e não interfere em nenhuma outra mesa.</p><div class="actions" style="justify-content:flex-start"><button id="novaCampanha" class="btn primary">+ Nova campanha</button></div><div id="listaCampanhas" class="grid"></div></section>
-<section class="section" style="padding-left:0;padding-right:0"><h2 style="text-align:left">Modo legado</h2><p class="muted">Use esta entrada somente para continuar campanhas que já existiam antes do sistema de salas isoladas. Os caminhos antigos do Firebase permanecem funcionando.</p><div class="grid"><article class="card"><h3>ATO I — Legado</h3><p>Continua utilizando os dados globais antigos.</p><a id="ato1Legado" class="btn" href="./ato1.html">Continuar campanha antiga</a></article><article id="card2" class="card"><h3>ATO II</h3><p id="txt2">Disponível no plano Experiente.</p><a id="ato2" class="btn" href="./ato2.html">Entrar no ATO II</a></article></div></section></main>
-<script type="module">import {auth,db} from './firebase-config.js';import {onAuthStateChanged,signOut} from 'https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js';import {ref,get,set,push} from 'https://www.gstatic.com/firebasejs/12.15.0/firebase-database.js';
-const u=document.querySelector('#usuario'),b=document.querySelector('#plano'),a=document.querySelector('#alerta'),c2=document.querySelector('#card2'),bt2=document.querySelector('#ato2'),lista=document.querySelector('#listaCampanhas'),btnNova=document.querySelector('#novaCampanha');let usuarioAtual=null,perfilAtual=null;
-document.querySelector('#sair').onclick=async()=>{await signOut(auth);location.replace('./login.html')};
-function esc(v=''){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-async function carregarCampanhas(){lista.innerHTML='<p class="muted">Carregando campanhas...</p>';const snap=await get(ref(db,'campanhas'));const dados=snap.val()||{};const cards=[];for(const [id,c] of Object.entries(dados)){if(id==='ato1'||!c?.meta)continue;const m=c.meta;if(m.ownerUid===usuarioAtual.uid||m.membros?.[usuarioAtual.uid]===true){cards.push(`<article class="card"><div class="badge">${m.ativa===false?'INATIVA':'ATIVA'}</div><h3>${esc(m.nome||'Campanha sem nome')}</h3><p class="muted">ID: ${esc(id)}</p><p>${m.ownerUid===usuarioAtual.uid?'Você é o proprietário desta campanha.':'Você participa desta campanha.'}</p>${m.ativa===false?'':`<a class="btn primary" href="./ato1.html?campanha=${encodeURIComponent(id)}">Entrar no ATO I</a>`}</article>`)}}lista.innerHTML=cards.length?cards.join(''):'<article class="card"><h3>Nenhuma campanha nova</h3><p>Crie sua primeira campanha isolada.</p></article>'}
-btnNova.onclick=async()=>{if(!usuarioAtual||!perfilAtual)return;const nome=(prompt('Nome da nova campanha:')||'').trim();if(!nome)return;btnNova.disabled=true;try{const nova=push(ref(db,'campanhas'));await set(ref(db,`campanhas/${nova.key}/meta`),{nome,ownerUid:usuarioAtual.uid,ativa:true,criadaEm:Date.now(),membros:{[usuarioAtual.uid]:true}});location.href=`./ato1.html?campanha=${encodeURIComponent(nova.key)}`}catch(e){console.error(e);a.textContent='Não foi possível criar a campanha. Verifique as regras do Firebase.'}finally{btnNova.disabled=false}};
-onAuthStateChanged(auth,async user=>{if(!user){location.replace('./login.html');return}usuarioAtual=user;const s=await get(ref(db,`usuarios/${user.uid}`)),p=s.val(),hoje=new Date().toISOString().slice(0,10);perfilAtual=p;u.textContent=user.email;if(!p||p.ativo!==true||p.bloqueado===true||(p.validade&&p.validade<hoje)){a.textContent='Seu acesso não está liberado. Entre em contato com o administrador.';document.querySelector('#ato1Legado').style.display='none';btnNova.style.display='none';c2.classList.add('locked');bt2.style.display='none';b.textContent='SEM ACESSO';return}b.textContent=(p.plano||'').toUpperCase()+(p.validade?' • até '+p.validade:'');if(p.plano!=='experiente'){c2.classList.add('locked');bt2.style.display='none'}else{document.querySelector('#txt2').textContent='Seu plano inclui o ATO II.'}await carregarCampanhas()});</script></body></html>
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Portal do Jogador — Nihil</title>
+    <link rel="stylesheet" href="./site.css" />
+  </head>
+  <body>
+    <div class="frame"></div>
+    <nav class="nav">
+      <a class="brand" href="./index.html">NIHIL</a
+      ><button id="sair" class="btn">Sair</button>
+    </nav>
+    <main class="portal">
+      <div class="topbar">
+        <div>
+          <h1 style="font-family: Cinzel; color: #c5a059">Portal do Jogador</h1>
+          <p id="usuario" class="muted">Carregando...</p>
+        </div>
+        <div id="plano" class="badge">...</div>
+      </div>
+      <div id="alerta" class="msg error"></div>
+      <section class="section" style="padding-left: 0; padding-right: 0">
+        <h2 style="text-align: left">Campanhas novas</h2>
+        <p class="muted">
+          Crie uma mesa isolada ou entre em uma campanha usando o código enviado
+          pelo Mestre. Cada participante precisa ter sua própria assinatura
+          ativa.
+        </p>
+        <div class="actions" style="justify-content: flex-start">
+          <button id="novaCampanha" class="btn primary">+ Nova campanha</button
+          ><button id="entrarCampanha" class="btn">Entrar com código</button>
+        </div>
+        <div id="listaCampanhas" class="grid"></div>
+      </section>
+
+      <section
+        id="areaAdmin"
+        class="section"
+        style="padding-left: 0; padding-right: 0; display: none"
+      >
+        <h2 style="text-align: left">Administração de usuários</h2>
+        <p class="muted">
+          Modo Spark híbrido: crie primeiro a conta em Firebase Authentication,
+          copie o UID e depois cadastre o perfil comercial aqui. Plano,
+          validade, bloqueio e status são gerenciados diretamente pelo Portal.
+        </p>
+        <article class="card admin-card">
+          <h3>Vincular conta do Authentication</h3>
+          <div class="admin-grid">
+            <label
+              >UID do Authentication<input
+                id="admUid"
+                class="admin-input"
+                autocomplete="off"
+                placeholder="Cole o UID criado no Authentication" /></label
+            ><label
+              >Nome<input
+                id="admNome"
+                class="admin-input"
+                autocomplete="off"
+                placeholder="Nome do cliente"
+            /></label>
+            <label
+              >E-mail<input
+                id="admEmail"
+                class="admin-input"
+                type="email"
+                autocomplete="off"
+                placeholder="cliente@email.com"
+            /></label>
+
+            <label
+              >Plano<select id="admPlano" class="admin-input">
+                <option value="iniciante">Iniciante — ATO 1</option>
+                <option value="experiente">Experiente — ATO 1 + ATO 2</option>
+              </select></label
+            >
+            <label
+              >Validade<input id="admValidade" class="admin-input" type="date"
+            /></label>
+            <label
+              >Status<select id="admAtivo" class="admin-input">
+                <option value="true">Ativo</option>
+                <option value="false">Inativo</option>
+              </select></label
+            >
+          </div>
+          <div class="actions" style="justify-content: flex-start">
+            <button id="admCriar" class="btn primary">Cadastrar perfil</button>
+          </div>
+          <div id="admMsg" class="msg"></div>
+        </article>
+        <article class="card admin-card" style="margin-top: 20px">
+          <div class="admin-list-head">
+            <div>
+              <h3>Assinantes cadastrados</h3>
+              <p class="muted">
+                Edite plano, validade, status e bloqueio diretamente no Realtime
+                Database. No modo Spark, isso controla o acesso ao Portal e às
+                campanhas; a conta do Authentication continua existindo.
+              </p>
+            </div>
+            <button id="admAtualizarLista" class="btn">Atualizar lista</button>
+          </div>
+          <div class="admin-search">
+            <input
+              id="admBusca"
+              class="admin-input"
+              placeholder="Buscar por nome ou e-mail"
+            />
+          </div>
+          <div id="admListaMsg" class="msg"></div>
+          <div id="admLista" class="admin-users"></div>
+        </article>
+      </section>
+      <section class="section" style="padding-left: 0; padding-right: 0">
+        <h2 style="text-align: left">Modo legado</h2>
+        <p class="muted">
+          Use esta entrada somente para continuar campanhas que já existiam
+          antes do sistema de salas isoladas. Os caminhos antigos do Firebase
+          permanecem funcionando.
+        </p>
+        <div class="grid">
+          <article class="card">
+            <h3>ATO I — Legado</h3>
+            <p>Continua utilizando os dados globais antigos.</p>
+            <a id="ato1Legado" class="btn" href="./ato1.html"
+              >Continuar campanha antiga</a
+            >
+          </article>
+          <article id="card2" class="card">
+            <h3>ATO II</h3>
+            <p id="txt2">Disponível no plano Experiente.</p>
+            <a id="ato2" class="btn" href="./ato2.html">Entrar no ATO II</a>
+          </article>
+        </div>
+      </section>
+    </main>
+    <div id="modalConvite" class="modal-nihil" hidden>
+      <div class="modal-nihil-card">
+        <button id="fecharConvite" class="modal-x" aria-label="Fechar">
+          ×
+        </button>
+        <h2>Código de convite</h2>
+        <p>
+          Compartilhe este código com os jogadores. Cada pessoa deverá entrar
+          com sua própria conta Nihil e possuir assinatura ativa.
+        </p>
+        <div id="codigoConvite" class="codigo-convite"></div>
+        <button id="copiarConvite" class="btn primary">Copiar código</button>
+        <div id="msgConvite" class="msg ok"></div>
+      </div>
+    </div>
+    <script type="module">
+      import { auth, db } from "./firebase-config.js";
+      import {
+        onAuthStateChanged,
+        signOut,
+      } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+      import {
+        ref,
+        get,
+        set,
+        push,
+        update,
+      } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-database.js";
+      const u = document.querySelector("#usuario"),
+        b = document.querySelector("#plano"),
+        a = document.querySelector("#alerta"),
+        c2 = document.querySelector("#card2"),
+        bt2 = document.querySelector("#ato2"),
+        lista = document.querySelector("#listaCampanhas"),
+        btnNova = document.querySelector("#novaCampanha"),
+        btnEntrar = document.querySelector("#entrarCampanha");
+      let usuarioAtual = null,
+        perfilAtual = null;
+      document.querySelector("#sair").onclick = async () => {
+        await signOut(auth);
+        location.replace("./login.html");
+      };
+      function esc(v = "") {
+        return String(v).replace(
+          /[&<>"']/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[c],
+        );
+      }
+      function assinaturaValida(p) {
+        const hoje = new Date().toISOString().slice(0, 10);
+        return (
+          !!p &&
+          p.ativo === true &&
+          p.bloqueado !== true &&
+          (!p.validade || p.validade >= hoje) &&
+          ["iniciante", "experiente"].includes(p.plano)
+        );
+      }
+      function segredo() {
+        const bytes = new Uint8Array(6);
+        crypto.getRandomValues(bytes);
+        return Array.from(bytes, (b) => b.toString(36).padStart(2, "0"))
+          .join("")
+          .toUpperCase()
+          .slice(0, 10);
+      }
+      function codigo(id, secret) {
+        return `${id}.${secret}`;
+      }
+      function abrirConvite(cod) {
+        document.querySelector("#codigoConvite").textContent = cod;
+        document.querySelector("#msgConvite").textContent = "";
+        document.querySelector("#modalConvite").hidden = false;
+      }
+      document.querySelector("#fecharConvite").onclick = () =>
+        (document.querySelector("#modalConvite").hidden = true);
+      document.querySelector("#copiarConvite").onclick = async () => {
+        const cod = document.querySelector("#codigoConvite").textContent;
+        try {
+          await navigator.clipboard.writeText(cod);
+          document.querySelector("#msgConvite").textContent = "Código copiado.";
+        } catch {
+          document.querySelector("#msgConvite").textContent =
+            "Selecione e copie o código acima.";
+        }
+      };
+      window.addEventListener("click", (e) => {
+        if (e.target.id === "modalConvite") e.target.hidden = true;
+      });
+      async function carregarCampanhas() {
+        lista.innerHTML = '<p class="muted">Carregando campanhas...</p>';
+        const idx = await get(
+          ref(db, `campanhasPorUsuario/${usuarioAtual.uid}`),
+        );
+        const ids = Object.keys(idx.val() || {});
+        const cards = [];
+        for (const id of ids) {
+          try {
+            const snap = await get(ref(db, `campanhas/${id}/meta`));
+            const m = snap.val();
+            if (!m) continue;
+            const membro = m.membros?.[usuarioAtual.uid];
+            const participa =
+              m.ownerUid === usuarioAtual.uid ||
+              membro === true ||
+              membro?.ativo === true;
+            if (!participa) continue;
+            const dono = m.ownerUid === usuarioAtual.uid;
+            const cod = m.inviteSecret ? codigo(id, m.inviteSecret) : "";
+            cards.push(
+              `<article class="card"><div class="badge">${m.ativa === false ? "INATIVA" : "ATIVA"}</div><h3>${esc(m.nome || "Campanha sem nome")}</h3><p>${dono ? "Você é o Mestre/proprietário desta campanha." : "Você participa desta campanha."}</p>${m.ativa === false ? "" : `<div class="actions" style="justify-content:flex-start"><a class="btn primary" href="./ato1.html?campanha=${encodeURIComponent(id)}">Entrar no ATO I</a>${dono && cod ? `<button class="btn btn-convite" data-codigo="${esc(cod)}">Convidar jogadores</button>` : ""}</div>`}</article>`,
+            );
+          } catch (e) {
+            console.warn("Campanha indisponível", id, e);
+          }
+        }
+        lista.innerHTML = cards.length
+          ? cards.join("")
+          : '<article class="card"><h3>Nenhuma campanha nova</h3><p>Crie sua primeira campanha isolada ou entre usando um código de convite.</p></article>';
+        document
+          .querySelectorAll(".btn-convite")
+          .forEach((x) => (x.onclick = () => abrirConvite(x.dataset.codigo)));
+      }
+      btnNova.onclick = async () => {
+        if (!usuarioAtual || !assinaturaValida(perfilAtual)) return;
+        const nome = (prompt("Nome da nova campanha:") || "").trim();
+        if (!nome) return;
+        btnNova.disabled = true;
+        try {
+          const nova = push(ref(db, "campanhas"));
+          const secret = segredo();
+          await set(ref(db, `campanhas/${nova.key}/meta`), {
+            nome,
+            ownerUid: usuarioAtual.uid,
+            ativa: true,
+            criadaEm: Date.now(),
+            inviteSecret: secret,
+            membros: { [usuarioAtual.uid]: true },
+          });
+          await set(
+            ref(db, `campanhasPorUsuario/${usuarioAtual.uid}/${nova.key}`),
+            true,
+          );
+          abrirConvite(codigo(nova.key, secret));
+          await carregarCampanhas();
+        } catch (e) {
+          console.error(e);
+          a.textContent =
+            "Não foi possível criar a campanha. Publique as novas regras do Firebase.";
+        } finally {
+          btnNova.disabled = false;
+        }
+      };
+      btnEntrar.onclick = async () => {
+        if (!usuarioAtual || !assinaturaValida(perfilAtual)) {
+          a.textContent =
+            "Sua assinatura precisa estar ativa para entrar em uma campanha.";
+          return;
+        }
+        const bruto = (
+          prompt("Cole o código de convite enviado pelo Mestre:") || ""
+        ).trim();
+        if (!bruto) return;
+        const p = bruto.split(".");
+        if (p.length !== 2 || !p[0] || !p[1]) {
+          a.textContent = "Código de convite inválido.";
+          return;
+        }
+        const [id, secret] = p;
+        btnEntrar.disabled = true;
+        a.textContent = "";
+        try {
+          await set(
+            ref(db, `campanhas/${id}/meta/membros/${usuarioAtual.uid}`),
+            { ativo: true, entrouEm: Date.now(), convite: secret },
+          );
+          await set(
+            ref(db, `campanhasPorUsuario/${usuarioAtual.uid}/${id}`),
+            true,
+          );
+          const camp = await get(ref(db, `campanhas/${id}/meta`));
+          if (!camp.exists()) throw new Error("Campanha não encontrada");
+          await carregarCampanhas();
+          location.href = `./ato1.html?campanha=${encodeURIComponent(id)}`;
+        } catch (e) {
+          console.error(e);
+          a.textContent =
+            "Não foi possível entrar. Confira o código e se sua assinatura está ativa.";
+        } finally {
+          btnEntrar.disabled = false;
+        }
+      };
+      const areaAdmin = document.querySelector("#areaAdmin"),
+        admMsg = document.querySelector("#admMsg"),
+        admCriar = document.querySelector("#admCriar"),
+        admLista = document.querySelector("#admLista"),
+        admListaMsg = document.querySelector("#admListaMsg"),
+        admBusca = document.querySelector("#admBusca");
+      let assinantesAdmin = [];
+      function ehAdmin(p) {
+        return !!p && (p.role === "admin" || p.admin === true);
+      }
+      function validadePadrao() {
+        const d = new Date();
+        d.setMonth(d.getMonth() + 1);
+        return d.toISOString().slice(0, 10);
+      }
+      document.querySelector("#admValidade").value = validadePadrao();
+      admCriar.onclick = async () => {
+        if (!usuarioAtual || !ehAdmin(perfilAtual)) {
+          admMsg.className = "msg error";
+          admMsg.textContent = "Acesso administrativo não autorizado.";
+          return;
+        }
+        const uid = document.querySelector("#admUid").value.trim(),
+          nome = document.querySelector("#admNome").value.trim(),
+          email = document
+            .querySelector("#admEmail")
+            .value.trim()
+            .toLowerCase(),
+          plano = document.querySelector("#admPlano").value,
+          validade = document.querySelector("#admValidade").value,
+          ativo = document.querySelector("#admAtivo").value === "true";
+        if (!uid || !nome || !email || !validade) {
+          admMsg.className = "msg error";
+          admMsg.textContent =
+            "Preencha UID, nome, e-mail e validade. O UID deve vir de Authentication > Users.";
+          return;
+        }
+        admCriar.disabled = true;
+        admMsg.className = "msg";
+        admMsg.textContent = "Cadastrando perfil...";
+        try {
+          const existente = await get(ref(db, `usuarios/${uid}`));
+          if (existente.exists())
+            throw new Error("Já existe um perfil cadastrado para este UID.");
+          await set(ref(db, `usuarios/${uid}`), {
+            email,
+            nome,
+            plano,
+            ativo,
+            bloqueado: false,
+            validade,
+            role: "user",
+            criadoEm: Date.now(),
+            criadoPor: usuarioAtual.uid,
+          });
+          admMsg.className = "msg ok";
+          admMsg.textContent =
+            "Perfil cadastrado. A conta já pode usar o login criado no Authentication.";
+          document.querySelector("#admUid").value = "";
+          document.querySelector("#admNome").value = "";
+          document.querySelector("#admEmail").value = "";
+          await carregarAssinantesAdmin();
+        } catch (e) {
+          console.error(e);
+          admMsg.className = "msg error";
+          admMsg.textContent =
+            e?.message || "Não foi possível cadastrar o perfil.";
+        } finally {
+          admCriar.disabled = false;
+        }
+      };
+
+      async function carregarAssinantesAdmin() {
+        if (!ehAdmin(perfilAtual)) return;
+        admListaMsg.className = "msg";
+        admListaMsg.textContent = "Carregando assinantes...";
+        try {
+          const snap = await get(ref(db, "usuarios"));
+          const obj = snap.val() || {};
+          assinantesAdmin = Object.entries(obj).map(([uid, p]) => ({
+            uid,
+            ...(p || {}),
+          }));
+          renderAssinantes();
+        } catch (e) {
+          console.error(e);
+          admListaMsg.className = "msg error";
+          admListaMsg.textContent =
+            e?.message ||
+            "Não foi possível carregar os assinantes. Confirme se publicou o database.rules.json da V5.1.";
+        }
+      }
+      function renderAssinantes() {
+        const q = (admBusca.value || "").trim().toLowerCase();
+        const arr = assinantesAdmin.filter(
+          (x) => !q || `${x.nome} ${x.email}`.toLowerCase().includes(q),
+        );
+        admListaMsg.textContent = `${arr.length} conta(s) exibida(s).`;
+        admLista.innerHTML =
+          arr
+            .map(
+              (x) =>
+                `<div class="admin-user" data-uid="${esc(x.uid)}"><div class="admin-user-title"><strong>${esc(x.nome || "Sem nome")}</strong><span>${esc(x.email)}</span><small>UID: ${esc(x.uid)}</small></div><div class="admin-user-fields"><label>Nome<input class="admin-input au-nome" value="${esc(x.nome)}"></label><label>Plano<select class="admin-input au-plano" ${x.role === "admin" ? "disabled" : ""}><option value="iniciante" ${x.plano === "iniciante" ? "selected" : ""}>Iniciante</option><option value="experiente" ${x.plano === "experiente" ? "selected" : ""}>Experiente</option></select></label><label>Validade<input class="admin-input au-validade" type="date" value="${esc(x.validade)}"></label><label>Status<select class="admin-input au-ativo"><option value="true" ${x.ativo ? "selected" : ""}>Ativo</option><option value="false" ${!x.ativo ? "selected" : ""}>Inativo</option></select></label><label>Bloqueio<select class="admin-input au-bloqueado"><option value="false" ${!x.bloqueado ? "selected" : ""}>Desbloqueado</option><option value="true" ${x.bloqueado ? "selected" : ""}>Bloqueado</option></select></label></div><div class="admin-user-actions"><span class="badge">${x.role === "admin" ? "ADMIN" : x.bloqueado ? "BLOQUEADO" : x.ativo ? "ATIVO" : "INATIVO"}</span><button class="btn primary au-salvar">Salvar alterações</button></div><div class="msg au-msg"></div></div>`,
+            )
+            .join("") || '<p class="muted">Nenhum usuário encontrado.</p>';
+        admLista
+          .querySelectorAll(".au-salvar")
+          .forEach(
+            (btn) =>
+              (btn.onclick = () => salvarAssinante(btn.closest(".admin-user"))),
+          );
+      }
+      async function salvarAssinante(el) {
+        const uid = el.dataset.uid,
+          msg = el.querySelector(".au-msg"),
+          btn = el.querySelector(".au-salvar");
+        const payload = {
+          nome: el.querySelector(".au-nome").value.trim(),
+          plano: el.querySelector(".au-plano").value,
+          validade: el.querySelector(".au-validade").value,
+          ativo: el.querySelector(".au-ativo").value === "true",
+          bloqueado: el.querySelector(".au-bloqueado").value === "true",
+        };
+        if (!payload.nome || !payload.validade) {
+          msg.className = "msg error";
+          msg.textContent = "Nome e validade são obrigatórios.";
+          return;
+        }
+        if (uid === usuarioAtual.uid && (!payload.ativo || payload.bloqueado)) {
+          msg.className = "msg error";
+          msg.textContent =
+            "Você não pode bloquear ou desativar a própria conta administrativa.";
+          return;
+        }
+        btn.disabled = true;
+        msg.className = "msg";
+        msg.textContent = "Salvando...";
+        try {
+          await update(ref(db, `usuarios/${uid}`), {
+            ...payload,
+            atualizadoEm: Date.now(),
+            atualizadoPor: usuarioAtual.uid,
+          });
+          msg.className = "msg ok";
+          msg.textContent = "Conta atualizada no Realtime Database.";
+          await carregarAssinantesAdmin();
+        } catch (e) {
+          console.error(e);
+          msg.className = "msg error";
+          msg.textContent = e?.message || "Não foi possível atualizar.";
+        } finally {
+          btn.disabled = false;
+        }
+      }
+      document.querySelector("#admAtualizarLista").onclick =
+        carregarAssinantesAdmin;
+      admBusca.addEventListener("input", renderAssinantes);
+
+      onAuthStateChanged(auth, async (user) => {
+        if (!user) {
+          location.replace("./login.html");
+          return;
+        }
+        usuarioAtual = user;
+        const s = await get(ref(db, `usuarios/${user.uid}`)),
+          p = s.val();
+        perfilAtual = p;
+        u.textContent = user.email;
+        if (ehAdmin(p)) {
+          areaAdmin.style.display = "block";
+          b.textContent = "ADMINISTRADOR";
+          await carregarAssinantesAdmin();
+        }
+        if (!assinaturaValida(p) && !ehAdmin(p)) {
+          a.textContent =
+            "Seu acesso não está liberado. Verifique a assinatura com o administrador.";
+          document.querySelector("#ato1Legado").style.display = "none";
+          btnNova.style.display = "none";
+          btnEntrar.style.display = "none";
+          c2.classList.add("locked");
+          bt2.style.display = "none";
+          b.textContent = "SEM ACESSO";
+          return;
+        }
+        if (!ehAdmin(p))
+          b.textContent =
+            (p.plano || "").toUpperCase() +
+            (p.validade ? " • até " + p.validade : "");
+        if (p.plano !== "experiente") {
+          c2.classList.add("locked");
+          bt2.style.display = "none";
+        } else {
+          document.querySelector("#txt2").textContent =
+            "Seu plano inclui o ATO II.";
+        }
+        await carregarCampanhas();
+      });
+    </script>
+  </body>
+</html>

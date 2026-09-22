@@ -2352,7 +2352,7 @@
                 <div class="menu-item-container">
                     <button class="btn-menu-rodape" onclick="alternarDropup(event, 'drop-discipulos')">Alnur e Discípulos</button>
                     <ul id="drop-discipulos" class="lista-dropup">
-                        <li onclick="mostrarImagemGrupo('./assets/cartas/Alnur e Discípulos/Alnur.jpg')">Alnur</li>
+                        <li onclick="mostrarImagemGrupo('./assets/cartas/Alnur e Discípulos/Alnur.png')">Alnur</li>
                         <li onclick="mostrarImagemGrupo('./assets/cartas/Alnur e Discípulos/Aliatrix.jpg')">Aliatrix</li>
                         <li onclick="mostrarImagemGrupo('./assets/cartas/Alnur e Discípulos/Delgron.jpg')">Delgron</li>
                         <li onclick="mostrarImagemGrupo('./assets/cartas/Alnur e Discípulos/Ravandra.jpg')">Ravandra</li>
@@ -2681,7 +2681,8 @@
                 if (!modoLegado) {
                     const campSnap = await get(ref(db, `campanhas/${campanhaId}/meta`));
                     const camp = campSnap.val();
-                    const permitido = camp && (camp.ownerUid === user.uid || camp.membros?.[user.uid] === true);
+                    const membro = camp?.membros?.[user.uid];
+                    const permitido = camp && (camp.ownerUid === user.uid || membro === true || membro?.ativo === true);
                     if (!permitido || camp.ativa === false) {
                         window.location.replace('./portal.html?acesso=campanha');
                         return;

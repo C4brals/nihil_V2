@@ -1,0 +1,27 @@
+NIHIL V5.1 HIBRIDA - FIREBASE SPARK
+
+Esta versão NÃO usa Cloud Functions e NÃO exige o plano Blaze.
+
+PRIMEIRO ADMINISTRADOR
+1. Firebase Authentication > Users: crie sua conta manualmente.
+2. Copie o UID.
+3. Realtime Database > usuarios/SEU_UID: crie o perfil com email, nome, plano, ativo=true, bloqueado=false, validade e role=admin.
+4. Publique o arquivo database.rules.json desta V5.1 em Realtime Database > Rules.
+5. Saia e entre novamente no Portal.
+
+CADASTRAR NOVO CLIENTE
+1. Firebase Authentication > Users > Add user.
+2. Informe email e senha inicial.
+3. Copie o UID criado.
+4. No Portal Nihil, como administrador, abra Administração de usuários > Vincular conta do Authentication.
+5. Cole o UID e preencha nome, email, plano, validade e status.
+6. Clique Cadastrar perfil.
+
+GESTAO
+O Portal pode listar os perfis do nó usuarios e alterar nome, plano, validade, ativo e bloqueado. Não é necessário abrir o Realtime Database para essas alterações.
+
+LIMITACAO DO SPARK
+Bloquear/desativar no Portal altera o perfil comercial e impede o acesso validado pelo Nihil, mas NÃO desabilita a conta no Firebase Authentication. Para desabilitar a credencial de Authentication em si, faça isso manualmente no Console. Quando o projeto migrar para Blaze, a versão com Cloud Functions pode voltar a sincronizar automaticamente os dois lados.
+
+IMPORTANTE
+Não tente colocar Firebase Admin SDK ou service-account no HTML. Segredos administrativos nunca devem ser enviados ao navegador.

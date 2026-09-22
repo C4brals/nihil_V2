@@ -4,8 +4,17 @@
     ".write": false,
     "usuarios": {
       "$uid": {
+        ".read": "auth != null && (auth.uid === $uid || root.child('usuarios').child(auth.uid).child('role').val() === 'admin')",
+        ".write": "auth != null && root.child('usuarios').child(auth.uid).child('role').val() === 'admin' && (data.exists() || (newData.child('role').val() === 'user' && newData.child('email').isString() && newData.child('nome').isString())) && (!data.child('role').exists() || newData.child('role').val() === data.child('role').val())"
+      },
+      ".read": "auth != null && root.child('usuarios').child(auth.uid).child('role').val() === 'admin'"
+    },
+    "campanhasPorUsuario": {
+      "$uid": {
         ".read": "auth != null && auth.uid === $uid",
-        ".write": false
+        "$campanhaId": {
+          ".write": "auth != null && auth.uid === $uid && (root.child('campanhas').child($campanhaId).child('meta/ownerUid').val() === auth.uid || root.child('campanhas').child($campanhaId).child('meta/membros').child(auth.uid).val() === true || root.child('campanhas').child($campanhaId).child('meta/membros').child(auth.uid).child('ativo').val() === true)"
+        }
       }
     },
     "campanhas": {
@@ -14,12 +23,21 @@
         ".write": "auth != null && root.child('usuarios').child(auth.uid).child('ativo').val() === true && root.child('usuarios').child(auth.uid).child('bloqueado').val() !== true"
       },
       "$campanhaId": {
-        ".read": "auth != null && root.child('usuarios').child(auth.uid).child('ativo').val() === true && root.child('usuarios').child(auth.uid).child('bloqueado').val() !== true && (data.child('meta/ownerUid').val() === auth.uid || data.child('meta/membros').child(auth.uid).val() === true)",
-        ".write": "auth != null && root.child('usuarios').child(auth.uid).child('ativo').val() === true && root.child('usuarios').child(auth.uid).child('bloqueado').val() !== true && ((!data.exists() && newData.child('meta/ownerUid').val() === auth.uid && newData.child('meta/membros').child(auth.uid).val() === true) || data.child('meta/ownerUid').val() === auth.uid || data.child('meta/membros').child(auth.uid).val() === true)",
+        ".read": "auth != null && root.child('usuarios').child(auth.uid).child('ativo').val() === true && root.child('usuarios').child(auth.uid).child('bloqueado').val() !== true && (data.child('meta/ownerUid').val() === auth.uid || data.child('meta/membros').child(auth.uid).val() === true || data.child('meta/membros').child(auth.uid).child('ativo').val() === true)",
         "meta": {
+          ".write": "auth != null && ((!data.exists() && newData.child('ownerUid').val() === auth.uid && newData.child('membros').child(auth.uid).val() === true && root.child('usuarios').child(auth.uid).child('ativo').val() === true && root.child('usuarios').child(auth.uid).child('bloqueado').val() !== true) || data.child('ownerUid').val() === auth.uid)",
           "ownerUid": {
             ".validate": "newData.isString() && (!data.exists() || newData.val() === data.val())"
+          },
+          "membros": {
+            "$uid": {
+              ".write": "auth != null && ((data.parent().parent().child('ownerUid').val() === auth.uid) || (auth.uid === $uid && root.child('usuarios').child(auth.uid).child('ativo').val() === true && root.child('usuarios').child(auth.uid).child('bloqueado').val() !== true && (root.child('usuarios').child(auth.uid).child('plano').val() === 'iniciante' || root.child('usuarios').child(auth.uid).child('plano').val() === 'experiente') && newData.child('ativo').val() === true && newData.child('convite').val() === data.parent().parent().child('inviteSecret').val() && data.parent().parent().child('ativa').val() !== false))"
+            }
           }
+        },
+        "ato1": {
+          ".read": "auth != null && root.child('usuarios').child(auth.uid).child('ativo').val() === true && root.child('usuarios').child(auth.uid).child('bloqueado').val() !== true && (root.child('campanhas').child($campanhaId).child('meta/ownerUid').val() === auth.uid || root.child('campanhas').child($campanhaId).child('meta/membros').child(auth.uid).val() === true || root.child('campanhas').child($campanhaId).child('meta/membros').child(auth.uid).child('ativo').val() === true)",
+          ".write": "auth != null && root.child('usuarios').child(auth.uid).child('ativo').val() === true && root.child('usuarios').child(auth.uid).child('bloqueado').val() !== true && (root.child('campanhas').child($campanhaId).child('meta/ownerUid').val() === auth.uid || root.child('campanhas').child($campanhaId).child('meta/membros').child(auth.uid).val() === true || root.child('campanhas').child($campanhaId).child('meta/membros').child(auth.uid).child('ativo').val() === true)"
         }
       }
     },
