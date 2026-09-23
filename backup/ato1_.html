@@ -2476,7 +2476,7 @@
 
             <!--Audio Inimigo DADO 6-->
             <audio id="som-habilidade-inimigo"
-                src="./assets/ATO1/efeitosSonoros/habilidade.mp3"
+                src="./assets/efeitosSonoros/habilidade_inimigo.mp3"
                 preload="auto">
             </audio>
 
@@ -3138,36 +3138,10 @@
             }
         }
 
-        // Processa uma rolagem da mesma forma para quem lançou e para os demais jogadores.
-        // Isso evita diferenças entre a execução local e a recebida pelo Firebase.
-        function processarRolagem(dados) {
-            animarDado3D(dados.nome, dados.resultado, dados.estado, dados.cor);
-
-            // Sempre exibe primeiro o resultado normal do dado no chat (inclusive o 6).
-            adicionarRolagemChat(dados.nome, dados.resultado, dados.cor);
-
-            // Regra especial: ao tirar 6, o inimigo ativa sua habilidade.
-            if (dados.idHeroi === "sistema_inimigo" && Number(dados.resultado) === 6) {
-                const audioHabilidade = document.getElementById("som-habilidade-inimigo");
-                if (audioHabilidade) {
-                    audioHabilidade.currentTime = 0;
-                    audioHabilidade.play().catch(() => {
-                        console.warn("O navegador bloqueou o áudio da habilidade até haver interação com a página.");
-                    });
-                }
-
-                adicionarRolagemChat(
-                    "💀 Habilidade Especial!",
-                    `${dados.nome} ativou sua habilidade!`,
-                    "#ff9900"
-                );
-            }
-
-            mostrarChatRolagens();
-        }
-
         function executarRolagemLocal(dados) {
-            processarRolagem(dados);
+            animarDado3D(dados.nome, dados.resultado, dados.estado, dados.cor);
+            adicionarRolagemChat(dados.nome, dados.resultado, dados.cor);
+            mostrarChatRolagens();
         }
 
         window.lancarDado = function(idHeroi) {
@@ -3194,10 +3168,7 @@
             if (inimigoAbertoLocalmente && inimigoAbertoLocalmente.caminho) {
                 const partes = inimigoAbertoLocalmente.caminho.split('/');
                 const arquivo = partes[partes.length - 1];
-                nomeInimigo = arquivo.split('.')[0]
-                    .replace(/_+/g, ' ')       // Troca cada grupo de underscores por espaço
-                    .replace(/\s+/g, ' ')      // Evita espaços duplicados
-                    .trim();
+                nomeInimigo = arquivo.split('.')[0];
                 nomeInimigo = nomeInimigo.charAt(0).toUpperCase() + nomeInimigo.slice(1);
             }
 
@@ -3874,9 +3845,41 @@
             if (!dados.timestamp || dados.timestamp <= momentoCarregamento) return;
             if (dados.sessaoJogador === sessaoJogador) return;
 
-            // Usa exatamente o mesmo processamento da rolagem local.
-            // Assim resultado, habilidade especial e áudio ficam iguais para todos da campanha.
-            processarRolagem(dados);
+            animarDado3D(
+                dados.nome,
+                dados.resultado,
+                dados.estado,
+                dados.cor
+            );
+
+            if (dados.idHeroi === "sistema_inimigo" && dados.resultado === 6) {
+
+                // Toca o som
+                const audio = document.getElementById("som-habilidade-inimigo");
+                if (audio) {
+                    audio.currentTime = 0;
+                    audio.play().catch(() => {});
+                }
+
+                // Exibe apenas a mensagem especial
+                adicionarRolagemChat(
+                    "💀 Habilidade Especial!",
+                    `${dados.nome} ativou sua habilidade!`,
+                    "#ff9900"
+                );
+
+            } else {
+
+                // Todas as demais rolagens
+                adicionarRolagemChat(
+                    dados.nome,
+                    dados.resultado,
+                    dados.cor
+                );
+
+            }
+
+            mostrarChatRolagens();
 
         });
 
