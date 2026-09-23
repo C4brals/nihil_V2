@@ -1429,19 +1429,6 @@
         /* Emblema discreto NIHIL */
         .nihil-emblema-ato1 { position:fixed; top:18px; left:18px; width:58px; height:58px; z-index:25000; opacity:.72; object-fit:contain; pointer-events:none; user-select:none; filter:drop-shadow(0 0 7px rgba(139,0,0,.55)) drop-shadow(0 1px 2px #000); transition:opacity .25s ease, filter .25s ease; }
         @media (max-width:900px){ .nihil-emblema-ato1{width:44px;height:44px;top:10px;left:10px;opacity:.62;} }
-    
-        /* ===== NIHIL V6: zoom local de cartas (não sincronizado no Firebase) ===== */
-        .nihil-carta-zoom-stage{position:relative;display:flex;align-items:flex-start;justify-content:center;max-width:92vw;max-height:72vh;pointer-events:auto;margin:0 auto;overflow:visible}
-        .nihil-zoom-toolbar{position:absolute;top:8px;right:8px;display:flex;gap:3px;align-items:center;justify-content:center;pointer-events:auto;background:rgba(8,6,6,.72);border:1px solid rgba(197,160,89,.55);border-radius:4px;padding:3px 4px;box-shadow:0 3px 10px rgba(0,0,0,.45);z-index:20;opacity:.48;transition:opacity .18s ease,background .18s ease}
-        .nihil-carta-zoom-stage:hover .nihil-zoom-toolbar,.nihil-zoom-toolbar:focus-within{opacity:1;background:rgba(8,6,6,.94)}
-        .nihil-zoom-toolbar button{background:rgba(23,18,18,.9);color:#e7d6bd;border:1px solid #6f5b3a;border-radius:3px;min-width:25px;width:25px;height:24px;padding:0;cursor:pointer;font-family:'Cinzel',serif;font-size:.72rem;font-weight:bold;line-height:1}
-        .nihil-zoom-toolbar button:hover{border-color:#c5a059;color:#fff}
-        .nihil-zoom-toolbar .zoom-label{min-width:37px;text-align:center;color:#c5a059;font:700 .59rem 'Cinzel',serif}
-        #imagem-central-exibida,#imagem-inimigo-exibida{display:block;transform-origin:top center;transition:transform .14s ease;will-change:transform}
-        #modal-imagem-central,#modal-inimigo-central{box-sizing:border-box;overflow:auto;padding:4vh 3vw 5vh}
-        @media(max-width:900px){.nihil-zoom-toolbar{top:5px;right:5px}.nihil-zoom-toolbar button{min-width:23px;width:23px;height:22px}.nihil-zoom-toolbar .zoom-label{min-width:34px}}
-        .nihil-convidado .btn-menu-rodape,.nihil-convidado #btn-tokens-topo,.nihil-convidado #btn-efeitos-topo,.nihil-convidado #seletor-musica,.nihil-convidado #btn-play-pause,.nihil-convidado #seletorEfeito{opacity:.38!important;cursor:not-allowed!important;filter:grayscale(.7)}
-
     </style>
 </head>
 <body>
@@ -2498,7 +2485,6 @@
         audio.volume = 0.5;
 
         window.trocarMusica = function(vindoDoFirebase = false) {
-            if (!vindoDoFirebase && !exigirMestre()) return;
 
             const caminhoMusica = seletorMusica.value;
 
@@ -2652,28 +2638,6 @@
         const gameRef = (caminho = '') => ref(db, caminhoJogo(caminho));
         window.NIHIL_CAMPANHA_ID = campanhaId || null;
         window.NIHIL_MODO_LEGADO = modoLegado;
-        // V6: autoridade local da interface. Em campanhas novas, somente o ownerUid é Mestre.
-        // O modo legado mantém o comportamento anterior para não quebrar mesas antigas.
-        let usuarioAtualNihil = null;
-        let ehMestreCampanha = modoLegado;
-        window.NIHIL_EH_MESTRE = ehMestreCampanha;
-
-        function aplicarPermissoesMestre() {
-            window.NIHIL_EH_MESTRE = ehMestreCampanha;
-            document.body?.classList.toggle('nihil-convidado', !ehMestreCampanha && !modoLegado);
-            document.querySelectorAll('.btn-menu-rodape, #btn-tokens-topo, #btn-efeitos-topo, #seletor-musica, #btn-play-pause, #seletorEfeito')
-                .forEach(el => {
-                    el.disabled = !ehMestreCampanha && !modoLegado;
-                    el.setAttribute('aria-disabled', String(!ehMestreCampanha && !modoLegado));
-                    if (!ehMestreCampanha && !modoLegado) el.title = 'Controle exclusivo do Mestre desta campanha';
-                });
-        }
-
-        function exigirMestre() {
-            if (modoLegado || ehMestreCampanha) return true;
-            console.warn('Ação bloqueada: controle exclusivo do Mestre.');
-            return false;
-        }
 
         // ===== PROTEÇÃO COMERCIAL DO ATO 1 =====
         // O ATO só permanece aberto para usuário autenticado, ativo e com plano permitido.
@@ -2703,16 +2667,11 @@
                     const camp = campSnap.val();
                     const membro = camp?.membros?.[user.uid];
                     const permitido = camp && (camp.ownerUid === user.uid || membro === true || membro?.ativo === true);
-                    usuarioAtualNihil = user;
-                    ehMestreCampanha = !!camp && camp.ownerUid === user.uid;
-                    aplicarPermissoesMestre();
                     if (!permitido || camp.ativa === false) {
                         window.location.replace('./portal.html?acesso=campanha');
                         return;
                     }
                 }
-                usuarioAtualNihil = user;
-                if (modoLegado) { ehMestreCampanha = true; aplicarPermissoesMestre(); }
                 acessoValidado = true;
                 document.documentElement.style.visibility = 'visible';
             } catch (err) {
@@ -2960,7 +2919,7 @@
         // Função interna para processar o cálculo dos valores em %
         function moverToken(clientX, clientY) {
             if (!tokenAtivo) return;
-            const container = document.querySelector('.mapa-wrapper');
+            const container = document.querySelector('.tabuleiro-container');
             const limite = container.getBoundingClientRect();
 
             let pctLeft = ((clientX - limite.left - offsetX) / limite.width) * 100;
@@ -3241,7 +3200,6 @@
 
         // --- CONTROLE DE ABERTURA DOS MENUS (DROPUP) ---
         window.alternarDropup = function(event, idDropup) {
-            if (!exigirMestre()) return;
             event.stopPropagation();
             
             const listas = document.querySelectorAll('.lista-dropup, .lista-dropdown');
@@ -3272,7 +3230,6 @@
 
         // --- TRANSMITIR IMAGEM DO MENU PARA TODOS OS JOGADORES ---
         window.mostrarImagemGrupo = function(caminhoImagem) {
-            if (!exigirMestre()) return;
             set(gameRef('inimigo_ativo'), {
                 caminho: caminhoImagem,
                 vida: 0
@@ -3280,7 +3237,6 @@
         };
 
         window.criarTokenExtra = function(nome, imagem){
-            if (!exigirMestre()) return;
 
             contadorTokensExtras++;
 
@@ -3311,7 +3267,7 @@
 
             registrarToken(token);
 
-            set(gameRef('tokens/' + id),{
+            set(ref(db,"tokens/"+id),{
 
                 left:50,
                 top:50,
@@ -3363,7 +3319,6 @@
         window.alternarChatRolagens = alternarChatRolagens;
 
         function trocarEfeitoMapa(nome) {
-            if (!exigirMestre()) return;
             // Referência ao banco
             const efeitoRef = gameRef('efeitoGlobal');
             
@@ -4014,7 +3969,6 @@
 
         // --- ENVIAR PARA O FIREBASE O EFEITO SONORO DISPARADO ---
         window.dispararEfeitoFirebase = function(caminhoEfeito) {
-            if (!exigirMestre()) return;
             if (!caminhoEfeito) return;
             
             // Fecha o menu suspenso após a escolha
@@ -4067,32 +4021,10 @@
 
     };
         
-    
-        // ===== NIHIL V6: zoom local das cartas =====
-        // Estado existe apenas nesta aba/navegador; nada é gravado no Firebase.
-        const zoomLocalCartas = new Map();
-        function aplicarZoomLocal(id, valor){
-            const img=document.getElementById(id); if(!img) return;
-            const z=Math.max(0.75,Math.min(2,valor));
-            zoomLocalCartas.set(id,z); img.style.transform=`scale(${z})`;
-            document.querySelectorAll(`.nihil-zoom-toolbar[data-zoom-target="${id}"] .zoom-label`).forEach(x=>x.textContent=Math.round(z*100)+'%');
-        }
-        document.addEventListener('click',e=>{
-            const b=e.target.closest('.nihil-zoom-toolbar button'); if(!b) return;
-            e.preventDefault(); e.stopPropagation();
-            const tb=b.closest('.nihil-zoom-toolbar'), id=tb.dataset.zoomTarget;
-            const atual=zoomLocalCartas.get(id)||1;
-            aplicarZoomLocal(id,b.dataset.z==='+'?atual+.25:b.dataset.z==='-'?atual-.25:1);
-        });
-        ['imagem-central-exibida','imagem-inimigo-exibida'].forEach(id=>aplicarZoomLocal(id,1));
-
     </script>
 
     <div id="modal-imagem-central" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 99; align-items: center; justify-content: center; flex-direction: column; gap: 20px; pointer-events: none;">
-        <div class="nihil-carta-zoom-stage">
-            <img id="imagem-central-exibida" src="" style="max-width: 80vw; max-height: 65vh; border: 2px solid #c5a059; box-shadow: 0 0 20px rgba(197, 160, 89, 0.5); border-radius: 4px; pointer-events: auto;">
-            <div class="nihil-zoom-toolbar" data-zoom-target="imagem-central-exibida" aria-label="Zoom local da carta"><button type="button" data-z="-" title="Reduzir">−</button><span class="zoom-label">100%</span><button type="button" data-z="+" title="Ampliar">+</button><button type="button" data-z="reset" title="Restaurar 100%">↺</button></div>
-        </div>
+        <img id="imagem-central-exibida" src="" style="max-width: 80%; max-height: 65vh; border: 2px solid #c5a059; box-shadow: 0 0 20px rgba(197, 160, 89, 0.5); border-radius: 4px; pointer-events: auto;">
         
         <div id="container-botoes-heroi" style="display: flex; gap: 20px; pointer-events: auto;">
             <button id="btn-modal-usar" style="background: #8b0000; color: #fff; border: 1px solid #ff0000; padding: 10px 25px; font-family: 'Cinzel', serif; font-weight: bold; cursor: pointer; border-radius: 4px;">Usar</button>
@@ -4101,10 +4033,7 @@
     </div>
 
     <div id="modal-inimigo-central" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.2); z-index: 98; align-items: center; justify-content: center; flex-direction: column; gap: 20px; pointer-events: none;">
-        <div class="nihil-carta-zoom-stage">
-            <img id="imagem-inimigo-exibida" src="" style="max-width: 75vw; max-height: 60vh; border: 2px solid #8b0000; box-shadow: 0 0 20px rgba(139, 0, 0, 0.6); border-radius: 4px; pointer-events: auto;">
-            <div class="nihil-zoom-toolbar" data-zoom-target="imagem-inimigo-exibida" aria-label="Zoom local da carta"><button type="button" data-z="-" title="Reduzir">−</button><span class="zoom-label">100%</span><button type="button" data-z="+" title="Ampliar">+</button><button type="button" data-z="reset" title="Restaurar 100%">↺</button></div>
-        </div>
+        <img id="imagem-inimigo-exibida" src="" style="max-width: 75%; max-height: 60vh; border: 2px solid #8b0000; box-shadow: 0 0 20px rgba(139, 0, 0, 0.6); border-radius: 4px; pointer-events: auto;">
         
         <div id="container-vida-monstro" style="flex-direction: column; align-items: center; gap: 12px; background: rgba(15,10,10,0.95); padding: 15px 25px; border: 1px solid rgba(139, 0, 0, 0.4); border-radius: 6px; pointer-events: auto;">
             <div style="display: flex; align-items: center; gap: 15px;">

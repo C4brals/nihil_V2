@@ -52,6 +52,8 @@ a{color:inherit}.frame{position:fixed;inset:8px;pointer-events:none;z-index:9999
 .modal-nihil-card{position:relative;width:min(520px,100%);padding:28px;background:#100b0b;border:1px solid rgba(197,160,89,.45);border-radius:7px;box-shadow:0 18px 60px #000}.modal-nihil-card h2{margin:0 40px 12px 0;font-family:'Cinzel',serif;color:var(--nihil-gold2)}.modal-nihil-card p{line-height:1.6;margin:0 0 18px}.modal-x{position:absolute;right:14px;top:12px;border:0;background:transparent;color:#d8c7b0;font-size:1.7rem;cursor:pointer}.codigo-convite{margin:16px 0;padding:14px;background:#090707;border:1px solid #4e3b2d;border-radius:4px;font-family:monospace;overflow-wrap:anywhere}
 @media(max-width:650px){.portal .section{padding-top:32px;padding-bottom:32px}.admin-list-head{align-items:stretch;flex-direction:column}.admin-list-head .btn{align-self:flex-start}.admin-user{padding:16px}.admin-user-fields{grid-template-columns:1fr}.admin-user-actions{align-items:stretch;flex-direction:column}.admin-user-actions .badge{margin-right:0;align-self:flex-start}.admin-user-actions .btn{width:100%}.portal .actions{align-items:stretch}.portal .actions .btn{flex:1 1 100%}}
 
+
+      .campanha-cabecalho{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:8px}.campanha-cabecalho h3{margin:0;min-width:0}.solicitacoes-campanha{margin-top:16px;padding-top:12px;border-top:1px solid rgba(197,160,89,.28)}.solicitacoes-campanha h4{font-family:Cinzel;color:#c5a059;margin:0 0 10px}.pedido-entrada{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px;background:rgba(0,0,0,.22);border:1px solid rgba(197,160,89,.18);margin-top:7px}.pedido-entrada span{display:flex;flex-direction:column;gap:2px}.pedido-entrada small{color:#9e9183}.btn-encerrar{border-color:#7d2929!important;color:#d9aaaa!important}.btn-aceitar{border-color:#4d7750!important}.btn-recusar{border-color:#7d2929!important}@media(max-width:620px){.campanha-cabecalho,.pedido-entrada{align-items:flex-start;flex-direction:column}}
 </style>
   
     <link rel="icon" href="./favicon.ico" sizes="any">
@@ -306,9 +308,20 @@ a{color:inherit}.frame{position:fixed;inset:8px;pointer-events:none;z-index:9999
             if (!participa) continue;
             const dono = m.ownerUid === usuarioAtual.uid;
             const cod = m.inviteSecret ? codigo(id, m.inviteSecret) : "";
-            cards.push(
-              `<article class="card"><div class="badge">${m.ativa === false ? "INATIVA" : "ATIVA"}</div><h3>${esc(m.nome || "Campanha sem nome")}</h3><p>${dono ? "Você é o Mestre/proprietário desta campanha." : "Você participa desta campanha."}</p>${m.ativa === false ? "" : `<div class="actions" style="justify-content:flex-start"><a class="btn primary" href="./ato1.html?campanha=${encodeURIComponent(id)}">Entrar no ATO I</a>${dono && cod ? `<button class="btn btn-convite" data-codigo="${esc(cod)}">Convidar jogadores</button>` : ""}</div>`}</article>`,
-            );
+            let solicitacoesHtml = '';
+            if (dono) {
+              const ss = await get(ref(db, `campanhas/${id}/solicitacoes`));
+              const pedidos = Object.entries(ss.val() || {}).filter(([,v]) => v && v.status === 'pendente');
+              if (pedidos.length) solicitacoesHtml = `<div class="solicitacoes-campanha"><h4>Solicitações de entrada (${pedidos.length})</h4>${pedidos.map(([uid,p]) => `<div class="pedido-entrada"><span><strong>${esc(p.nome || p.email || 'Jogador')}</strong><small>${esc(p.email || '')}</small></span><div class="actions"><button class="btn btn-aceitar" data-campanha="${esc(id)}" data-uid="${esc(uid)}">Aceitar</button><button class="btn btn-recusar" data-campanha="${esc(id)}" data-uid="${esc(uid)}">Recusar</button></div></div>`).join('')}</div>`;
+            }
+            let acoesHtml = '';
+            if (m.ativa === false) {
+              if (dono) acoesHtml = `<button class="btn btn-reativar" data-campanha="${esc(id)}">Reabrir Campanha</button>`;
+            } else {
+              acoesHtml = `<a class="btn primary" href="./ato1.html?campanha=${encodeURIComponent(id)}">Entrar no ATO I</a>`;
+              if (dono && cod) acoesHtml += `<button class="btn btn-convite" data-codigo="${esc(cod)}">Convidar jogadores</button><button class="btn btn-encerrar" data-campanha="${esc(id)}">Encerrar Campanha</button>`;
+            }
+            cards.push(`<article class="card campanha-card"><div class="campanha-cabecalho"><h3>${esc(m.nome || "Campanha sem nome")}</h3><div class="badge">${m.ativa === false ? "INATIVA" : "ATIVA"}</div></div><p>${dono ? "Você é o Mestre/proprietário desta campanha." : "Você participa desta campanha."}</p>${acoesHtml ? `<div class="actions" style="justify-content:flex-start">${acoesHtml}</div>` : ''}${solicitacoesHtml}</article>`);
           } catch (e) {
             console.warn("Campanha indisponível", id, e);
           }
@@ -319,6 +332,27 @@ a{color:inherit}.frame{position:fixed;inset:8px;pointer-events:none;z-index:9999
         document
           .querySelectorAll(".btn-convite")
           .forEach((x) => (x.onclick = () => abrirConvite(x.dataset.codigo)));
+        document.querySelectorAll('.btn-encerrar').forEach(x => x.onclick = async () => {
+          if (!confirm('Encerrar esta campanha? Os dados serão preservados, mas convidados não poderão entrar até que ela seja reaberta.')) return;
+          await set(ref(db, `campanhas/${x.dataset.campanha}/meta/ativa`), false);
+          await carregarCampanhas();
+        });
+        document.querySelectorAll('.btn-reativar').forEach(x => x.onclick = async () => {
+          await set(ref(db, `campanhas/${x.dataset.campanha}/meta/ativa`), true);
+          await carregarCampanhas();
+        });
+        document.querySelectorAll('.btn-aceitar').forEach(x => x.onclick = async () => {
+          const id=x.dataset.campanha, uid=x.dataset.uid;
+          await set(ref(db, `campanhas/${id}/meta/membros/${uid}`), {ativo:true, entrouEm:Date.now(), aprovadoPor:usuarioAtual.uid});
+          await set(ref(db, `campanhasPorUsuario/${uid}/${id}`), true);
+          await set(ref(db, `campanhas/${id}/solicitacoes/${uid}/status`), 'aceita');
+          await carregarCampanhas();
+        });
+        document.querySelectorAll('.btn-recusar').forEach(x => x.onclick = async () => {
+          const id=x.dataset.campanha, uid=x.dataset.uid;
+          await set(ref(db, `campanhas/${id}/solicitacoes/${uid}/status`), 'recusada');
+          await carregarCampanhas();
+        });
       }
       btnNova.onclick = async () => {
         if (!usuarioAtual || !assinaturaValida(perfilAtual)) return;
@@ -369,22 +403,19 @@ a{color:inherit}.frame{position:fixed;inset:8px;pointer-events:none;z-index:9999
         btnEntrar.disabled = true;
         a.textContent = "";
         try {
-          await set(
-            ref(db, `campanhas/${id}/meta/membros/${usuarioAtual.uid}`),
-            { ativo: true, entrouEm: Date.now(), convite: secret },
-          );
-          await set(
-            ref(db, `campanhasPorUsuario/${usuarioAtual.uid}/${id}`),
-            true,
-          );
-          const camp = await get(ref(db, `campanhas/${id}/meta`));
-          if (!camp.exists()) throw new Error("Campanha não encontrada");
-          await carregarCampanhas();
-          location.href = `./ato1.html?campanha=${encodeURIComponent(id)}`;
+          const pedido = {
+            uid: usuarioAtual.uid,
+            nome: perfilAtual?.nome || usuarioAtual.displayName || usuarioAtual.email || 'Jogador',
+            email: usuarioAtual.email || perfilAtual?.email || '',
+            solicitadoEm: Date.now(),
+            status: 'pendente',
+            convite: secret
+          };
+          await set(ref(db, `campanhas/${id}/solicitacoes/${usuarioAtual.uid}`), pedido);
+          a.textContent = 'Solicitação enviada ao Mestre. Aguarde a aprovação antes de entrar na campanha.';
         } catch (e) {
           console.error(e);
-          a.textContent =
-            "Não foi possível entrar. Confira o código e se sua assinatura está ativa.";
+          a.textContent = 'Não foi possível enviar a solicitação. Confira o código, o status da campanha e sua assinatura.';
         } finally {
           btnEntrar.disabled = false;
         }

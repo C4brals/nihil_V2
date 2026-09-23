@@ -1,0 +1,10 @@
+NIHIL V6 - alterações aplicadas
+
+1. Zoom local nas cartas: botões - / + / restaurar. O zoom não é salvo no Firebase.
+2. Tokens: cálculo de posição corrigido para usar .mapa-wrapper e token extra passa a usar gameRef da campanha.
+3. Mestre: ownerUid da campanha define o Mestre. Menus de rodapé e controles globais do topo ficam bloqueados para convidados em campanhas novas.
+4. Encerrar/Reabrir campanha: disponível no Portal apenas ao proprietário. Dados são preservados.
+5. Convites: código agora cria solicitação pendente. O Mestre aceita/recusa no Portal. Só após aceitar o jogador entra em membros e campanhasPorUsuario.
+6. database.rules.json atualizado para o novo fluxo e para proteger ações globais importantes do ATO I.
+
+IMPORTANTE: publique database.rules.json no Firebase antes de testar o novo fluxo de convites. Faça backup do Realtime Database antes da publicação. O modo legado foi preservado.
