@@ -8,11 +8,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" href="./assets/ico.png" sizes="32x32">
-
-    <link rel="icon" type="image/png" href="./assets/ico.png" sizes="192x192">
-
-    <link rel="apple-touch-icon" href="./assets/ico-ios.png">
+    <link rel="icon" href="./favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" href="./favicon-32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="./favicon-192.png" sizes="192x192">
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png">
     
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -1426,11 +1425,16 @@
             .painel-status-firebase { left:12px; bottom:12px; width:250px; max-width:calc(100vw - 24px); }
             .alerta-conexao { left:12px; bottom:155px; max-width:calc(100vw - 24px); }
         }
+    
+        /* Emblema discreto NIHIL */
+        .nihil-emblema-ato1 { position:fixed; top:18px; left:18px; width:58px; height:58px; z-index:25000; opacity:.72; object-fit:contain; pointer-events:none; user-select:none; filter:drop-shadow(0 0 7px rgba(139,0,0,.55)) drop-shadow(0 1px 2px #000); transition:opacity .25s ease, filter .25s ease; }
+        @media (max-width:900px){ .nihil-emblema-ato1{width:44px;height:44px;top:10px;left:10px;opacity:.62;} }
     </style>
 </head>
 <body>
 
     <div class="moldura-tela"></div>
+    <img class="nihil-emblema-ato1" src="./nihil-emblema.png" alt="" aria-hidden="true">
 
     <section id="painel-status-firebase" class="painel-status-firebase" aria-label="Status da conexão">
         <div class="cabecalho-status-firebase">
@@ -1526,16 +1530,16 @@
                 <li class="item-dropdown-topo" onclick="criarTokenExtra('Sarcedotisa de Malkar','./assets/tokens/sarcedotisaDeMalkar.jpg')">Fenda IV - Sarcedotisa de Malkar (Elite)</li>
                 <li class="item-dropdown-topo" onclick="criarTokenExtra('Lâmina do Abismo','./assets/tokens/laminaDoAbismo.jpg')">Fenda IV - Lâmina do Abismo (Comum)</li>
                 <li class="item-dropdown-topo" onclick="criarTokenExtra('A Fenda','./assets/tokens/fenda.jpg')">Fenda (Portal)</li>
-                <li class="item-dropdown-topo" onclick="criarTokenExtra('Itens - Adepto das Sombras','./assets/herois/adepto_drop.jpg')">Adepto das Sombras (Drop)</li>
-                <li class="item-dropdown-topo" onclick="criarTokenExtra('Itens - Guerreiro Atroz','./assets/herois/atroz_drop.jpg')">Guerreiro Atroz (Drop)</li>
-                <li class="item-dropdown-topo" onclick="criarTokenExtra('Itens - Mestre Caçador','./assets/herois/cacador_drop.jpg')">Mestre Caçador (Drop)</li>
-                <li class="item-dropdown-topo" onclick="criarTokenExtra('Itens - Clériga','./assets/herois/cleriga_drop.jpg')">Clériga (Drop)</li>
-                <li class="item-dropdown-topo" onclick="criarTokenExtra('Itens - Combatente','./assets/herois/combatente_drop.jpg')">Combatente (Drop)</li>
-                <li class="item-dropdown-topo" onclick="criarTokenExtra('Itens - Druida','./assets/herois/druida_drop.jpg')">Druida (Drop)</li>
-                <li class="item-dropdown-topo" onclick="criarTokenExtra('Itens - Elementarista','./assets/herois/elementarista_drop.jpg')">Elementarista (Drop)</li>
-                <li class="item-dropdown-topo" onclick="criarTokenExtra('Itens - Guardião','./assets/herois/guardiao_drop.jpg')">Guardião (Drop)</li>
-                <li class="item-dropdown-topo" onclick="criarTokenExtra('Itens - Mestre da Forja','./assets/herois/necromante_drop.jpg')">Mestre da Forja (Drop)</li>
-                <li class="item-dropdown-topo" onclick="criarTokenExtra('Itens - Protetor','./assets/herois/protetor_drop.jpg')">Protetor (Drop)</li>
+                <li class="item-dropdown-topo" onclick="criarTokenExtra('Itens - Adepto das Sombras','./assets/ATO1/herois/loot.png')">Adepto das Sombras (Drop)</li>
+                <li class="item-dropdown-topo" onclick="criarTokenExtra('Itens - Guerreiro Atroz','./assets/ATO1/herois/loot.png')">Guerreiro Atroz (Drop)</li>
+                <li class="item-dropdown-topo" onclick="criarTokenExtra('Itens - Mestre Caçador','./assets/ATO1/herois/loot.png')">Mestre Caçador (Drop)</li>
+                <li class="item-dropdown-topo" onclick="criarTokenExtra('Itens - Clériga','./assets/ATO1/herois/loot.png')">Clériga (Drop)</li>
+                <li class="item-dropdown-topo" onclick="criarTokenExtra('Itens - Combatente','./assets/ATO1/herois/loot.png')">Combatente (Drop)</li>
+                <li class="item-dropdown-topo" onclick="criarTokenExtra('Itens - Druida','./assets/ATO1/herois/loot.png')">Druida (Drop)</li>
+                <li class="item-dropdown-topo" onclick="criarTokenExtra('Itens - Mago','./assets/ATO1/herois/loot.png')">Mago (Drop)</li>
+                <li class="item-dropdown-topo" onclick="criarTokenExtra('Itens - Guardião','./assets/ATO1/herois/loot.png')">Guardião (Drop)</li>
+                <li class="item-dropdown-topo" onclick="criarTokenExtra('Itens - Mestre da Forja','./assets/ATO1/herois/loot.png')">Mestre da Forja (Drop)</li>
+                <li class="item-dropdown-topo" onclick="criarTokenExtra('Itens - Protetor','./assets/ATO1/herois/loot.png')">Protetor (Drop)</li>
             </ul>
         </div>
 
@@ -1600,12 +1604,12 @@
             
             <!-- ADEPTO DAS SOMBRAS -->
             <div id="card-h1" class="card-heroi" style="--token-color: #8b0000;" 
-                 data-img-normal="./assets/herois/adepto.jpg?w=100"
-                 data-img-corrompida="./assets/herois/adepto_corrompido.jpg?w=100">
+                 data-img-normal="./assets/ATO1/herois/adepto/adepto.png?w=100"
+                 data-img-corrompida="./assets/ATO1/herois/adepto/adepto_corrompido.png?w=100">
                 <div class="info-heroi">
-                    <img src="./assets/herois/adepto.jpg?w=100" class="avatar-painel" id="avatar-h1">
+                    <img src="./assets/ATO1/herois/adepto/adepto.png" class="avatar-painel" id="avatar-h1">
                     <div class="textos-heroi">
-                        <span class="nome-heroi">Adepto das Sombras</span>
+                        <span class="nome-heroi">Adepto</span>
                         <div class="atributos-container">
                             <span class="pv-container"><span id="pv-h1">5</span> PV</span>
                             <span class="am-container"><span id="am-h1">0</span> AM</span>
@@ -1642,19 +1646,19 @@
                     </div>
                     <button class="btn-estado" id="btn-estado-h1" onclick="alternarEstado('h1')">Normal</button>
                     <div class="botoes-imagens" style="display: flex; gap: 4px; margin-top: 4px;">
-                        <button id="btn-img-h1-1" class="btn-numero" onclick="abrirImagemCentral('h1', 1, './assets/habilidades/Adepto 2.jpg')">1</button>
-                        <button id="btn-img-h1-2" class="btn-numero" onclick="abrirImagemCentral('h1', 2, './assets/habilidades/Adepto 3.jpg')">2</button>
-                        <button id="btn-img-h1-3" class="btn-numero" onclick="abrirImagemCentral('h1', 3, './assets/habilidades/Adepto 1.jpg')">3</button>
+                        <button id="btn-img-h1-1" class="btn-numero" onclick="abrirImagemCentral('h1', 1, './assets/ATO1/herois/adepto/esquiva_perfeita.png')">1</button>
+                        <button id="btn-img-h1-2" class="btn-numero" onclick="abrirImagemCentral('h1', 2, './assets/ATO1/herois/adepto/evasao.png')">2</button>
+                        <button id="btn-img-h1-3" class="btn-numero" onclick="abrirImagemCentral('h1', 3, './assets/ATO1/herois/adepto/furto_espectral.png')">3</button>
                     </div>
                 </div>
             </div>
 
             <!-- ATROZ -->
             <div id="card-h2" class="card-heroi" style="--token-color: #743838;" 
-                 data-img-normal="./assets/herois/atroz.jpg?w=100"
-                 data-img-corrompida="./assets/herois/atroz_corrompido.jpg?w=100">
+                 data-img-normal="./assets/ATO1/herois/atroz/atroz.png?w=100"
+                 data-img-corrompida="./assets/ATO1/herois/atroz/atroz_corrompido.png?w=100">
                 <div class="info-heroi">
-                    <img src="./assets/herois/atroz.jpg?w=100" class="avatar-painel" id="avatar-h2">
+                    <img src="./assets/ATO1/herois/atroz/atroz.jpg?w=100" class="avatar-painel" id="avatar-h2">
                     <div class="textos-heroi">
                         <span class="nome-heroi">Guerreiro Atroz</span>
                         <div class="atributos-container">
@@ -1700,10 +1704,10 @@
 
             <!-- Cacador -->
             <div id="card-h3" class="card-heroi" style="--token-color: #202020;" 
-                 data-img-normal="./assets/herois/cacador.jpg?w=100"
-                 data-img-corrompida="./assets/herois/cacador_corrompido.jpg?w=100">
+                 data-img-normal="./assets/ATO1/herois/cacador/cacador.png?w=100"
+                 data-img-corrompida="./assets/ATO1/herois/cacador/cacador_corrompido.png?w=100">
                 <div class="info-heroi">
-                    <img src="./assets/herois/cacador.jpg?w=100" class="avatar-painel" id="avatar-h3">
+                    <img src="./assets/ATO1/herois/cacador/cacador.png?w=100" class="avatar-painel" id="avatar-h3">
                     <div class="textos-heroi">
                         <span class="nome-heroi">Mestre Cacador</span>
                         <div class="atributos-container">
@@ -1749,10 +1753,10 @@
 
             <!-- Cleriga -->
             <div id="card-h4" class="card-heroi" style="--token-color: #df8ce6;" 
-                 data-img-normal="./assets/herois/cleriga.jpg?w=100"
-                 data-img-corrompida="./assets/herois/cleriga_corrompido.jpg?w=100">
+                 data-img-normal="./assets/ATO1/herois/cleriga/cleriga.png?w=100"
+                 data-img-corrompida="./assets/ATO1/herois/cleriga/cleriga_corrompido.png?w=100">
                 <div class="info-heroi">
-                    <img src="./assets/herois/cleriga.jpg?w=100" class="avatar-painel" id="avatar-h4">
+                    <img src="./assets/ATO1/herois/cleriga/cleriga.png?w=100" class="avatar-painel" id="avatar-h4">
                     <div class="textos-heroi">
                         <span class="nome-heroi">Clériga</span>
                         <div class="atributos-container">
@@ -1798,10 +1802,10 @@
 
             <!-- combatente -->
             <div id="card-h5" class="card-heroi" style="--token-color: #331216;" 
-                 data-img-normal="./assets/herois/combatente.jpg?w=100"
-                 data-img-corrompida="./assets/herois/combatente_corrompido.jpg?w=100">
+                 data-img-normal="./assets/ATO1/herois/combatente/combatente.png?w=100"
+                 data-img-corrompida="./assets/ATO1/herois/combatente/combatente_corrompido.png?w=100">
                 <div class="info-heroi">
-                    <img src="./assets/herois/combatente.jpg?w=100" class="avatar-painel" id="avatar-h5">
+                    <img src="./assets/ATO1/herois/combatente/combatente.png?w=100" class="avatar-painel" id="avatar-h5">
                     <div class="textos-heroi">
                         <span class="nome-heroi">Combatente</span>
                         <div class="atributos-container">
@@ -1838,19 +1842,19 @@
                     </div>
                     <button class="btn-estado" id="btn-estado-h5" onclick="alternarEstado('h5')">Normal</button>
                     <div class="botoes-imagens" style="display: flex; gap: 4px; margin-top: 4px;">
-                        <button id="btn-img-h5-1" class="btn-numero" onclick="abrirImagemCentral('h5', 1, './assets/habilidades/Combatente 3.jpg')">1</button>
-                        <button id="btn-img-h5-2" class="btn-numero" onclick="abrirImagemCentral('h5', 2, './assets/habilidades/Combatente 1.jpg')">2</button>
-                        <button id="btn-img-h5-3" class="btn-numero" onclick="abrirImagemCentral('h5', 3, './assets/habilidades/Combatente 2.jpg')">3</button>
+                        <button id="btn-img-h5-1" class="btn-numero" onclick="abrirImagemCentral('h5', 1, './assets/ATO1/herois/combatente/golpe_de_oportunidade.png')">1</button>
+                        <button id="btn-img-h5-2" class="btn-numero" onclick="abrirImagemCentral('h5', 2, './assets/ATO1/herois/combatente/hora_de_vencer.png')">2</button>
+                        <button id="btn-img-h5-3" class="btn-numero" onclick="abrirImagemCentral('h5', 3, './assets/ATO1/herois/combatente/mestre_das_armas.png')">3</button>
                     </div>
                 </div>
             </div>
 
             <!-- Druida -->
             <div id="card-h6" class="card-heroi" style="--token-color: #4ead3b;" 
-                 data-img-normal="./assets/herois/druida.jpg?w=100"
-                 data-img-corrompida="./assets/herois/druida_corrompido.jpg?w=100">
+                 data-img-normal="./assets/ATO1/herois/druida/druida.png?w=100"
+                 data-img-corrompida="./assets/ATO1/herois/druida/druida_corrompido.png?w=100">
                 <div class="info-heroi">
-                    <img src="./assets/herois/druida.jpg?w=100" class="avatar-painel" id="avatar-h6">
+                    <img src="./assets/ATO1/herois/druida/druida.png?w=100" class="avatar-painel" id="avatar-h6">
                     <div class="textos-heroi">
                         <span class="nome-heroi">Druida</span>
                         <div class="atributos-container">
@@ -1894,14 +1898,14 @@
                 </div>
             </div>
 
-            <!-- elementarista -->
+            <!-- Mago -->
             <div id="card-h7" class="card-heroi" style="--token-color: #0d4949;" 
-                 data-img-normal="./assets/herois/elementarista.jpg?w=100"
-                 data-img-corrompida="./assets/herois/elementarista_corrompido.jpg?w=100">
+                 data-img-normal="./assets/ATO1/herois/Mago/Mago.png?w=100"
+                 data-img-corrompida="./assets/ATO1/herois/Mago/Mago_corrompido.png?w=100">
                 <div class="info-heroi">
-                    <img src="./assets/herois/elementarista.jpg?w=100" class="avatar-painel" id="avatar-h7">
+                    <img src="./assets/ATO1/herois/Mago/Mago.png?w=100" class="avatar-painel" id="avatar-h7">
                     <div class="textos-heroi">
-                        <span class="nome-heroi">Elementarista</span>
+                        <span class="nome-heroi">Mago</span>
                         <div class="atributos-container">
                             <span class="pv-container"><span id="pv-h7">5</span> PV</span>
                             <span class="am-container"><span id="am-h7">0</span> AM</span>
@@ -1927,7 +1931,7 @@
                         </div>
                         <div class="botoes-acao">
                             <!-- Botão de inventário -->
-                            <button class="btn-inventario-medieval" onclick="abrirInventario('h7', 'Elementarista')" title="Inventário">
+                            <button class="btn-inventario-medieval" onclick="abrirInventario('h7', 'Mago')" title="Inventário">
                                 <i class="fa-solid fa-flask" style="color: #c5a059; pointer-events: none;"></i>
                             </button>
                             <button class="btn-am" onclick="alterarAM('h7', -1)">-</button>
@@ -1936,19 +1940,19 @@
                     </div>
                     <button class="btn-estado" id="btn-estado-h7" onclick="alternarEstado('h7')">Normal</button>
                     <div class="botoes-imagens" style="display: flex; gap: 4px; margin-top: 4px;">
-                        <button id="btn-img-h7-1" class="btn-numero" onclick="abrirImagemCentral('h7', 1, './assets/habilidades/Elementarista 1.jpg')">1</button>
-                        <button id="btn-img-h7-2" class="btn-numero" onclick="abrirImagemCentral('h7', 2, './assets/habilidades/Elementarista 2.jpg')">2</button>
-                        <button id="btn-img-h7-3" class="btn-numero" onclick="abrirImagemCentral('h7', 3, './assets/habilidades/Elementarista 3.jpg')">3</button>
+                        <button id="btn-img-h7-1" class="btn-numero" onclick="abrirImagemCentral('h7', 1, './assets/ATO1/herois/Mago/criar_chamas.png')">1</button>
+                        <button id="btn-img-h7-2" class="btn-numero" onclick="abrirImagemCentral('h7', 2, './assets/ATO1/herois/Mago/embacamento.png')">2</button>
+                        <button id="btn-img-h7-3" class="btn-numero" onclick="abrirImagemCentral('h7', 3, './assets/ATO1/herois/Mago/inducao_eletrica.png')">3</button>
                     </div>
                 </div>
             </div>
 
             <!-- guardiao -->
             <div id="card-h8" class="card-heroi" style="--token-color: #7e3818;" 
-                 data-img-normal="./assets/herois/guardiao.jpg?w=100"
-                 data-img-corrompida="./assets/herois/guardiao_corrompido.jpg?w=100">
+                 data-img-normal="./assets/ATO1/herois/guardiao/guardiao.png?w=100"
+                 data-img-corrompida="./assets/ATO1/herois/guardiao/guardiao_corrompido.png?w=100">
                 <div class="info-heroi">
-                    <img src="./assets/herois/guardiao.jpg?w=100" class="avatar-painel" id="avatar-h8">
+                    <img src="./assets/ATO1/herois/guardiao/guardiao.png?w=100" class="avatar-painel" id="avatar-h8">
                     <div class="textos-heroi">
                         <span class="nome-heroi">Guardião</span>
                         <div class="atributos-container">
@@ -1985,19 +1989,19 @@
                     </div>
                     <button class="btn-estado" id="btn-estado-h8" onclick="alternarEstado('h8')">Normal</button>
                     <div class="botoes-imagens" style="display: flex; gap: 4px; margin-top: 4px;">
-                        <button id="btn-img-h8-1" class="btn-numero" onclick="abrirImagemCentral('h8', 1, './assets/habilidades/Guardião 1.jpg')">1</button>
-                        <button id="btn-img-h8-2" class="btn-numero" onclick="abrirImagemCentral('h8', 2, './assets/habilidades/Guardião 3.jpg')">2</button>
-                        <button id="btn-img-h8-3" class="btn-numero" onclick="abrirImagemCentral('h8', 3, './assets/habilidades/Guardião 2.jpg')">3</button>
+                        <button id="btn-img-h8-1" class="btn-numero" onclick="abrirImagemCentral('h8', 1, './assets/ATO1/herois/guardiao/escudada_poderosa.png')">1</button>
+                        <button id="btn-img-h8-2" class="btn-numero" onclick="abrirImagemCentral('h8', 2, './assets/ATO1/herois/guardiao/luz_da_alvorada.png')">2</button>
+                        <button id="btn-img-h8-3" class="btn-numero" onclick="abrirImagemCentral('h8', 3, './assets/ATO1/herois/guardiao/provocar.png')">3</button>
                     </div>
                 </div>
             </div>
 
             <!-- Necromante -->
             <div id="card-h9" class="card-heroi" style="--token-color: #3f0024;" 
-                 data-img-normal="./assets/herois/necromante.jpg?w=100"
-                 data-img-corrompida="./assets/herois/necromante_corrompido.jpg?w=100">
+                 data-img-normal="./assets/ATO1/herois/necromante/necromante.png?w=100"
+                 data-img-corrompida="./assets/ATO1/herois/necromante/necromante_corrompido.png?w=100">
                 <div class="info-heroi">
-                    <img src="./assets/herois/necromante.jpg?w=100" class="avatar-painel" id="avatar-h9">
+                    <img src="./assets/ATO1/herois/necromante/necromante.png?w=100" class="avatar-painel" id="avatar-h9">
                     <div class="textos-heroi">
                         <span class="nome-heroi">Mestre da Forja</span>
                         <div class="atributos-container">
@@ -2043,10 +2047,10 @@
 
             <!-- Protetor -->
             <div id="card-h10" class="card-heroi" style="--token-color: #8a8104;" 
-                 data-img-normal="./assets/herois/protetor.jpg?w=100"
-                 data-img-corrompida="./assets/herois/protetor_corrompido.jpg?w=100">
+                 data-img-normal="./assets/ATO1/herois/protetor/protetor.png?w=100"
+                 data-img-corrompida="./assets/ATO1/herois/protetor/protetor_corrompido.png?w=100">
                 <div class="info-heroi">
-                    <img src="./assets/herois/protetor.jpg?w=100" class="avatar-painel" id="avatar-h10">
+                    <img src="./assets/ATO1/herois/protetor/protetor.png?w=100" class="avatar-painel" id="avatar-h10">
                     <div class="textos-heroi">
                         <span class="nome-heroi">Protetor</span>
                         <div class="atributos-container">
@@ -2083,9 +2087,9 @@
                     </div>
                     <button class="btn-estado" id="btn-estado-h10" onclick="alternarEstado('h10')">Normal</button>
                     <div class="botoes-imagens" style="display: flex; gap: 4px; margin-top: 4px;">
-                        <button id="btn-img-h10-1" class="btn-numero" onclick="abrirImagemCentral('h10', 1, './assets/habilidades/Protetor 3.jpg')">1</button>
-                        <button id="btn-img-h10-2" class="btn-numero" onclick="abrirImagemCentral('h10', 2, './assets/habilidades/Protetor 1.jpg')">2</button>
-                        <button id="btn-img-h10-3" class="btn-numero" onclick="abrirImagemCentral('h10', 3, './assets/habilidades/Protetor 2.jpg')">3</button>
+                        <button id="btn-img-h10-1" class="btn-numero" onclick="abrirImagemCentral('h10', 1, './assets/ATO1/habilidades/Protetor 3.jpg')">1</button>
+                        <button id="btn-img-h10-2" class="btn-numero" onclick="abrirImagemCentral('h10', 2, './assets/ATO1/habilidades/Protetor 1.jpg')">2</button>
+                        <button id="btn-img-h10-3" class="btn-numero" onclick="abrirImagemCentral('h10', 3, './assets/ATO1/habilidades/Protetor 2.jpg')">3</button>
                     </div>
                 </div>
             </div>
@@ -2208,7 +2212,7 @@
 
                 </div>
                 <div class="mapa-midia">
-                    <img id="mapa-img-atual" src="./assets/mapas/mapa01.jpg" alt="Mapa Nihil" class="mapa-img">
+                    <img id="mapa-img-atual" src="./assets/ATO1/mapas/mapa01.jpg" alt="Mapa Nihil" class="mapa-img">
                     <video id="mapa-video-atual"
                            class="mapa-video"
                            autoplay
@@ -2222,16 +2226,16 @@
                 
                 
 
-                <div id="token-h1" class="token-heroi" style="--token-color: #8b0000; top: 46%; left: 16.5%;"><img src="./assets/herois/adepto.jpg?w=100" id="img-token-h1"></div>
-                <div id="token-h2" class="token-heroi" style="--token-color: #2e4a2e; top: 46%; left: 18.5%;"><img src="./assets/herois/atroz.jpg?w=100" id="img-token-h2"></div>
-                <div id="token-h3" class="token-heroi" style="--token-color: #2a4d6c; top: 46%; left: 20.5%;"><img src="./assets/herois/cacador.jpg?w=100" id="img-token-h3"></div>
-                <div id="token-h4" class="token-heroi" style="--token-color: #7c5225; top: 49%; left: 16.5%;"><img src="./assets/herois/cleriga.jpg?w=100" id="img-token-h4"></div>
-                <div id="token-h5" class="token-heroi" style="--token-color: #5b327a; top: 49%; left: 18.5%;"><img src="./assets/herois/combatente.jpg?w=100" id="img-token-h5"></div>
-                <div id="token-h6" class="token-heroi" style="--token-color: #8c7623; top: 49%; left: 20.5%;"><img src="./assets/herois/druida.jpg?w=100" id="img-token-h6"></div>
-                <div id="token-h7" class="token-heroi" style="--token-color: #3b7a7a; top: 52%; left: 16.5%;"><img src="./assets/herois/elementarista.jpg?w=100" id="img-token-h7"></div>
-                <div id="token-h8" class="token-heroi" style="--token-color: #555555; top: 52%; left: 18.5%;"><img src="./assets/herois/guardiao.jpg?w=100" id="img-token-h8"></div>
-                <div id="token-h9" class="token-heroi" style="--token-color: #9c4174; top: 52%; left: 20.5%;"><img src="./assets/herois/necromante.jpg?w=100" id="img-token-h9"></div>
-                <div id="token-h10" class="token-heroi" style="--token-color: #f2ff00d2; top: 55%; left: 16.5%;"><img src="./assets/herois/protetor.jpg?w=100" id="img-token-h10"></div>
+                <div id="token-h1" class="token-heroi" style="--token-color: #8b0000; top: 46%; left: 16.5%;"><img src="./assets/ATO1/herois/adepto/adepto.png" id="img-token-h1"></div>
+                <div id="token-h2" class="token-heroi" style="--token-color: #2e4a2e; top: 46%; left: 18.5%;"><img src="./assets/ATO1/herois/atroz/atroz.png" id="img-token-h2"></div>
+                <div id="token-h3" class="token-heroi" style="--token-color: #2a4d6c; top: 46%; left: 20.5%;"><img src="./assets/ATO1/herois/cacador/cacador.png" id="img-token-h3"></div>
+                <div id="token-h4" class="token-heroi" style="--token-color: #7c5225; top: 49%; left: 16.5%;"><img src="./assets/ATO1/herois/cleriga/cleriga.png" id="img-token-h4"></div>
+                <div id="token-h5" class="token-heroi" style="--token-color: #5b327a; top: 49%; left: 18.5%;"><img src="./assets/ATO1/herois/combatente/combatente.png" id="img-token-h5"></div>
+                <div id="token-h6" class="token-heroi" style="--token-color: #8c7623; top: 49%; left: 20.5%;"><img src="./assets/ATO1/herois/druida/druida.png" id="img-token-h6"></div>
+                <div id="token-h7" class="token-heroi" style="--token-color: #3b7a7a; top: 52%; left: 16.5%;"><img src="./assets/ATO1/herois/Mago/Mago.png" id="img-token-h7"></div>
+                <div id="token-h8" class="token-heroi" style="--token-color: #555555; top: 52%; left: 18.5%;"><img src="./assets/ATO1/herois/guardiao/guardiao.png" id="img-token-h8"></div>
+                <div id="token-h9" class="token-heroi" style="--token-color: #9c4174; top: 52%; left: 20.5%;"><img src="./assets/ATO1/herois/necromante/necromante.png" id="img-token-h9"></div>
+                <div id="token-h10" class="token-heroi" style="--token-color: #f2ff00d2; top: 55%; left: 16.5%;"><img src="./assets/ATO1/herois/protetor/protetor.png" id="img-token-h10"></div>
             </div>
             <!-- MENU RODAPÉ -->
             <div class="rodape-menu">
@@ -2447,12 +2451,12 @@
                     <button class="btn-menu-rodape" onclick="alternarDropup(event, 'drop-mapas')" style="color: #ffc107; border-color: rgba(255, 193, 7, 0.4);">Mudar Mapa</button>
                     <ul id="drop-mapas" class="lista-dropup">
                         <li onclick="trocarMapaNoBanco('./assets/mapas/taverna.jpeg')">Taverna</li>
-                        <li onclick="trocarMapaNoBanco('./assets/mapas/mapa01.jpg')">Mapa I</li>
-                        <li onclick="trocarMapaNoBanco('./assets/mapas/mapa02.jpeg')">Mapa II</li>
-                        <li onclick="trocarMapaNoBanco('./assets/mapas/mapa03.jpg')">Mapa III</li>
-                        <li onclick="trocarMapaNoBanco('./assets/mapas/mapa04.mp4')">Mapa IV</li>
-                        <li onclick="trocarMapaNoBanco('./assets/mapas/mapa05.mp4')">Mapa V</li>
-                        <li onclick="trocarMapaNoBanco('./assets/mapas/mapa06.mp4')">Mapa VI</li>
+                        <li onclick="trocarMapaNoBanco('./assets/ATO1/mapas/mapa01.jpg')">Mapa I</li>
+                        <li onclick="trocarMapaNoBanco('./assets/ATO1/mapas/mapa02.jpeg')">Mapa II</li>
+                        <li onclick="trocarMapaNoBanco('./assets/ATO1/mapas/mapa03.jpg')">Mapa III</li>
+                        <li onclick="trocarMapaNoBanco('./assets/ATO1/mapas/mapa04.mp4')">Mapa IV</li>
+                        <li onclick="trocarMapaNoBanco('./assets/ATO1/mapas/mapa05.mp4')">Mapa V</li>
+                        <li onclick="trocarMapaNoBanco('./assets/ATO1/mapas/mapa06.mp4')">Mapa VI</li>
                     </ul>
                 </div>
             </div>
@@ -3403,7 +3407,7 @@
             h4: {nome:"Clériga", cor:"#df8ce6"},
             h5: {nome:"Combatente", cor:"#331216"},
             h6: {nome:"Druida", cor:"#4ead3b"},
-            h7: {nome:"Elementarista", cor:"#0d4949"},
+            h7: {nome:"Mago", cor:"#0d4949"},
             h8: {nome:"Guardião", cor:"#7e3818"},
             h9: {nome:"Mestre da Forja", cor:"#3f0024"},
             h10:{nome:"Protetor", cor:"#8a8104"}
