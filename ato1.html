@@ -1442,6 +1442,128 @@
         @media(max-width:900px){.nihil-zoom-toolbar{top:5px;right:5px}.nihil-zoom-toolbar button{min-width:23px;width:23px;height:22px}.nihil-zoom-toolbar .zoom-label{min-width:34px}}
         .nihil-convidado .btn-menu-rodape,.nihil-convidado #btn-tokens-topo,.nihil-convidado #btn-efeitos-topo,.nihil-convidado #seletor-musica,.nihil-convidado #btn-play-pause,.nihil-convidado #seletorEfeito{opacity:.38!important;cursor:not-allowed!important;filter:grayscale(.7)}
 
+    
+
+        /* ================= AVATARES DOS HEROIS: QUALIDADE + ZOOM LOCAL ================= */
+        .avatar-painel {
+            flex: 0 0 85px;
+            width: 85px;
+            min-width: 85px;
+            height: 145px;
+            align-self: center;
+            object-fit: cover;
+            object-position: center top;
+            image-rendering: auto;
+            backface-visibility: hidden;
+            transform: translateZ(0);
+            cursor: zoom-in;
+            border: 1px solid rgba(197,160,89,.30);
+            border-radius: 3px;
+            box-shadow: inset 0 0 12px rgba(0,0,0,.35), 0 2px 8px rgba(0,0,0,.45);
+        }
+        .avatar-painel:hover {
+            border-color: rgba(197,160,89,.75);
+            box-shadow: 0 0 12px rgba(197,160,89,.22), 0 3px 10px rgba(0,0,0,.6);
+            filter: brightness(1.04) contrast(1.03);
+        }
+
+        #modal-avatar-heroi {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 120000;
+            align-items: center;
+            justify-content: center;
+            padding: 36px;
+            background: radial-gradient(circle at center, rgba(30,20,12,.35), rgba(0,0,0,.92) 70%);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        #modal-avatar-heroi.aberto { display: flex; }
+        .avatar-zoom-moldura {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            max-width: 90vw;
+            max-height: 90vh;
+            padding: 10px;
+            background: linear-gradient(145deg,#1a1109,#080606);
+            border: 2px solid #c5a059;
+            border-radius: 6px;
+            box-shadow: 0 0 0 1px #4a0000, 0 0 35px rgba(0,0,0,.9), inset 0 0 18px rgba(197,160,89,.12);
+        }
+        #avatar-heroi-ampliado {
+            display: block;
+            max-width: min(76vw, 900px);
+            max-height: 82vh;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            image-rendering: auto;
+            border-radius: 3px;
+        }
+        .fechar-avatar-zoom {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 1px solid #c5a059;
+            background: #160909;
+            color: #c5a059;
+            font: bold 20px/1 'Cinzel',serif;
+            cursor: pointer;
+            box-shadow: 0 3px 12px rgba(0,0,0,.75);
+        }
+        .fechar-avatar-zoom:hover { background:#4a0000; color:#fff; }
+
+        /* ================= LATERAIS DO MAPA: GRADIENTE VERMELHO =================
+           Sem bordas, símbolos ou sombras sobre o mapa. O gradiente aparece apenas
+           no espaço livre criado pelo object-fit: contain. */
+        .mapa-midia {
+            isolation: isolate;
+
+            background:
+                radial-gradient(
+                    ellipse at center,
+                    rgba(90, 0, 0, .08) 0%,
+                    transparent 55%
+                ),
+                linear-gradient(
+                    90deg,
+                    #080202 0%,
+                    #260000 7%,
+                    #520000 14%,
+                    #300000 22%,
+                    #090303 34%,
+                    #030303 50%,
+                    #090303 66%,
+                    #300000 78%,
+                    #520000 86%,
+                    #260000 93%,
+                    #080202 100%
+                );
+        }
+
+        /* Remove completamente a antiga decoração lateral da mesa de RPG. */
+        .mapa-midia::before,
+        .mapa-midia::after {
+            content: none !important;
+            display: none !important;
+        }
+
+        /* O mapa/vídeo permanece acima do fundo e sem qualquer sombra ou borda. */
+        .mapa-midia .mapa-img,
+        .mapa-midia .mapa-video {
+            position: relative;
+            z-index: 1;
+            box-shadow: none !important;
+            outline: none !important;
+            border: none !important;
+        }
+
     </style>
 </head>
 <body>
@@ -1617,8 +1739,8 @@
             
             <!-- ADEPTO DAS SOMBRAS -->
             <div id="card-h1" class="card-heroi" style="--token-color: #8b0000;" 
-                 data-img-normal="./assets/ATO1/herois/adepto/adepto.png?w=100"
-                 data-img-corrompida="./assets/ATO1/herois/adepto/adepto_corrompido.png?w=100">
+                 data-img-normal="./assets/ATO1/herois/adepto/adepto.png"
+                 data-img-corrompida="./assets/ATO1/herois/adepto/adepto_corrompido.png">
                 <div class="info-heroi">
                     <img src="./assets/ATO1/herois/adepto/adepto.png" class="avatar-painel" id="avatar-h1">
                     <div class="textos-heroi">
@@ -1668,10 +1790,10 @@
 
             <!-- ATROZ -->
             <div id="card-h2" class="card-heroi" style="--token-color: #743838;" 
-                 data-img-normal="./assets/ATO1/herois/atroz/atroz.png?w=100"
-                 data-img-corrompida="./assets/ATO1/herois/atroz/atroz_corrompido.png?w=100">
+                 data-img-normal="./assets/ATO1/herois/atroz/atroz.png"
+                 data-img-corrompida="./assets/ATO1/herois/atroz/atroz_corrompido.png">
                 <div class="info-heroi">
-                    <img src="./assets/ATO1/herois/atroz/atroz.png?w=100" class="avatar-painel" id="avatar-h2">
+                    <img src="./assets/ATO1/herois/atroz/atroz.png" class="avatar-painel" id="avatar-h2">
                     <div class="textos-heroi">
                         <span class="nome-heroi">Guerreiro Atroz</span>
                         <div class="atributos-container">
@@ -1717,10 +1839,10 @@
 
             <!-- Cacador -->
             <div id="card-h3" class="card-heroi" style="--token-color: #202020;" 
-                 data-img-normal="./assets/ATO1/herois/cacador/cacador.png?w=100"
-                 data-img-corrompida="./assets/ATO1/herois/cacador/cacador_corrompido.png?w=100">
+                 data-img-normal="./assets/ATO1/herois/cacador/cacador.png"
+                 data-img-corrompida="./assets/ATO1/herois/cacador/cacador_corrompido.png">
                 <div class="info-heroi">
-                    <img src="./assets/ATO1/herois/cacador/cacador.png?w=100" class="avatar-painel" id="avatar-h3">
+                    <img src="./assets/ATO1/herois/cacador/cacador.png" class="avatar-painel" id="avatar-h3">
                     <div class="textos-heroi">
                         <span class="nome-heroi">Mestre Cacador</span>
                         <div class="atributos-container">
@@ -1766,10 +1888,10 @@
 
             <!-- Cleriga -->
             <div id="card-h4" class="card-heroi" style="--token-color: #df8ce6;" 
-                 data-img-normal="./assets/ATO1/herois/cleriga/cleriga.png?w=100"
-                 data-img-corrompida="./assets/ATO1/herois/cleriga/cleriga_corrompido.png?w=100">
+                 data-img-normal="./assets/ATO1/herois/cleriga/cleriga.png"
+                 data-img-corrompida="./assets/ATO1/herois/cleriga/cleriga_corrompido.png">
                 <div class="info-heroi">
-                    <img src="./assets/ATO1/herois/cleriga/cleriga.png?w=100" class="avatar-painel" id="avatar-h4">
+                    <img src="./assets/ATO1/herois/cleriga/cleriga.png" class="avatar-painel" id="avatar-h4">
                     <div class="textos-heroi">
                         <span class="nome-heroi">Clériga</span>
                         <div class="atributos-container">
@@ -1815,10 +1937,10 @@
 
             <!-- combatente -->
             <div id="card-h5" class="card-heroi" style="--token-color: #331216;" 
-                 data-img-normal="./assets/ATO1/herois/combatente/combatente.png?w=100"
-                 data-img-corrompida="./assets/ATO1/herois/combatente/combatente_corrompido.png?w=100">
+                 data-img-normal="./assets/ATO1/herois/combatente/combatente.png"
+                 data-img-corrompida="./assets/ATO1/herois/combatente/combatente_corrompido.png">
                 <div class="info-heroi">
-                    <img src="./assets/ATO1/herois/combatente/combatente.png?w=100" class="avatar-painel" id="avatar-h5">
+                    <img src="./assets/ATO1/herois/combatente/combatente.png" class="avatar-painel" id="avatar-h5">
                     <div class="textos-heroi">
                         <span class="nome-heroi">Combatente</span>
                         <div class="atributos-container">
@@ -1864,10 +1986,10 @@
 
             <!-- Druida -->
             <div id="card-h6" class="card-heroi" style="--token-color: #4ead3b;" 
-                 data-img-normal="./assets/ATO1/herois/druida/druida.png?w=100"
-                 data-img-corrompida="./assets/ATO1/herois/druida/druida_corrompido.png?w=100">
+                 data-img-normal="./assets/ATO1/herois/druida/druida.png"
+                 data-img-corrompida="./assets/ATO1/herois/druida/druida_corrompido.png">
                 <div class="info-heroi">
-                    <img src="./assets/ATO1/herois/druida/druida.png?w=100" class="avatar-painel" id="avatar-h6">
+                    <img src="./assets/ATO1/herois/druida/druida.png" class="avatar-painel" id="avatar-h6">
                     <div class="textos-heroi">
                         <span class="nome-heroi">Druida</span>
                         <div class="atributos-container">
@@ -1913,10 +2035,10 @@
 
             <!-- Mago -->
             <div id="card-h7" class="card-heroi" style="--token-color: #0d4949;" 
-                 data-img-normal="./assets/ATO1/herois/Mago/Mago.png?w=100"
-                 data-img-corrompida="./assets/ATO1/herois/Mago/Mago_corrompido.png?w=100">
+                 data-img-normal="./assets/ATO1/herois/Mago/Mago.png"
+                 data-img-corrompida="./assets/ATO1/herois/Mago/Mago_corrompido.png">
                 <div class="info-heroi">
-                    <img src="./assets/ATO1/herois/Mago/Mago.png?w=100" class="avatar-painel" id="avatar-h7">
+                    <img src="./assets/ATO1/herois/Mago/Mago.png" class="avatar-painel" id="avatar-h7">
                     <div class="textos-heroi">
                         <span class="nome-heroi">Mago</span>
                         <div class="atributos-container">
@@ -1962,10 +2084,10 @@
 
             <!-- guardiao -->
             <div id="card-h8" class="card-heroi" style="--token-color: #7e3818;" 
-                 data-img-normal="./assets/ATO1/herois/guardiao/guardiao.png?w=100"
-                 data-img-corrompida="./assets/ATO1/herois/guardiao/guardiao_corrompido.png?w=100">
+                 data-img-normal="./assets/ATO1/herois/guardiao/guardiao.png"
+                 data-img-corrompida="./assets/ATO1/herois/guardiao/guardiao_corrompido.png">
                 <div class="info-heroi">
-                    <img src="./assets/ATO1/herois/guardiao/guardiao.png?w=100" class="avatar-painel" id="avatar-h8">
+                    <img src="./assets/ATO1/herois/guardiao/guardiao.png" class="avatar-painel" id="avatar-h8">
                     <div class="textos-heroi">
                         <span class="nome-heroi">Guardião</span>
                         <div class="atributos-container">
@@ -2011,10 +2133,10 @@
 
             <!-- Necromante -->
             <div id="card-h9" class="card-heroi" style="--token-color: #3f0024;" 
-                 data-img-normal="./assets/ATO1/herois/necromante/necromante.png?w=100"
-                 data-img-corrompida="./assets/ATO1/herois/necromante/necromante_corrompido.png?w=100">
+                 data-img-normal="./assets/ATO1/herois/necromante/necromante.png"
+                 data-img-corrompida="./assets/ATO1/herois/necromante/necromante_corrompido.png">
                 <div class="info-heroi">
-                    <img src="./assets/ATO1/herois/necromante/necromante.png?w=100" class="avatar-painel" id="avatar-h9">
+                    <img src="./assets/ATO1/herois/necromante/necromante.png" class="avatar-painel" id="avatar-h9">
                     <div class="textos-heroi">
                         <span class="nome-heroi">Mestre da Forja</span>
                         <div class="atributos-container">
@@ -2060,10 +2182,10 @@
 
             <!-- Protetor -->
             <div id="card-h10" class="card-heroi" style="--token-color: #8a8104;" 
-                 data-img-normal="./assets/ATO1/herois/protetor/protetor.png?w=100"
-                 data-img-corrompida="./assets/ATO1/herois/protetor/protetor_corrompido.png?w=100">
+                 data-img-normal="./assets/ATO1/herois/protetor/protetor.png"
+                 data-img-corrompida="./assets/ATO1/herois/protetor/protetor_corrompido.png">
                 <div class="info-heroi">
-                    <img src="./assets/ATO1/herois/protetor/protetor.png?w=100" class="avatar-painel" id="avatar-h10">
+                    <img src="./assets/ATO1/herois/protetor/protetor.png" class="avatar-painel" id="avatar-h10">
                     <div class="textos-heroi">
                         <span class="nome-heroi">Protetor</span>
                         <div class="atributos-container">
@@ -4176,5 +4298,61 @@
 
     
 
+
+    <!-- Zoom local do avatar do heroi: nao usa Firebase e aparece somente para quem clicou -->
+    <div id="modal-avatar-heroi" aria-hidden="true">
+        <div class="avatar-zoom-moldura" role="dialog" aria-modal="true" aria-label="Avatar do herói ampliado">
+            <img id="avatar-heroi-ampliado" src="" alt="Avatar do herói ampliado">
+            <button type="button" class="fechar-avatar-zoom" id="fechar-avatar-zoom" aria-label="Fechar">×</button>
+        </div>
+    </div>
+
+
+
+    <script>
+    // ===== ZOOM LOCAL DOS AVATARES DOS HEROIS =====
+    // Esta funcao e totalmente local: nao grava nem escuta qualquer dado no Firebase.
+    (function configurarZoomLocalAvatares(){
+        const modal = document.getElementById('modal-avatar-heroi');
+        const ampliada = document.getElementById('avatar-heroi-ampliado');
+        const fechar = document.getElementById('fechar-avatar-zoom');
+        if (!modal || !ampliada || !fechar) return;
+
+        function abrirAvatar(img){
+            ampliada.src = img.currentSrc || img.src;
+            ampliada.alt = img.alt || 'Avatar do herói ampliado';
+            modal.classList.add('aberto');
+            modal.setAttribute('aria-hidden','false');
+        }
+
+        function fecharAvatar(){
+            modal.classList.remove('aberto');
+            modal.setAttribute('aria-hidden','true');
+            ampliada.removeAttribute('src');
+        }
+
+        document.querySelectorAll('.avatar-painel').forEach((img) => {
+            img.setAttribute('title','Clique para ampliar');
+            img.setAttribute('tabindex','0');
+            img.setAttribute('role','button');
+            img.addEventListener('click', (e) => {
+                e.stopPropagation();
+                abrirAvatar(img);
+            });
+            img.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    abrirAvatar(img);
+                }
+            });
+        });
+
+        fechar.addEventListener('click', fecharAvatar);
+        modal.addEventListener('click', (e) => { if (e.target === modal) fecharAvatar(); });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('aberto')) fecharAvatar();
+        });
+    })();
+    </script>
 </body>
 </html>
