@@ -204,7 +204,7 @@
         .btn-pv:hover { color: #fff; border-color: #8b0000; background: #4a0000; }
 
         /* Container para alinhar as duas linhas (PV e AM) */
-        .atributos-container { display: flex; flex-direction: column; gap: 3px; margin-top: 83px; }
+        .atributos-container { display: flex; flex-direction: column; gap: 3px; margin-top: 106px; }
         
         /* Container de PV (mantido igual) */
         .pv-container { font-size: 1.1rem; font-weight: bold; color: #8b0000; }
@@ -625,6 +625,8 @@
 
             overflow: visible !important;
             box-sizing: border-box !important;
+
+             transform: translateY(-7px);
         }
 
         .btn-debuff {
@@ -2660,6 +2662,88 @@
             min-height: 22px !important;
             padding: 2px 4px !important;
         }
+
+
+        /* ============================================================
+           AJUSTE FINAL — ATIVO / MÁCULA / TUR COM MESMA LARGURA
+           Mantém as alturas e posições existentes.
+           ============================================================ */
+        .card-heroi .btn-participacao,
+        .card-heroi .btn-debuff,
+        .card-heroi .ordem-turno {
+            width: 55px !important;
+            min-width: 55px !important;
+            max-width: 55px !important;
+        }
+
+        /* Impede o MÁCULA e o TUR de serem redimensionados pelo flex. */
+        .card-heroi .btn-debuff,
+        .card-heroi .ordem-turno {
+            flex: 0 0 55px !important;
+        }
+
+        /* ============================================================
+           AJUSTE — ATIVO / MÁCULA / TUR PREENCHENDO A LARGURA ÚTIL
+           Os três mantêm a mesma altura e dividem igualmente o espaço
+           entre o fim do avatar e a borda direita do card.
+           ============================================================ */
+        .card-heroi .btn-participacao {
+            top: 35px !important;
+            left: 120px !important;
+            right: auto !important;
+            width: calc((100% - 136px) / 3) !important;
+            min-width: 0 !important;
+            max-width: none !important;
+            height: 22px !important;
+            min-height: 22px !important;
+            margin: 0 !important;
+        }
+
+        .card-heroi .controles-heroi > div[style*="display:flex"] {
+            position: absolute !important;
+            top: 35px !important;
+            left: calc(123px + ((100% - 136px) / 3)) !important;
+            right: 10px !important;
+            width: auto !important;
+            max-width: none !important;
+            min-width: 0 !important;
+            height: 22px !important;
+            margin: 0 !important;
+            gap: 3px !important;
+            display: flex !important;
+            align-items: stretch !important;
+            justify-content: stretch !important;
+            box-sizing: border-box !important;
+            z-index: 34 !important;
+        }
+
+        .card-heroi .btn-debuff,
+        .card-heroi .ordem-turno {
+            flex: 1 1 0 !important;
+            width: 0 !important;
+            min-width: 0 !important;
+            max-width: none !important;
+            height: 22px !important;
+            min-height: 22px !important;
+            box-sizing: border-box !important;
+        }
+
+        /* ============================================================
+           CORREÇÃO — EVITA SOBREPOSIÇÃO DA LINHA ATIVO / MÁCULA / TUR
+           Mantém os três com largura igual e reserva a primeira linha
+           exclusivamente para esses controles.
+           ============================================================ */
+        .card-heroi .controles-heroi {
+            padding-top: 50px !important;
+        }
+
+        .card-heroi .btn-participacao {
+            top: 35px !important;
+        }
+
+        .card-heroi .controles-heroi > div[style*="display:flex"] {
+            top: 35px !important;
+        }
 </style>
 </head>
 <body>
@@ -2742,10 +2826,10 @@
                 Tokens ▼
             </button>
             <ul id="drop-tokens" class="lista-dropdown" style="display: none; position: absolute; top: 110%; right: 0; min-width: 210px; background: rgba(15, 15, 15, 0.98); border: 1px solid #c5a059; border-radius: 4px; padding: 4px 0; z-index: 30005; list-style: none; box-shadow: 0 4px 10px rgba(0,0,0,0.8);">
-                <li class="item-dropdown-topo" onclick="criarTokenExtra('General Arivys','./assets/tokens/arivys.jpg')">General Arivys</li>
-                <li class="item-dropdown-topo" onclick="criarTokenExtra('General Nargull','./assets/tokens/nargull.jpg')">General Nargull</li>
-                <li class="item-dropdown-topo" onclick="criarTokenExtra('General Faredir','./assets/tokens/faredir.jpg')">General Faredir</li>
-                <li class="item-dropdown-topo" onclick="criarTokenExtra('General Jafras','./assets/tokens/jafras.jpg')">General Jafras</li>
+                <li class="item-dropdown-topo" onclick="criarTokenExtra('General Arivys','./assets/ATO1/cartas/generais/arivys_token.png')">General Arivys</li>
+                <li class="item-dropdown-topo" onclick="criarTokenExtra('General Nargull','./assets/ATO1/cartas/generais/nargull_token.png')">General Nargull</li>
+                <li class="item-dropdown-topo" onclick="criarTokenExtra('General Faredir','./assets/ATO1/cartas/generais/faredir_token.png')">General Faredir</li>
+                <li class="item-dropdown-topo" onclick="criarTokenExtra('General Jafras','./assets/ATO1/cartas/generais/jafras_token.png')">General Jafras</li>
                 <li class="item-dropdown-topo" onclick="criarTokenExtra('Travandull','./assets/tokens/travandull_fenda_1.jpg')">Fenda I - Travandull (Boss)</li>
                 <li class="item-dropdown-topo" onclick="criarTokenExtra('Corredor do Abismo','./assets/tokens/corredorDoAbismo.jpg')">Fenda I - Corredor do Abismo (Elite)</li>
                 <li class="item-dropdown-topo" onclick="criarTokenExtra('Cria Alada','./assets/tokens/criaAlada.jpg')">Fenda I - Cria Alada (Comum)</li>
@@ -2838,7 +2922,7 @@
                 <div class="info-heroi">
                     <img src="./assets/ATO1/herois/adepto/adepto.png" class="avatar-painel" id="avatar-h1">
                     <div class="textos-heroi">
-                        <span class="nome-heroi">Adepto</span>
+                        <span class="nome-heroi">Adepto das Sombras</span>
                         <div class="atributos-container">
                             <span class="pv-container"><span id="pv-h1">5</span> PV</span>
                             <span class="am-container"><span id="am-h1">0</span> AM</span>
@@ -2889,7 +2973,7 @@
                 <div class="info-heroi">
                     <img src="./assets/ATO1/herois/atroz/atroz.png" class="avatar-painel" id="avatar-h2">
                     <div class="textos-heroi">
-                        <span class="nome-heroi">G.Atroz</span>
+                        <span class="nome-heroi">Guerreiro Atroz</span>
                         <div class="atributos-container">
                             <span class="pv-container"><span id="pv-h2">5</span> PV</span>
                             <span class="am-container"><span id="am-h2">0</span> AM</span>
@@ -2938,7 +3022,7 @@
                 <div class="info-heroi">
                     <img src="./assets/ATO1/herois/cacador/cacador.png" class="avatar-painel" id="avatar-h3">
                     <div class="textos-heroi">
-                        <span class="nome-heroi">M.Caçador</span>
+                        <span class="nome-heroi">Mestre Caçador</span>
                         <div class="atributos-container">
                             <span class="pv-container"><span id="pv-h3">5</span> PV</span>
                             <span class="am-container"><span id="am-h3">0</span> AM</span>
@@ -3134,7 +3218,7 @@
                 <div class="info-heroi">
                     <img src="./assets/ATO1/herois/Mago/Mago.png" class="avatar-painel" id="avatar-h7">
                     <div class="textos-heroi">
-                        <span class="nome-heroi">Mago</span>
+                        <span class="nome-heroi">Elementarista</span>
                         <div class="atributos-container">
                             <span class="pv-container"><span id="pv-h7">5</span> PV</span>
                             <span class="am-container"><span id="am-h7">0</span> AM</span>
@@ -3232,7 +3316,7 @@
                 <div class="info-heroi">
                     <img src="./assets/ATO1/herois/necromante/necromante.png" class="avatar-painel" id="avatar-h9">
                     <div class="textos-heroi">
-                        <span class="nome-heroi">M. da Forja</span>
+                        <span class="nome-heroi">Mestre da Forja</span>
                         <div class="atributos-container">
                             <span class="pv-container"><span id="pv-h9">5</span> PV</span>
                             <span class="am-container"><span id="am-h9">0</span> AM</span>
@@ -3471,19 +3555,19 @@
                 <div class="menu-item-container">
                     <button class="btn-menu-rodape" onclick="alternarDropup(event, 'drop-comuns')">Comuns</button>
                     <ul id="drop-comuns" class="lista-dropup">
-                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_comuns/Acumulador.jpg')">Acumulador</li>
-                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_comuns/Adivinho.jpg')">Adivinho</li>
+                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_comuns/acumulador.png')">Acumulador</li>
+                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_comuns/adivinho.png')">Adivinho</li>
                         <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_comuns/alteza_das_copas.png')">Alteza das Copas</li>
-                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_comuns/Atormentador.jpg')">Atormentador</li>
+                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_comuns/atormentador_alado.png')">Atormentador Alado</li>
                         <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_comuns/bruxa_do_pantano.png')">Bruxa do Pântano</li>
                         <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_comuns/driade_banida.png')">Dríade Banida</li>
                         <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_comuns/Fantasma.png')">Fantasma</li>
                         <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_comuns/goblin_ferroso.png')">Goblin Ferroso</li>
                         <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_comuns/harpia.png')">Harpia</li>
-                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_comuns/Iluminador.jpg')">Iluminador</li>
+                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_comuns/iluminador.png')">Iluminador Perpétuo</li>
                         <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_comuns/lobo_atroz.png')">Lobo Atroz</li>
                         <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_comuns/maculado.png')">Maculado</li>
-                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_comuns/Orador.jpg')">Orador</li>
+                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_comuns/oradora.png')">Oradora da Mácula</li>
                         <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_comuns/orc_desordeiro.png')">Orc Desordeiro</li>
                         <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_comuns/salteador.png')">Salteador</li>
                         <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_comuns/vespa_gigante.png')">Vespa Gigante</li>
@@ -3499,15 +3583,15 @@
                         <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_elites/chefe_orc.png')">Chefe Orc</li>
                         <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_elites/cocatriz.png')">Cocatriz</li>
                         <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_elites/colecionador.png')">Colecionador de Cabeças</li>
-                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_elites/Devorador.png')">Devorador</li>
-                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_elites/Jihada.png')">Jihada</li>
+                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_elites/devorador_da_podridao.png')">Devorador da Podridão</li>
+                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_elites/jihada.png')">Jihada</li>
                         <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_elites/lider_da_matilha.png')">Líder da Matilha</li>
-                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_elites/Mantícora.png')">Mantícora</li>
-                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_elites/Orc Shaman.png')">Orc Shaman</li>
-                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_elites/Quilhionte.png')">Quilhionte</li>
+                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_elites/manticora.png')">Mantícora</li>
+                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_elites/orc_xama.png')">Orc Xamã</li>
+                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_elites/quilhionte.png')">Quilhionte</li>
                         <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_elites/quimera.png')">Quimera</li>
                         <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_elites/sarcedote_de_draqma.png')">Sarcedote de Draqma</li>
-                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_elites/Simbiose.png')">Simbiose</li>
+                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_elites/simbionte.png')">Simbionte</li>
                         <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_elites/troll_das_cavernas.png')">Troll das Cavernas</li>
                         <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_elites/vampiro_alfa.png')">Vampiro Alfa</li>
                         <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_elites/wyvern.png')">Wyvern</li>
@@ -3558,10 +3642,10 @@
                 <div class="menu-item-container">
                     <button class="btn-menu-rodape" onclick="alternarDropup(event, 'drop-generais')">Generais</button>
                     <ul id="drop-generais" class="lista-dropup">
-                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/generais/Arivys.jpg')">Arivys</li>
+                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/generais/arivys.png')">Arivys</li>
                         <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/generais/faredir.png')">Faredir</li>
-                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/generais/Jafras.jpg')">Jafras</li>
-                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/generais/Nargull.jpg')">Nargull</li>
+                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/generais/jafras.png')">Jafras</li>
+                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/generais/nargull.png')">Nargull</li>
                     </ul>
                 </div>
 
