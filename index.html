@@ -8,14 +8,14 @@
     <style id="nihil-identity-v2">
       @import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Lora:ital,wght@0,400;0,500;1,400&display=swap");
       :root {
-        --nihil-black: #070505;
-        --nihil-panel: #100b0b;
-        --nihil-red: #8b0000;
-        --nihil-red2: #b31318;
-        --nihil-gold: #c5a059;
-        --nihil-gold2: #e0c17a;
-        --nihil-text: #eadfce;
-        --nihil-muted: #a99a88;
+        --nihil-black: #040705;
+        --nihil-panel: #071009;
+        --nihil-red: #173d24;
+        --nihil-red2: #245c35;
+        --nihil-gold: #b8c2b8;
+        --nihil-gold2: #d5ddd5;
+        --nihil-text: #e4e8e4;
+        --nihil-muted: #9ea7a0;
       }
       * {
         box-sizing: border-box;
@@ -31,11 +31,11 @@
         background:
           radial-gradient(
             circle at 50% -10%,
-            rgba(139, 0, 0, 0.25),
+            rgba(23,61,36, 0.25),
             transparent 34%
           ),
-          linear-gradient(rgba(5, 3, 3, 0.94), rgba(5, 3, 3, 0.97)),
-          repeating-linear-gradient(135deg, #0b0707 0 2px, #070505 2px 7px);
+          linear-gradient(rgba(3,8,5, 0.94), rgba(3,8,5, 0.97)),
+          repeating-linear-gradient(135deg, #050806 0 2px, #040705 2px 7px);
         background-attachment: fixed;
       }
       body:before {
@@ -47,12 +47,12 @@
         background:
           radial-gradient(
             circle at 50% 25%,
-            rgba(197, 160, 89, 0.055),
+            rgba(184,194,184, 0.055),
             transparent 24%
           ),
           radial-gradient(
             circle at 50% 100%,
-            rgba(139, 0, 0, 0.14),
+            rgba(23,61,36, 0.14),
             transparent 34%
           );
       }
@@ -64,9 +64,9 @@
         inset: 8px;
         pointer-events: none;
         z-index: 9999;
-        border: 1px solid rgba(197, 160, 89, 0.38);
+        border: 1px solid rgba(184,194,184, 0.38);
         box-shadow:
-          inset 0 0 0 2px rgba(139, 0, 0, 0.18),
+          inset 0 0 0 2px rgba(23,61,36, 0.18),
           inset 0 0 28px rgba(0, 0, 0, 0.85);
       }
       .nav {
@@ -80,10 +80,10 @@
         z-index: 20;
         background: linear-gradient(
           180deg,
-          rgba(8, 5, 5, 0.98),
-          rgba(10, 6, 6, 0.88)
+          rgba(4,10,6, 0.98),
+          rgba(5,12,7, 0.88)
         );
-        border-bottom: 1px solid rgba(197, 160, 89, 0.28);
+        border-bottom: 1px solid rgba(184,194,184, 0.28);
         box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
       }
       .brand,
@@ -96,7 +96,7 @@
         width: 68px;
         height: 68px;
         object-fit: contain;
-        filter: drop-shadow(0 0 12px rgba(139, 0, 0, 0.45));
+        filter: drop-shadow(0 0 12px rgba(23,61,36, 0.45));
       }
       .brand-logo span {
         font-family: "Cinzel", serif;
@@ -116,7 +116,7 @@
       }
       .navlinks a:not(.btn) {
         text-decoration: none;
-        color: #d7c7b2;
+        color: #cbd1cc;
         font-family: "Cinzel", serif;
         font-size: 0.82rem;
         letter-spacing: 0.08em;
@@ -126,11 +126,11 @@
       }
       .btn {
         appearance: none;
-        border: 1px solid rgba(197, 160, 89, 0.5);
+        border: 1px solid rgba(184,194,184, 0.5);
         border-radius: 5px;
         padding: 11px 18px;
-        background: linear-gradient(#171010, #0a0707);
-        color: #e8dac6;
+        background: linear-gradient(#0b110d, #050806);
+        color: #dde2dd;
         text-decoration: none;
         font-family: "Cinzel", serif;
         font-weight: 700;
@@ -145,12 +145,12 @@
         transform: translateY(-1px);
       }
       .btn.primary {
-        background: linear-gradient(180deg, #981014, #5f0508);
-        border-color: #c69a54;
-        color: #fff3df;
+        background: linear-gradient(180deg, #1f4f2e, #102d1a);
+        border-color: #aeb9af;
+        color: #f0f3f0;
         box-shadow:
           inset 0 0 0 1px rgba(255, 205, 120, 0.14),
-          0 0 20px rgba(139, 0, 0, 0.2);
+          0 0 20px rgba(23,61,36, 0.2);
       }
       .hero {
         min-height: 610px;
@@ -168,10 +168,10 @@
         background:
           radial-gradient(
             circle at 50% 42%,
-            rgba(139, 0, 0, 0.25),
+            rgba(23,61,36, 0.25),
             transparent 28%
           ),
-          linear-gradient(180deg, transparent 50%, #070505 100%);
+          linear-gradient(180deg, transparent 50%, #040705 100%);
         z-index: -1;
       }
       .hero > div {
@@ -188,23 +188,23 @@
       }
       .hero h2 {
         font-size: clamp(0.8rem, 2vw, 1.1rem);
-        color: #bca888;
+        color: #aab3ac;
       }
       .hero h1 {
         font-family: "Cinzel", serif;
         font-size: clamp(4rem, 12vw, 8.5rem);
         line-height: 0.85;
         margin: 18px 0;
-        color: #d6b466;
+        color: #cbd4cc;
         text-shadow:
-          0 3px 0 #4d250d,
-          0 0 25px rgba(139, 0, 0, 0.5);
+          0 3px 0 #15261a,
+          0 0 25px rgba(23,61,36, 0.5);
         letter-spacing: 0.08em;
       }
       .hero p {
         font-size: 1.08rem;
         line-height: 1.75;
-        color: #c9baa8;
+        color: #bbc2bc;
         max-width: 690px;
         margin: 0 auto 28px;
       }
@@ -230,10 +230,10 @@
         background: linear-gradient(
           145deg,
           rgba(25, 16, 16, 0.96),
-          rgba(8, 6, 6, 0.98)
+          rgba(4,10,6, 0.98)
         );
-        border: 1px solid rgba(197, 160, 89, 0.35);
-        border-left: 3px solid #78090c;
+        border: 1px solid rgba(184,194,184, 0.35);
+        border-left: 3px solid #163b22;
         border-radius: 7px;
         padding: 24px;
         box-shadow:
@@ -254,8 +254,8 @@
       .footer {
         text-align: center;
         padding: 32px;
-        color: #806f60;
-        border-top: 1px solid rgba(197, 160, 89, 0.16);
+        color: #78827a;
+        border-top: 1px solid rgba(184,194,184, 0.16);
         font-family: "Cinzel", serif;
         letter-spacing: 0.08em;
       }
@@ -276,7 +276,7 @@
         height: 108px;
         margin: -4px auto 12px;
         background: url("./icone.png") center/contain no-repeat;
-        filter: drop-shadow(0 0 12px rgba(139, 0, 0, 0.38));
+        filter: drop-shadow(0 0 12px rgba(23,61,36, 0.38));
       }
       .auth-card h1 {
         text-align: center;
@@ -289,7 +289,7 @@
       .admin-grid label {
         display: grid;
         gap: 7px;
-        color: #c9b99f;
+        color: #b9c1ba;
         font-family: "Cinzel", serif;
         font-size: 0.78rem;
       }
@@ -297,7 +297,7 @@
       .admin-input {
         width: 100%;
         background: #090707;
-        border: 1px solid #4e3b2d;
+        border: 1px solid #39463c;
         color: #f0e4d4;
         border-radius: 4px;
         padding: 12px;
@@ -306,7 +306,7 @@
       .field input:focus,
       .admin-input:focus {
         border-color: var(--nihil-gold);
-        box-shadow: 0 0 0 2px rgba(197, 160, 89, 0.08);
+        box-shadow: 0 0 0 2px rgba(184,194,184, 0.08);
       }
       .msg {
         margin-top: 12px;
@@ -324,11 +324,11 @@
         align-items: center;
         justify-content: space-between;
         gap: 20px;
-        border-bottom: 1px solid rgba(197, 160, 89, 0.25);
+        border-bottom: 1px solid rgba(184,194,184, 0.25);
         padding-bottom: 20px;
       }
       .badge {
-        border: 1px solid rgba(197, 160, 89, 0.4);
+        border: 1px solid rgba(184,194,184, 0.4);
         background: #100a0a;
         padding: 9px 13px;
         border-radius: 999px;
@@ -377,7 +377,30 @@
           flex-direction: column;
         }
       }
-    </style>
+    
+/* ===== HOVER MACULA: contraste e legibilidade ===== */
+.navlinks a:not(.btn), .btn, .card, .auth-card { transition: color .22s ease, background .22s ease, border-color .22s ease, box-shadow .22s ease, transform .22s ease, filter .22s ease; }
+.navlinks a:not(.btn):hover, .navlinks a:not(.btn):focus-visible {
+    color:#f1f5f1 !important;
+    text-shadow:0 0 8px rgba(77,150,91,.7);
+}
+.btn:hover, .btn:focus-visible {
+    color:#f7faf7 !important;
+    background:linear-gradient(180deg,#173d24,#0b2112) !important;
+    border-color:#5c916a !important;
+    box-shadow:inset 0 0 14px rgba(73,139,87,.16),0 0 13px rgba(42,105,57,.28),0 5px 16px rgba(0,0,0,.34);
+    text-shadow:0 1px 2px #000;
+}
+.btn.primary:hover, .btn.primary:focus-visible {
+    background:linear-gradient(180deg,#2c6a3d,#153b21) !important;
+    border-color:#8aaa91 !important;
+    color:#fff !important;
+}
+.card:hover {
+    border-color:rgba(92,145,106,.72);
+    box-shadow:inset 0 0 34px rgba(37,88,49,.13),0 0 18px rgba(35,83,48,.16),0 16px 38px rgba(0,0,0,.34);
+}
+</style>
 
     <link rel="icon" href="./favicon.ico" sizes="any" />
     <link rel="icon" type="image/png" href="./favicon-32.png" sizes="32x32" />

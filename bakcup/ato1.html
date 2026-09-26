@@ -204,7 +204,7 @@
         .btn-pv:hover { color: #fff; border-color: #8b0000; background: #4a0000; }
 
         /* Container para alinhar as duas linhas (PV e AM) */
-        .atributos-container { display: flex; flex-direction: column; gap: 3px; margin-top: 106px; }
+        .atributos-container { display: flex; flex-direction: column; gap: 3px; margin-top: 83px; }
         
         /* Container de PV (mantido igual) */
         .pv-container { font-size: 1.1rem; font-weight: bold; color: #8b0000; }
@@ -625,8 +625,6 @@
 
             overflow: visible !important;
             box-sizing: border-box !important;
-
-             transform: translateY(-7px);
         }
 
         .btn-debuff {
@@ -2662,88 +2660,6 @@
             min-height: 22px !important;
             padding: 2px 4px !important;
         }
-
-
-        /* ============================================================
-           AJUSTE FINAL — ATIVO / MÁCULA / TUR COM MESMA LARGURA
-           Mantém as alturas e posições existentes.
-           ============================================================ */
-        .card-heroi .btn-participacao,
-        .card-heroi .btn-debuff,
-        .card-heroi .ordem-turno {
-            width: 55px !important;
-            min-width: 55px !important;
-            max-width: 55px !important;
-        }
-
-        /* Impede o MÁCULA e o TUR de serem redimensionados pelo flex. */
-        .card-heroi .btn-debuff,
-        .card-heroi .ordem-turno {
-            flex: 0 0 55px !important;
-        }
-
-        /* ============================================================
-           AJUSTE — ATIVO / MÁCULA / TUR PREENCHENDO A LARGURA ÚTIL
-           Os três mantêm a mesma altura e dividem igualmente o espaço
-           entre o fim do avatar e a borda direita do card.
-           ============================================================ */
-        .card-heroi .btn-participacao {
-            top: 35px !important;
-            left: 120px !important;
-            right: auto !important;
-            width: calc((100% - 136px) / 3) !important;
-            min-width: 0 !important;
-            max-width: none !important;
-            height: 22px !important;
-            min-height: 22px !important;
-            margin: 0 !important;
-        }
-
-        .card-heroi .controles-heroi > div[style*="display:flex"] {
-            position: absolute !important;
-            top: 35px !important;
-            left: calc(123px + ((100% - 136px) / 3)) !important;
-            right: 10px !important;
-            width: auto !important;
-            max-width: none !important;
-            min-width: 0 !important;
-            height: 22px !important;
-            margin: 0 !important;
-            gap: 3px !important;
-            display: flex !important;
-            align-items: stretch !important;
-            justify-content: stretch !important;
-            box-sizing: border-box !important;
-            z-index: 34 !important;
-        }
-
-        .card-heroi .btn-debuff,
-        .card-heroi .ordem-turno {
-            flex: 1 1 0 !important;
-            width: 0 !important;
-            min-width: 0 !important;
-            max-width: none !important;
-            height: 22px !important;
-            min-height: 22px !important;
-            box-sizing: border-box !important;
-        }
-
-        /* ============================================================
-           CORREÇÃO — EVITA SOBREPOSIÇÃO DA LINHA ATIVO / MÁCULA / TUR
-           Mantém os três com largura igual e reserva a primeira linha
-           exclusivamente para esses controles.
-           ============================================================ */
-        .card-heroi .controles-heroi {
-            padding-top: 50px !important;
-        }
-
-        .card-heroi .btn-participacao {
-            top: 35px !important;
-        }
-
-        .card-heroi .controles-heroi > div[style*="display:flex"] {
-            top: 35px !important;
-        }
 </style>
 </head>
 <body>
@@ -2922,7 +2838,7 @@
                 <div class="info-heroi">
                     <img src="./assets/ATO1/herois/adepto/adepto.png" class="avatar-painel" id="avatar-h1">
                     <div class="textos-heroi">
-                        <span class="nome-heroi">Adepto das Sombras</span>
+                        <span class="nome-heroi">Adepto</span>
                         <div class="atributos-container">
                             <span class="pv-container"><span id="pv-h1">5</span> PV</span>
                             <span class="am-container"><span id="am-h1">0</span> AM</span>
@@ -2973,7 +2889,7 @@
                 <div class="info-heroi">
                     <img src="./assets/ATO1/herois/atroz/atroz.png" class="avatar-painel" id="avatar-h2">
                     <div class="textos-heroi">
-                        <span class="nome-heroi">Guerreiro Atroz</span>
+                        <span class="nome-heroi">G.Atroz</span>
                         <div class="atributos-container">
                             <span class="pv-container"><span id="pv-h2">5</span> PV</span>
                             <span class="am-container"><span id="am-h2">0</span> AM</span>
@@ -3022,7 +2938,7 @@
                 <div class="info-heroi">
                     <img src="./assets/ATO1/herois/cacador/cacador.png" class="avatar-painel" id="avatar-h3">
                     <div class="textos-heroi">
-                        <span class="nome-heroi">Mestre Caçador</span>
+                        <span class="nome-heroi">M.Caçador</span>
                         <div class="atributos-container">
                             <span class="pv-container"><span id="pv-h3">5</span> PV</span>
                             <span class="am-container"><span id="am-h3">0</span> AM</span>
@@ -3218,7 +3134,7 @@
                 <div class="info-heroi">
                     <img src="./assets/ATO1/herois/Mago/Mago.png" class="avatar-painel" id="avatar-h7">
                     <div class="textos-heroi">
-                        <span class="nome-heroi">Elementarista</span>
+                        <span class="nome-heroi">Mago</span>
                         <div class="atributos-container">
                             <span class="pv-container"><span id="pv-h7">5</span> PV</span>
                             <span class="am-container"><span id="am-h7">0</span> AM</span>
@@ -3316,7 +3232,7 @@
                 <div class="info-heroi">
                     <img src="./assets/ATO1/herois/necromante/necromante.png" class="avatar-painel" id="avatar-h9">
                     <div class="textos-heroi">
-                        <span class="nome-heroi">Mestre da Forja</span>
+                        <span class="nome-heroi">M. da Forja</span>
                         <div class="atributos-container">
                             <span class="pv-container"><span id="pv-h9">5</span> PV</span>
                             <span class="am-container"><span id="am-h9">0</span> AM</span>
