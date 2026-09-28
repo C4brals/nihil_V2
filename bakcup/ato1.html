@@ -501,7 +501,7 @@
         }
         
         .token-heroi img { 
-            width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; 
+            width: 100%; height: 100%; border-radius: 50%; object-fit: cover; object-position: center top; display: block; 
             pointer-events: none; 
 
             /* ---- ADICIONE ESTA LINHA AQUI ---- */
@@ -2744,6 +2744,57 @@
         .card-heroi .controles-heroi > div[style*="display:flex"] {
             top: 35px !important;
         }
+
+        /* ============================================================
+           HABILIDADES DO PAINEL — ESTADO USADO
+           Mantém a lógica Firebase existente e garante que a habilidade
+           marcada como USAR permaneça vermelha mesmo com o tema Mácula.
+           ============================================================ */
+        .card-heroi .botoes-imagens .btn-numero.usado {
+            background: #8b0000 !important;
+            color: #ffffff !important;
+            border-color: #d84a4a !important;
+            box-shadow: 0 0 6px rgba(180, 0, 0, .65) !important;
+        }
+
+        .card-heroi .botoes-imagens .btn-numero.usado:hover {
+            background: #a50000 !important;
+            color: #ffffff !important;
+            border-color: #ff5a5a !important;
+            box-shadow: 0 0 8px rgba(220, 0, 0, .72) !important;
+        }
+
+        /* ===== FRAGMENTO ATIVO: leitura para todos / seleção somente do dono ===== */
+        .texto-exibir-fragmento {
+            font-family:'Cinzel',serif;
+            font-size:7px;
+            line-height:1.1;
+            letter-spacing:.25px;
+            color:var(--macula-branco-texto, #d4dad5);
+            opacity:.78;
+            white-space:nowrap;
+            pointer-events:none;
+        }
+        /* Dropdown do Fragmento Ativo mais compacto para dar destaque ao texto acima */
+        #seletorEfeito {
+            height: 16px !important;
+            min-height: 16px !important;
+            margin-top: 1px !important;
+            padding: 0 18px 0 5px !important;
+            font-size: 8px !important;
+            line-height: 14px !important;
+        }
+
+        /* Convidados continuam podendo clicar no painel para ler o efeito,
+           mas não recebem o controle de seleção do fragmento. */
+        .nihil-convidado #seletorEfeito {
+            display:none !important;
+        }
+        .nihil-convidado .painel-efeito-topo {
+            cursor:pointer !important;
+            opacity:1 !important;
+            filter:none !important;
+        }
 </style>
 </head>
 <body>
@@ -2784,6 +2835,7 @@
              onclick="abrirDescricaoEfeito()">
             <span class="rotulo-fragmento">FRAGMENTO ATIVO</span>
             <span id="nomeEfeito">Nenhum</span>
+            <span class="texto-exibir-fragmento">Exibir efeito de Fragmento Ativo</span>
             <select id="seletorEfeito" aria-label="Selecionar fragmento" onclick="event.stopPropagation()" onchange="trocarEfeitoMapa(this.value)">
                 <option value="">Nenhum</option>
                 <option value="Fragmento I">Fragmento I</option>
@@ -2830,26 +2882,26 @@
                 <li class="item-dropdown-topo" onclick="criarTokenExtra('General Nargull','./assets/ATO1/cartas/generais/nargull_token.png')">General Nargull</li>
                 <li class="item-dropdown-topo" onclick="criarTokenExtra('General Faredir','./assets/ATO1/cartas/generais/faredir_token.png')">General Faredir</li>
                 <li class="item-dropdown-topo" onclick="criarTokenExtra('General Jafras','./assets/ATO1/cartas/generais/jafras_token.png')">General Jafras</li>
-                <li class="item-dropdown-topo" onclick="criarTokenExtra('Travandull','./assets/tokens/travandull_fenda_1.jpg')">Fenda I - Travandull (Boss)</li>
-                <li class="item-dropdown-topo" onclick="criarTokenExtra('Corredor do Abismo','./assets/tokens/corredorDoAbismo.jpg')">Fenda I - Corredor do Abismo (Elite)</li>
-                <li class="item-dropdown-topo" onclick="criarTokenExtra('Cria Alada','./assets/tokens/criaAlada.jpg')">Fenda I - Cria Alada (Comum)</li>
-                <li class="item-dropdown-topo" onclick="criarTokenExtra('Crismodeu','./assets/tokens/crismodeu_fenda_2.jpg')">Fenda II - Crismodeu (Boss)</li>
-                <li class="item-dropdown-topo" onclick="criarTokenExtra('Argento Inernal','./assets/tokens/argentoInfernal.jpg')">Fenda II - Argento Inernal (Elite)</li>
-                <li class="item-dropdown-topo" onclick="criarTokenExtra('Depredador','./assets/tokens/depredadorDasChamas.jpg')">Fenda II - Depredador (Comum)</li>
-                <li class="item-dropdown-topo" onclick="criarTokenExtra('Clinks','./assets/tokens/clinks_fenda_3.jpg')">Fenda III - Clinks (Boss)</li>
-                <li class="item-dropdown-topo" onclick="criarTokenExtra('Arauto','./assets/tokens/arauto.jpg')">Fenda III - Arauto (Elite)</li>
-                <li class="item-dropdown-topo" onclick="criarTokenExtra('Automato','./assets/tokens/automatoDaFenda.jpg')">Fenda III - Automato (Comum)</li>
-                <li class="item-dropdown-topo" onclick="criarTokenExtra('Absam','./assets/tokens/absam_fenda_4.jpg')">Fenda IV - Absam (Boss)</li>
-                <li class="item-dropdown-topo" onclick="criarTokenExtra('Sarcedotisa de Malkar','./assets/tokens/sarcedotisaDeMalkar.jpg')">Fenda IV - Sarcedotisa de Malkar (Elite)</li>
-                <li class="item-dropdown-topo" onclick="criarTokenExtra('Lâmina do Abismo','./assets/tokens/laminaDoAbismo.jpg')">Fenda IV - Lâmina do Abismo (Comum)</li>
-                <li class="item-dropdown-topo" onclick="criarTokenExtra('A Fenda','./assets/tokens/fenda.jpg')">Fenda (Portal)</li>
+                <li class="item-dropdown-topo" onclick="criarTokenExtra('A Fenda','./assets/ATO1/cartas/fendas/fenda.png')">Fenda (Portal)</li>
+                <li class="item-dropdown-topo" onclick="criarTokenExtra('Travandull','./assets/ATO1/cartas/fendas/monarca_f1_token.png')">Fenda I - Travandull (Boss)</li>
+                <li class="item-dropdown-topo" onclick="criarTokenExtra('Corredor do Abismo','./assets/ATO1/cartas/fendas/elite_f1_token.png')">Fenda I - Corredor do Abismo (Elite)</li>
+                <li class="item-dropdown-topo" onclick="criarTokenExtra('Cria Alada','./assets/ATO1/cartas/fendas/comum_f1_token.png')">Fenda I - Cria Alada (Comum)</li>
+                <li class="item-dropdown-topo" onclick="criarTokenExtra('Crismodeu','./assets/ATO1/cartas/fendas/monarca_f2_token.png')">Fenda II - Crismodeu (Boss)</li>
+                <li class="item-dropdown-topo" onclick="criarTokenExtra('Argento Inernal','./assets/ATO1/cartas/fendas/elite_f2_token.png')">Fenda II - Argento Inernal (Elite)</li>
+                <li class="item-dropdown-topo" onclick="criarTokenExtra('Depredador','./assets/ATO1/cartas/fendas/comum_f2_token.png')">Fenda II - Depredador (Comum)</li>
+                <li class="item-dropdown-topo" onclick="criarTokenExtra('Clinks','./assets/ATO1/cartas/fendas/monarca_f3_token.png')">Fenda III - Clinks (Boss)</li>
+                <li class="item-dropdown-topo" onclick="criarTokenExtra('Arauto','./assets/ATO1/cartas/fendas/elite_f3_token.png')">Fenda III - Arauto (Elite)</li>
+                <li class="item-dropdown-topo" onclick="criarTokenExtra('Automato','./assets/ATO1/cartas/fendas/comum_f3_token.png')">Fenda III - Automato (Comum)</li>
+                <li class="item-dropdown-topo" onclick="criarTokenExtra('Absam','./assets/ATO1/cartas/fendas/monarca_f4_token.png')">Fenda IV - Absam (Boss)</li>
+                <li class="item-dropdown-topo" onclick="criarTokenExtra('Sarcedotisa de Malkar','./assets/ATO1/cartas/fendas/elite_f4_token.png')">Fenda IV - Sarcedotisa de Malkar (Elite)</li>
+                <li class="item-dropdown-topo" onclick="criarTokenExtra('Lâmina do Abismo','./assets/ATO1/cartas/fendas/comum_f4_token.png')">Fenda IV - Lâmina do Abismo (Comum)</li>                
                 <li class="item-dropdown-topo" onclick="criarTokenExtra('Itens - Adepto das Sombras','./assets/ATO1/herois/loot.png')">Adepto das Sombras (Drop)</li>
                 <li class="item-dropdown-topo" onclick="criarTokenExtra('Itens - Guerreiro Atroz','./assets/ATO1/herois/loot.png')">Guerreiro Atroz (Drop)</li>
                 <li class="item-dropdown-topo" onclick="criarTokenExtra('Itens - Mestre Caçador','./assets/ATO1/herois/loot.png')">Mestre Caçador (Drop)</li>
                 <li class="item-dropdown-topo" onclick="criarTokenExtra('Itens - Clériga','./assets/ATO1/herois/loot.png')">Clériga (Drop)</li>
                 <li class="item-dropdown-topo" onclick="criarTokenExtra('Itens - Combatente','./assets/ATO1/herois/loot.png')">Combatente (Drop)</li>
                 <li class="item-dropdown-topo" onclick="criarTokenExtra('Itens - Druida','./assets/ATO1/herois/loot.png')">Druida (Drop)</li>
-                <li class="item-dropdown-topo" onclick="criarTokenExtra('Itens - Mago','./assets/ATO1/herois/loot.png')">Mago (Drop)</li>
+                <li class="item-dropdown-topo" onclick="criarTokenExtra('Itens - Elemenetarista','./assets/ATO1/herois/loot.png')">Elementarista (Drop)</li>
                 <li class="item-dropdown-topo" onclick="criarTokenExtra('Itens - Guardião','./assets/ATO1/herois/loot.png')">Guardião (Drop)</li>
                 <li class="item-dropdown-topo" onclick="criarTokenExtra('Itens - Mestre da Forja','./assets/ATO1/herois/loot.png')">Mestre da Forja (Drop)</li>
                 <li class="item-dropdown-topo" onclick="criarTokenExtra('Itens - Protetor','./assets/ATO1/herois/loot.png')">Protetor (Drop)</li>
@@ -3213,10 +3265,10 @@
 
             <!-- Mago -->
             <div id="card-h7" class="card-heroi" style="--token-color: #0d4949;" 
-                 data-img-normal="./assets/ATO1/herois/Mago/Mago.png"
-                 data-img-corrompida="./assets/ATO1/herois/Mago/Mago_corrompido.png">
+                 data-img-normal="./assets/ATO1/herois/Mago/mago.png"
+                 data-img-corrompida="./assets/ATO1/herois/Mago/mago_corrompido.png">
                 <div class="info-heroi">
-                    <img src="./assets/ATO1/herois/Mago/Mago.png" class="avatar-painel" id="avatar-h7">
+                    <img src="./assets/ATO1/herois/Mago/mago.png" class="avatar-painel" id="avatar-h7">
                     <div class="textos-heroi">
                         <span class="nome-heroi">Elementarista</span>
                         <div class="atributos-container">
@@ -3652,11 +3704,11 @@
                 <div class="menu-item-container">
                     <button class="btn-menu-rodape" onclick="alternarDropup(event, 'drop-lordes')">Lordes</button>
                     <ul id="drop-lordes" class="lista-dropup">
-                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/lordes/arkambau.png')">Arkambau</li>
-                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/lordes/dilas.png')">Dilas</li>
-                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/lordes/guido.png')">Guido</li>
-                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/lordes/hilforte.png')">Hilforte</li>
-                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/lordes/oure.png')">Oure</li>
+                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/Lordes/arkambau.png')">Arkambau</li>
+                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/Lordes/dilas.png')">Dilas</li>
+                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/Lordes/guido.png')">Guido</li>
+                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/Lordes/hilforte.png')">Hilforte</li>
+                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/Lordes/oure.png')">Oure</li>
                     </ul>
                 </div>
 
@@ -3690,21 +3742,21 @@
                 <div class="menu-item-container">
                     <button class="btn-menu-rodape" onclick="alternarDropup(event, 'drop-fendas')">Fendas</button>
                     <ul id="drop-fendas" class="lista-dropup">
-                        <li onclick="mostrarImagemGrupo('./assets/cartas/Fendas/Fenda 1/Travandull.jpg')">Travandull (Boss - Fenda I)</li>
-                        <li onclick="mostrarImagemGrupo('./assets/cartas/Fendas/Fenda 1/Corredor do Abismo.jpg')">Corredor do Abismo (Elite - Fenda I)</li>
-                        <li onclick="mostrarImagemGrupo('./assets/cartas/Fendas/Fenda 1/Cria Alada.jpg')">Cria Alada (Comum - Fenda I)</li>
+                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/fendas/monarca_f1.png')">Travandull (Boss - Fenda I)</li>
+                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/fendas/elite_f1.png')">Corredor do Abismo (Elite - Fenda I)</li>
+                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/fendas/comum_f1.png')">Cria Alada (Comum - Fenda I)</li>
 
-                        <li onclick="mostrarImagemGrupo('./assets/cartas/Fendas/Fenda 2/Crismodeu.jpg')">Crismodeu (Boss - Fenda II)</li>
-                        <li onclick="mostrarImagemGrupo('./assets/cartas/Fendas/Fenda 2/Argento Infernal.jpg')">Argento Infernal (Elite - Fenda II)</li>
-                        <li onclick="mostrarImagemGrupo('./assets/cartas/Fendas/Fenda 2/Depredador das Chamas.jpg')">Depredador das Chamas (Comum - Fenda II)</li>
+                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/fendas/monarca_f2.png')">Crismodeu (Boss - Fenda II)</li>
+                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/fendas/elite_f2.png')">Argento Infernal (Elite - Fenda II)</li>
+                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/fendas/comum_f2.png')">Depredador das Chamas (Comum - Fenda II)</li>
 
-                        <li onclick="mostrarImagemGrupo('./assets/cartas/Fendas/Fenda 3/Clinks.jpg')">Clinks (Boss - Fenda III)</li>
-                        <li onclick="mostrarImagemGrupo('./assets/cartas/Fendas/Fenda 3/Arauto.jpg')">Arauto (Elite - Fenda III)</li>
-                        <li onclick="mostrarImagemGrupo('./assets/cartas/Fendas/Fenda 3/Autômato.jpg')">Autômato (Comum - Fenda III)</li>
+                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/fendas/monarca_f3.png')">Clinks (Boss - Fenda III)</li>
+                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/fendas/elite_f3.png')">Arauto (Elite - Fenda III)</li>
+                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/fendas/comum_f3.png')">Autômato (Comum - Fenda III)</li>
 
-                        <li onclick="mostrarImagemGrupo('./assets/cartas/Fendas/Fenda 4/Absam.jpg')">Absam (Boss - Fenda IV)</li>
-                        <li onclick="mostrarImagemGrupo('./assets/cartas/Fendas/Fenda 4/SArcedotisa.jpg')">Sarcedotisa (Elite - Fenda IV)</li>
-                        <li onclick="mostrarImagemGrupo('./assets/cartas/Fendas/Fenda 4/Lâmina do Abismo.jpg')">Lâmina do Abismo (Comum - Fenda IV)</li>
+                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/fendas/monarca_f4.png')">Absam (Boss - Fenda IV)</li>
+                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/fendas/elite_f4.png')">Sarcedotisa (Elite - Fenda IV)</li>
+                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/fendas/comum_f4.png')">Lâmina do Abismo (Comum - Fenda IV)</li>
                     </ul>
                 </div>                
 
@@ -3757,13 +3809,13 @@
                 <div class="menu-item-container">
                     <button class="btn-menu-rodape" onclick="alternarDropup(event, 'drop-mapas')" style="color: #ffc107; border-color: rgba(255, 193, 7, 0.4);">Mudar Mapa</button>
                     <ul id="drop-mapas" class="lista-dropup">
-                        <li onclick="trocarMapaNoBanco('./assets/mapas/taverna.jpeg')">Taverna</li>
+                        <li onclick="trocarMapaNoBanco('./assets/ATO1/mapas/taverna.png')">Taverna</li>
                         <li onclick="trocarMapaNoBanco('./assets/ATO1/mapas/mapa01.jpg')">Mapa I</li>
-                        <li onclick="trocarMapaNoBanco('./assets/ATO1/mapas/mapa02.jpeg')">Mapa II</li>
+                        <li onclick="trocarMapaNoBanco('./assets/ATO1/mapas/mapa02.jpg')">Mapa II</li>
                         <li onclick="trocarMapaNoBanco('./assets/ATO1/mapas/mapa03.jpg')">Mapa III</li>
-                        <li onclick="trocarMapaNoBanco('./assets/ATO1/mapas/mapa04.mp4')">Mapa IV</li>
-                        <li onclick="trocarMapaNoBanco('./assets/ATO1/mapas/mapa05.mp4')">Mapa V</li>
-                        <li onclick="trocarMapaNoBanco('./assets/ATO1/mapas/mapa06.mp4')">Mapa VI</li>
+                        <li onclick="trocarMapaNoBanco('./assets/ATO1/mapas/mapa04.jpg')">Mapa IV</li>
+                        <li onclick="trocarMapaNoBanco('./assets/ATO1/mapas/mapa05.jpg')">Mapa V</li>
+                        <li onclick="trocarMapaNoBanco('./assets/ATO1/mapas/mapa06.jpg')">Mapa VI</li>
                     </ul>
                 </div>
             </div>
@@ -3961,6 +4013,14 @@
                     el.setAttribute('aria-disabled', String(!ehMestreCampanha && !modoLegado));
                     if (!ehMestreCampanha && !modoLegado) el.title = 'Controle exclusivo do Mestre desta campanha';
                 });
+
+            // O painel do Fragmento Ativo permanece clicável para todos.
+            // Somente o dono/Mestre visualiza o dropdown que altera o fragmento.
+            const seletorFragmento = document.getElementById('seletorEfeito');
+            if (seletorFragmento) {
+                const podeSelecionarFragmento = modoLegado || ehMestreCampanha;
+                seletorFragmento.style.display = podeSelecionarFragmento ? 'block' : 'none';
+            }
         }
 
         function exigirMestre() {
