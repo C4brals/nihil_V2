@@ -11,9 +11,9 @@
     },
     "campanhasPorUsuario": {
       "$uid": {
-        ".read": "auth != null && auth.uid === $uid",
+        ".read": "auth != null && (auth.uid === $uid || root.child('usuarios').child(auth.uid).child('role').val() === 'admin')",
         "$campanhaId": {
-          ".write": "auth != null && (auth.uid === $uid || root.child('campanhas').child($campanhaId).child('meta/ownerUid').val() === auth.uid)"
+          ".write": "auth != null && (root.child('usuarios').child(auth.uid).child('role').val() === 'admin' || auth.uid === $uid || root.child('campanhas').child($campanhaId).child('meta/ownerUid').val() === auth.uid)"
         }
       }
     },
@@ -79,8 +79,10 @@
           "turnos": {
             ".write": "auth != null && (root.child('campanhas').child($campanhaId).child('meta/ownerUid').val() === auth.uid || root.child('campanhas').child($campanhaId).child('meta/membros').child(auth.uid).child('ativo').val() === true || root.child('campanhas').child($campanhaId).child('meta/membros').child(auth.uid).val() === true)"
           }
-        }
-      }
+        },
+        ".write": "auth != null && root.child('usuarios').child(auth.uid).child('role').val() === 'admin'"
+      },
+      ".read": "auth != null && root.child('usuarios').child(auth.uid).child('role').val() === 'admin'"
     },
     "tokens": {
       ".read": "auth != null",

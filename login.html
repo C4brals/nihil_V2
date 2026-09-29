@@ -111,7 +111,8 @@ a{color:inherit}.frame{position:fixed;inset:8px;pointer-events:none;z-index:9999
           await signOut(auth);
           throw new Error("Seu acesso está bloqueado ou inativo.");
         }
-        if (p.validade && p.validade < hoje) {
+        const admin = p.role === "admin" || p.admin === true;
+        if (!admin && p.ilimitado !== true && (!p.validade || p.validade < hoje)) {
           await signOut(auth);
           throw new Error("Sua assinatura está vencida.");
         }

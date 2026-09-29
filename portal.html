@@ -80,6 +80,7 @@ a{color:inherit}.frame{position:fixed;inset:8px;pointer-events:none;z-index:9999
 
 .admin-user, .pedido-entrada { transition: border-color .22s ease, background .22s ease, box-shadow .22s ease; }
 .admin-user:hover, .pedido-entrada:hover { border-color:rgba(92,145,106,.65); background:linear-gradient(145deg,rgba(12,31,17,.96),rgba(4,10,6,.99)); box-shadow:0 0 15px rgba(35,83,48,.14); }
+.check-ilimitado{display:flex;align-items:center;gap:8px;margin-top:7px;font-family:'Lora',serif;font-size:.78rem;color:#b8c2b8}.check-ilimitado input{accent-color:#2f6b3e}.btn-excluir-campanha{border-color:#713d3d!important;color:#f0b4b4!important}.btn-excluir-campanha:hover{background:linear-gradient(180deg,#5a2020,#2b0d0d)!important;border-color:#a65a5a!important}
 </style>
   
     <link rel="icon" href="./favicon.ico" sizes="any">
@@ -157,9 +158,10 @@ a{color:inherit}.frame{position:fixed;inset:8px;pointer-events:none;z-index:9999
                 <option value="experiente">Experiente — ATO 1 + ATO 2</option>
               </select></label
             >
-            <label
-              >Validade<input id="admValidade" class="admin-input" type="date"
-            /></label>
+            <label>Validade
+              <input id="admValidade" class="admin-input" type="date" />
+              <span class="check-ilimitado"><input id="admIlimitado" type="checkbox" /> Ilimitado</span>
+            </label>
             <label
               >Status<select id="admAtivo" class="admin-input">
                 <option value="true">Ativo</option>
@@ -194,22 +196,20 @@ a{color:inherit}.frame{position:fixed;inset:8px;pointer-events:none;z-index:9999
           <div id="admListaMsg" class="msg"></div>
           <div id="admLista" class="admin-users"></div>
         </article>
+        <article class="card admin-card" style="margin-top: 20px">
+          <div class="admin-list-head">
+            <div>
+              <h3>Campanhas encerradas</h3>
+              <p class="muted">Somente campanhas encerradas podem ser excluídas definitivamente.</p>
+            </div>
+            <button id="admAtualizarCampanhas" class="btn">Atualizar lista</button>
+          </div>
+          <div id="admCampanhasMsg" class="msg"></div>
+          <div id="admCampanhas" class="admin-users"></div>
+        </article>
       </section>
       <section class="section" style="padding-left: 0; padding-right: 0">
-        <h2 style="text-align: left">Modo legado</h2>
-        <p class="muted">
-          Use esta entrada somente para continuar campanhas que já existiam
-          antes do sistema de salas isoladas. Os caminhos antigos do Firebase
-          permanecem funcionando.
-        </p>
         <div class="grid">
-          <article class="card">
-            <h3>ATO I — Legado</h3>
-            <p>Continua utilizando os dados globais antigos.</p>
-            <a id="ato1Legado" class="btn" href="./ato1.html"
-              >Continuar campanha antiga</a
-            >
-          </article>
           <article id="card2" class="card">
             <h3>ATO II</h3>
             <p id="txt2">Disponível no plano Experiente.</p>
@@ -279,7 +279,7 @@ a{color:inherit}.frame{position:fixed;inset:8px;pointer-events:none;z-index:9999
           !!p &&
           p.ativo === true &&
           p.bloqueado !== true &&
-          (!p.validade || p.validade >= hoje) &&
+          (p.ilimitado === true || (!!p.validade && p.validade >= hoje)) &&
           ["iniciante", "experiente"].includes(p.plano)
         );
       }
@@ -451,7 +451,9 @@ a{color:inherit}.frame{position:fixed;inset:8px;pointer-events:none;z-index:9999
         admCriar = document.querySelector("#admCriar"),
         admLista = document.querySelector("#admLista"),
         admListaMsg = document.querySelector("#admListaMsg"),
-        admBusca = document.querySelector("#admBusca");
+        admBusca = document.querySelector("#admBusca"),
+        admCampanhas = document.querySelector("#admCampanhas"),
+        admCampanhasMsg = document.querySelector("#admCampanhasMsg");
       let assinantesAdmin = [];
       function ehAdmin(p) {
         return !!p && (p.role === "admin" || p.admin === true);
@@ -461,7 +463,14 @@ a{color:inherit}.frame{position:fixed;inset:8px;pointer-events:none;z-index:9999
         d.setMonth(d.getMonth() + 1);
         return d.toISOString().slice(0, 10);
       }
-      document.querySelector("#admValidade").value = validadePadrao();
+      const admValidade = document.querySelector("#admValidade");
+      const admIlimitado = document.querySelector("#admIlimitado");
+      admValidade.value = validadePadrao();
+      admIlimitado.addEventListener("change", () => {
+        admValidade.disabled = admIlimitado.checked;
+        if (admIlimitado.checked) admValidade.value = "";
+        else if (!admValidade.value) admValidade.value = validadePadrao();
+      });
       admCriar.onclick = async () => {
         if (!usuarioAtual || !ehAdmin(perfilAtual)) {
           admMsg.className = "msg error";
@@ -475,12 +484,13 @@ a{color:inherit}.frame{position:fixed;inset:8px;pointer-events:none;z-index:9999
             .value.trim()
             .toLowerCase(),
           plano = document.querySelector("#admPlano").value,
-          validade = document.querySelector("#admValidade").value,
+          ilimitado = document.querySelector("#admIlimitado").checked,
+          validade = ilimitado ? "" : document.querySelector("#admValidade").value,
           ativo = document.querySelector("#admAtivo").value === "true";
-        if (!uid || !nome || !email || !validade) {
+        if (!uid || !nome || !email || (!ilimitado && !validade)) {
           admMsg.className = "msg error";
           admMsg.textContent =
-            "Preencha UID, nome, e-mail e validade. O UID deve vir de Authentication > Users.";
+            "Preencha UID, nome, e-mail e a validade, ou marque Ilimitado. O UID deve vir de Authentication > Users.";
           return;
         }
         admCriar.disabled = true;
@@ -497,6 +507,7 @@ a{color:inherit}.frame{position:fixed;inset:8px;pointer-events:none;z-index:9999
             ativo,
             bloqueado: false,
             validade,
+            ilimitado,
             role: "user",
             criadoEm: Date.now(),
             criadoPor: usuarioAtual.uid,
@@ -507,6 +518,9 @@ a{color:inherit}.frame{position:fixed;inset:8px;pointer-events:none;z-index:9999
           document.querySelector("#admUid").value = "";
           document.querySelector("#admNome").value = "";
           document.querySelector("#admEmail").value = "";
+          admIlimitado.checked = false;
+          admValidade.disabled = false;
+          admValidade.value = validadePadrao();
           await carregarAssinantesAdmin();
         } catch (e) {
           console.error(e);
@@ -548,7 +562,7 @@ a{color:inherit}.frame{position:fixed;inset:8px;pointer-events:none;z-index:9999
           arr
             .map(
               (x) =>
-                `<div class="admin-user" data-uid="${esc(x.uid)}"><div class="admin-user-title"><strong>${esc(x.nome || "Sem nome")}</strong><span>${esc(x.email)}</span><small>UID: ${esc(x.uid)}</small></div><div class="admin-user-fields"><label>Nome<input class="admin-input au-nome" value="${esc(x.nome)}"></label><label>Plano<select class="admin-input au-plano" ${x.role === "admin" ? "disabled" : ""}><option value="iniciante" ${x.plano === "iniciante" ? "selected" : ""}>Iniciante</option><option value="experiente" ${x.plano === "experiente" ? "selected" : ""}>Experiente</option></select></label><label>Validade<input class="admin-input au-validade" type="date" value="${esc(x.validade)}"></label><label>Status<select class="admin-input au-ativo"><option value="true" ${x.ativo ? "selected" : ""}>Ativo</option><option value="false" ${!x.ativo ? "selected" : ""}>Inativo</option></select></label><label>Bloqueio<select class="admin-input au-bloqueado"><option value="false" ${!x.bloqueado ? "selected" : ""}>Desbloqueado</option><option value="true" ${x.bloqueado ? "selected" : ""}>Bloqueado</option></select></label></div><div class="admin-user-actions"><span class="badge">${x.role === "admin" ? "ADMIN" : x.bloqueado ? "BLOQUEADO" : x.ativo ? "ATIVO" : "INATIVO"}</span><button class="btn primary au-salvar">Salvar alterações</button></div><div class="msg au-msg"></div></div>`,
+                `<div class="admin-user" data-uid="${esc(x.uid)}"><div class="admin-user-title"><strong>${esc(x.nome || "Sem nome")}</strong><span>${esc(x.email)}</span><small>UID: ${esc(x.uid)}</small></div><div class="admin-user-fields"><label>Nome<input class="admin-input au-nome" value="${esc(x.nome)}"></label><label>Plano<select class="admin-input au-plano" ${x.role === "admin" ? "disabled" : ""}><option value="iniciante" ${x.plano === "iniciante" ? "selected" : ""}>Iniciante</option><option value="experiente" ${x.plano === "experiente" ? "selected" : ""}>Experiente</option></select></label><label>Validade<input class="admin-input au-validade" type="date" value="${esc(x.validade)}" ${x.ilimitado === true ? "disabled" : ""}><span class="check-ilimitado"><input class="au-ilimitado" type="checkbox" ${x.ilimitado === true ? "checked" : ""}> Ilimitado</span></label><label>Status<select class="admin-input au-ativo"><option value="true" ${x.ativo ? "selected" : ""}>Ativo</option><option value="false" ${!x.ativo ? "selected" : ""}>Inativo</option></select></label><label>Bloqueio<select class="admin-input au-bloqueado"><option value="false" ${!x.bloqueado ? "selected" : ""}>Desbloqueado</option><option value="true" ${x.bloqueado ? "selected" : ""}>Bloqueado</option></select></label></div><div class="admin-user-actions"><span class="badge">${x.role === "admin" ? "ADMIN" : x.bloqueado ? "BLOQUEADO" : x.ativo ? "ATIVO" : "INATIVO"}</span><button class="btn primary au-salvar">Salvar alterações</button></div><div class="msg au-msg"></div></div>`,
             )
             .join("") || '<p class="muted">Nenhum usuário encontrado.</p>';
         admLista
@@ -557,21 +571,32 @@ a{color:inherit}.frame{position:fixed;inset:8px;pointer-events:none;z-index:9999
             (btn) =>
               (btn.onclick = () => salvarAssinante(btn.closest(".admin-user"))),
           );
+        admLista.querySelectorAll(".au-ilimitado").forEach((chk) => {
+          chk.addEventListener("change", () => {
+            const el = chk.closest(".admin-user");
+            const campo = el.querySelector(".au-validade");
+            campo.disabled = chk.checked;
+            if (chk.checked) campo.value = "";
+            else if (!campo.value) campo.value = validadePadrao();
+          });
+        });
       }
       async function salvarAssinante(el) {
         const uid = el.dataset.uid,
           msg = el.querySelector(".au-msg"),
           btn = el.querySelector(".au-salvar");
+        const ilimitado = el.querySelector(".au-ilimitado").checked;
         const payload = {
           nome: el.querySelector(".au-nome").value.trim(),
           plano: el.querySelector(".au-plano").value,
-          validade: el.querySelector(".au-validade").value,
+          validade: ilimitado ? "" : el.querySelector(".au-validade").value,
+          ilimitado,
           ativo: el.querySelector(".au-ativo").value === "true",
           bloqueado: el.querySelector(".au-bloqueado").value === "true",
         };
-        if (!payload.nome || !payload.validade) {
+        if (!payload.nome || (!ilimitado && !payload.validade)) {
           msg.className = "msg error";
-          msg.textContent = "Nome e validade são obrigatórios.";
+          msg.textContent = "Nome e validade são obrigatórios, exceto quando Ilimitado estiver marcado.";
           return;
         }
         if (uid === usuarioAtual.uid && (!payload.ativo || payload.bloqueado)) {
@@ -600,6 +625,50 @@ a{color:inherit}.frame{position:fixed;inset:8px;pointer-events:none;z-index:9999
           btn.disabled = false;
         }
       }
+      async function carregarCampanhasEncerradasAdmin() {
+        if (!ehAdmin(perfilAtual)) return;
+        admCampanhasMsg.className = "msg";
+        admCampanhasMsg.textContent = "Carregando campanhas encerradas...";
+        try {
+          const snap = await get(ref(db, "campanhas"));
+          const todas = Object.entries(snap.val() || {})
+            .filter(([id, c]) => id !== "ato1" && c?.meta && c.meta.ativa === false)
+            .map(([id, c]) => ({ id, ...(c.meta || {}) }));
+          admCampanhasMsg.textContent = `${todas.length} campanha(s) encerrada(s).`;
+          admCampanhas.innerHTML = todas.map(c =>
+            `<div class="admin-user" data-campanha="${esc(c.id)}"><div class="admin-user-title"><strong>${esc(c.nome || "Campanha sem nome")}</strong><span>ENCERRADA</span><small>ID: ${esc(c.id)}</small></div><div class="admin-user-actions"><span class="badge">INATIVA</span><button class="btn btn-excluir-campanha">Excluir campanha definitivamente</button></div><div class="msg au-msg"></div></div>`
+          ).join("") || '<p class="muted">Nenhuma campanha encerrada.</p>';
+          admCampanhas.querySelectorAll(".btn-excluir-campanha").forEach(btn => btn.onclick = async () => {
+            const el = btn.closest(".admin-user");
+            const id = el.dataset.campanha;
+            const msg = el.querySelector(".au-msg");
+            if (!confirm("Excluir definitivamente esta campanha encerrada? Esta ação remove todos os dados da campanha e não pode ser desfeita.")) return;
+            btn.disabled = true;
+            try {
+              const campanhaSnap = await get(ref(db, `campanhas/${id}`));
+              const campanha = campanhaSnap.val();
+              if (!campanha?.meta || campanha.meta.ativa !== false) throw new Error("A campanha não está encerrada e não pode ser excluída.");
+              const uids = new Set([campanha.meta.ownerUid, ...Object.keys(campanha.meta.membros || {})].filter(Boolean));
+              const alteracoes = { [`campanhas/${id}`]: null };
+              uids.forEach(uid => { alteracoes[`campanhasPorUsuario/${uid}/${id}`] = null; });
+              await update(ref(db), alteracoes);
+              await carregarCampanhasEncerradasAdmin();
+              await carregarCampanhas();
+            } catch (e) {
+              console.error(e);
+              msg.className = "msg error";
+              msg.textContent = e?.message || "Não foi possível excluir a campanha.";
+              btn.disabled = false;
+            }
+          });
+        } catch (e) {
+          console.error(e);
+          admCampanhasMsg.className = "msg error";
+          admCampanhasMsg.textContent = e?.message || "Não foi possível carregar as campanhas encerradas.";
+        }
+      }
+      document.querySelector("#admAtualizarCampanhas").onclick = carregarCampanhasEncerradasAdmin;
+
       document.querySelector("#admAtualizarLista").onclick =
         carregarAssinantesAdmin;
       admBusca.addEventListener("input", renderAssinantes);
@@ -618,11 +687,11 @@ a{color:inherit}.frame{position:fixed;inset:8px;pointer-events:none;z-index:9999
           areaAdmin.style.display = "block";
           b.textContent = "ADMINISTRADOR";
           await carregarAssinantesAdmin();
+          await carregarCampanhasEncerradasAdmin();
         }
         if (!assinaturaValida(p) && !ehAdmin(p)) {
           a.textContent =
             "Seu acesso não está liberado. Verifique a assinatura com o administrador.";
-          document.querySelector("#ato1Legado").style.display = "none";
           btnNova.style.display = "none";
           btnEntrar.style.display = "none";
           c2.classList.add("locked");
@@ -633,7 +702,7 @@ a{color:inherit}.frame{position:fixed;inset:8px;pointer-events:none;z-index:9999
         if (!ehAdmin(p))
           b.textContent =
             (p.plano || "").toUpperCase() +
-            (p.validade ? " • até " + p.validade : "");
+            (p.ilimitado === true ? " • ILIMITADO" : (p.validade ? " • até " + p.validade : ""));
         if (p.plano !== "experiente") {
           c2.classList.add("locked");
           bt2.style.display = "none";
