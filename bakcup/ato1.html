@@ -2795,6 +2795,26 @@
             opacity:1 !important;
             filter:none !important;
         }
+
+        /* DESTAQUE VISUAL DO BOTÃO MÁCULA QUANDO O EFEITO ESTÁ ATIVO */
+        .card-heroi .btn-debuff.ativo {
+            background: linear-gradient(180deg, #1f8f35 0%, #0f6724 100%) !important;
+            color: #ffffff !important;
+            border-color: #65ff7a !important;
+            box-shadow:
+                0 0 7px rgba(70, 255, 100, .85),
+                0 0 15px rgba(35, 190, 70, .55),
+                inset 0 0 7px rgba(190, 255, 200, .18) !important;
+            text-shadow: 0 1px 2px rgba(0,0,0,.9) !important;
+        }
+
+        .card-heroi .btn-debuff.ativo:hover {
+            background: linear-gradient(180deg, #28a843 0%, #14772a 100%) !important;
+            border-color: #8aff99 !important;
+            box-shadow:
+                0 0 9px rgba(90, 255, 115, .95),
+                0 0 19px rgba(35, 210, 75, .68) !important;
+        }
 </style>
 </head>
 <body>
@@ -3613,7 +3633,7 @@
                         <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_comuns/atormentador_alado.png')">Atormentador Alado</li>
                         <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_comuns/bruxa_do_pantano.png')">Bruxa do Pântano</li>
                         <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_comuns/driade_banida.png')">Dríade Banida</li>
-                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_comuns/Fantasma.png')">Fantasma</li>
+                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_comuns/fantasma.png')">Fantasma</li>
                         <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_comuns/goblin_ferroso.png')">Goblin Ferroso</li>
                         <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_comuns/harpia.png')">Harpia</li>
                         <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/inimigos_comuns/iluminador.png')">Iluminador Perpétuo</li>
@@ -3658,7 +3678,7 @@
                         <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/consumiveis/e_armazenamento_magico.png')">E. Armazenamento Mágico</li>
                         <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/consumiveis/e_confusao_magica.png')">E. Confusão Mágica</li>
                         <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/consumiveis/e_cura.png')">E. Cura</li>
-                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/consumiveis/e-_distorcao.png')">E. Distorção</li>
+                        <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/consumiveis/e_distorcao.png')">E. Distorção</li>
                         <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/consumiveis/e_escudos.png')">E. Escudos</li>
                         <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/consumiveis/e_invisibilidade.png')">E. Invisibilidade</li>
                         <li onclick="mostrarImagemGrupo('./assets/ATO1/cartas/consumiveis/e_luta_melhorada.png')">E. Luta Melhorada</li>

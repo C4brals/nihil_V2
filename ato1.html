@@ -1309,6 +1309,15 @@
         .card-heroi.turno-atual {
             box-shadow: 0 0 0 1px #ffd966, 0 0 14px rgba(255,217,102,.35);
         }
+
+        /* Destaca também o token do herói que está no turno atual */
+        .token-heroi.turno-atual {
+            border-color: #ffd966 !important;
+            box-shadow: 0 0 0 1px #ffd966, 0 0 14px rgba(255,217,102,.55), 0 4px 10px rgba(0,0,0,.8) !important;
+        }
+        .token-heroi.turno-atual::after {
+            border-top-color: #ffd966 !important;
+        }
         .token-heroi.personagem-inativo {
             opacity: .28;
             filter: grayscale(1);
@@ -2934,17 +2943,17 @@
             </button>
             <ul id="drop-efeitos-topo" class="lista-dropdown" style="display: none; position: absolute; top: 110%; right: 0; min-width: 155px; background: rgba(15, 15, 15, 0.98); border: 1px solid #c5a059; border-radius: 4px; padding: 4px 0; z-index: 30005; list-style: none; box-shadow: 0 4px 10px rgba(0,0,0,0.8);">
                 <li class="item-dropdown-topo" onclick="dispararEfeitoFirebase('')">Nenhum Efeito</li>
-                <li class="item-dropdown-topo" onclick="dispararEfeitoFirebase('./assets/efeitosSonoros/ataque_espada.mp3')">Ataque Espada 1</li>
-                <li class="item-dropdown-topo" onclick="dispararEfeitoFirebase('./assets/efeitosSonoros/ataque_espada2.mp3')">Ataque Espada 2</li>
-                <li class="item-dropdown-topo" onclick="dispararEfeitoFirebase('./assets/efeitosSonoros/magia_fogo.mp3')">Magia de Fogo</li>
-                <li class="item-dropdown-topo" onclick="dispararEfeitoFirebase('./assets/efeitosSonoros/congelar.mp3')">Magia de Gelo</li>
-                <li class="item-dropdown-topo" onclick="dispararEfeitoFirebase('./assets/efeitosSonoros/inducao_eletrica.mpeg')">Indução Elétrica</li>
-                <li class="item-dropdown-topo" onclick="dispararEfeitoFirebase('./assets/efeitosSonoros/monstro.mp3')">Monstro</li>
-                <li class="item-dropdown-topo" onclick="dispararEfeitoFirebase('./assets/efeitosSonoros/monstro_voador.mp3')">Monstro Voador</li>
-                <li class="item-dropdown-topo" onclick="dispararEfeitoFirebase('./assets/efeitosSonoros/flecha.mp3')">Tiro de Flecha</li>
-                <li class="item-dropdown-topo" onclick="dispararEfeitoFirebase('./assets/efeitosSonoros/defesa_escudo.mp3')">Defesa com Escudo</li>
-                <li class="item-dropdown-topo" onclick="dispararEfeitoFirebase('./assets/audios/Game Over.mp3')">Game Over</li>
-                <li class="item-dropdown-topo" onclick="dispararEfeitoFirebase('./assets/efeitosSonoros/Belliphysoot.mpeg')">Belliphysoot</li>
+                <li class="item-dropdown-topo" onclick="dispararEfeitoFirebase('./assets/ATO1/efeitosSonoros/ataque_espada.mp3')">Ataque Espada 1</li>
+                <li class="item-dropdown-topo" onclick="dispararEfeitoFirebase('./assets/ATO1/efeitosSonoros/ataque_espada2.mp3')">Ataque Espada 2</li>
+                <li class="item-dropdown-topo" onclick="dispararEfeitoFirebase('./assets/ATO1/efeitosSonoros/magia_fogo.mp3')">Magia de Fogo</li>
+                <li class="item-dropdown-topo" onclick="dispararEfeitoFirebase('./assets/ATO1/efeitosSonoros/congelar.mp3')">Magia de Gelo</li>
+                <li class="item-dropdown-topo" onclick="dispararEfeitoFirebase('./assets/ATO1/efeitosSonoros/inducao_eletrica.mpeg')">Indução Elétrica</li>
+                <li class="item-dropdown-topo" onclick="dispararEfeitoFirebase('./assets/ATO1/efeitosSonoros/monstro.mp3')">Monstro</li>
+                <li class="item-dropdown-topo" onclick="dispararEfeitoFirebase('./assets/ATO1/efeitosSonoros/monstro_voador.mp3')">Monstro Voador</li>
+                <li class="item-dropdown-topo" onclick="dispararEfeitoFirebase('./assets/ATO1/efeitosSonoros/flecha.mp3')">Tiro de Flecha</li>
+                <li class="item-dropdown-topo" onclick="dispararEfeitoFirebase('./assets/ATO1/efeitosSonoros/defesa_escudo.mp3')">Defesa com Escudo</li>
+                <li class="item-dropdown-topo" onclick="dispararEfeitoFirebase('./assets/ATO1/audios/Game Over.mp3')">Game Over</li>
+                <li class="item-dropdown-topo" onclick="dispararEfeitoFirebase('./assets/ATO1/efeitosSonoros/Belliphysoot.mpeg')">Belliphysoot</li>
                 
                 
             </ul>
@@ -4945,9 +4954,15 @@
             document.querySelectorAll('.card-heroi').forEach(card => {
                 card.classList.remove('turno-atual');
             });
+            document.querySelectorAll('.token-heroi').forEach(token => {
+                token.classList.remove('turno-atual');
+            });
             if (atualId) {
                 const cardAtual = document.getElementById(`card-${atualId}`);
                 if (cardAtual) cardAtual.classList.add('turno-atual');
+
+                const tokenAtual = document.getElementById(`token-${atualId}`);
+                if (tokenAtual) tokenAtual.classList.add('turno-atual');
             }
         }
 
