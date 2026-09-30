@@ -1560,7 +1560,7 @@
           document.body.style.overflow = "";
         };
         document
-          .querySelectorAll('.carousel-card:not([aria-hidden="true"]) img')
+          .querySelectorAll('.carousel-card img')
           .forEach((img) =>
             img.addEventListener("click", () => {
               modalImg.src = img.src;
