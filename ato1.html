@@ -261,6 +261,36 @@
         .btn-estado:hover { background: #c5a059; color: #050505; }
         .card-heroi.corrompido-estado .btn-estado { border-color: #9c4174; color: #9c4174; background: rgba(30, 10, 35, 0.8); }
         .card-heroi.corrompido-estado .btn-estado:hover { background: #9c4174; color: #fff; box-shadow: 0 0 8px #9c4174; }
+        
+        .btn-estado.insaciavel-ativo {
+            background: #a00000 !important;
+            color: #ffffff !important;
+            border: 1px solid #ff3030 !important;
+
+            box-shadow:
+                0 0 8px rgba(255, 0, 0, 0.9),
+                0 0 16px rgba(255, 0, 0, 0.7),
+                inset 0 0 8px rgba(255, 0, 0, 0.4) !important;
+
+            animation: brilhoInsaciavel 2s ease-in-out infinite;
+        }
+
+        @keyframes brilhoInsaciavel {
+            0%, 100% {
+                box-shadow: 0 0 6px #ff0000;
+            }
+
+            50% {
+                box-shadow:
+                    0 0 12px #ff0000,
+                    0 0 22px rgba(255, 0, 0, 0.8);
+            }
+        }
+        
+        .btn-estado.insaciavel-ativo:hover {
+            background: #b00000 !important;
+            color: #ffffff !important;
+        }
 
         .btn-numero {
             background: rgba(197, 160, 89, 0.1); color: #bfae96; border: 1px solid rgba(197, 160, 89, 0.3);
@@ -2156,6 +2186,29 @@
             box-shadow: 0 0 8px rgba(47,107,62,.42) !important;
         }
 
+        /* Guardião — estado Insaciável: sobrescreve o tema verde do estado normal */
+        .card-heroi:not(.corrompido-estado) .btn-estado.insaciavel-ativo {
+            background: #8b0000 !important;
+            color: #ffffff !important;
+            border-color: #ff3030 !important;
+            animation: brilhoInsaciavelFinal 1.2s ease-in-out infinite !important;
+        }
+        .card-heroi:not(.corrompido-estado) .btn-estado.insaciavel-ativo:hover {
+            background: #c00000 !important;
+            color: #ffffff !important;
+            border-color: #ff5555 !important;
+        }
+        @keyframes brilhoInsaciavelFinal {
+            0%, 100% {
+                background: #750000;
+                box-shadow: 0 0 5px #ff0000, 0 0 10px rgba(255,0,0,.55) !important;
+            }
+            50% {
+                background: #c00000;
+                box-shadow: 0 0 10px #ff0000, 0 0 20px rgba(255,0,0,.9), 0 0 30px rgba(255,0,0,.55) !important;
+            }
+        }
+
         /* Painel / controles de Ordens */
         .painel-ordens,
         #painel-ordens,
@@ -3344,7 +3397,8 @@
             <!-- guardiao -->
             <div id="card-h8" class="card-heroi" style="--token-color: #7e3818;" 
                  data-img-normal="./assets/ATO1/herois/guardiao/guardiao.png"
-                 data-img-corrompida="./assets/ATO1/herois/guardiao/guardiao_corrompido.png">
+                 data-img-corrompida="./assets/ATO1/herois/guardiao/guardiao_corrompido.png"
+                 data-img-insaciavel="./assets/ATO1/herois/guardiao/guardiao_insaciavel.jpeg">
                 <div class="info-heroi">
                     <img src="./assets/ATO1/herois/guardiao/guardiao.png" class="avatar-painel" id="avatar-h8">
                     <div class="textos-heroi">
@@ -4474,8 +4528,30 @@
 
             let novoEstado;
 
+            // Guardião (h8): Normal -> Corrompido -> Insaciável -> Normal
+            if (idHeroi === "h8") {
+
+                switch (btn.innerText) {
+
+                    case "Normal":
+                        novoEstado = "Corrompido";
+                        break;
+
+                    case "Corrompido":
+                        novoEstado = "Insaciável";
+                        break;
+
+                    case "Insaciável":
+                        novoEstado = "Normal";
+                        break;
+
+                    default:
+                        novoEstado = "Normal";
+                        break;
+                }
+
             // Apenas o Necromante (h9)
-            if (idHeroi === "h9") {
+            } else if (idHeroi === "h9") {
 
                 switch (btn.innerText) {
 
@@ -4620,6 +4696,9 @@
 
             const urlNormal = card.getAttribute('data-img-normal');
             const urlCorrompida = card.getAttribute('data-img-corrompida');
+            const urlInsaciavel = card.getAttribute('data-img-insaciavel');
+
+            if (btn) btn.classList.remove('insaciavel-ativo');
 
             switch (estado) {
 
@@ -4637,6 +4716,17 @@
                     if (avatarPainel) avatarPainel.src = urlCorrompida;
                     if (imgToken) imgToken.src = urlCorrompida;
                     if (btn) btn.innerText = "Corrompido";
+                    break;
+
+                case "Insaciável":
+                    card.classList.remove('corrompido-estado');
+                    if (token) token.classList.remove('corrompido-estado');
+                    if (avatarPainel && urlInsaciavel) avatarPainel.src = urlInsaciavel;
+                    if (imgToken) imgToken.src = "./assets/ATO1/herois/guardiao/guardiao_insaciavel.jpeg";
+                    if (btn) {
+                        btn.innerText = "Insaciável";
+                        btn.classList.add('insaciavel-ativo');
+                    }
                     break;
 
                 case "Stvr":

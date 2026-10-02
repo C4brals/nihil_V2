@@ -1186,6 +1186,55 @@
           animation: none;
         }
       }
+
+      /* ===== MODAL AJUDE O PROJETO / MÁCULA ===== */
+      .apoio-modal {
+        position: fixed; inset: 0; z-index: 21000; display: none; place-items: center;
+        padding: 24px; background: rgba(1, 4, 2, .92); backdrop-filter: blur(9px);
+      }
+      .apoio-modal.open { display: grid; }
+      .apoio-modal::before {
+        content: ""; position: absolute; inset: 0; pointer-events: none;
+        background:
+          radial-gradient(circle at 50% 70%, rgba(35,105,52,.30), transparent 34%),
+          radial-gradient(circle at 30% 25%, rgba(23,61,36,.20), transparent 24%);
+        animation: apoioMacula 5s ease-in-out infinite alternate;
+      }
+      .apoio-box {
+        position: relative; z-index: 2; width: min(480px, 94vw); text-align: center;
+        padding: 28px 30px 30px; border: 1px solid rgba(116,159,126,.55);
+        border-radius: 10px; overflow: hidden;
+        background: linear-gradient(155deg, rgba(12,30,17,.98), rgba(3,8,5,.99) 68%);
+        box-shadow: inset 0 0 35px rgba(22,68,34,.18), 0 22px 65px #000, 0 0 28px rgba(40,110,57,.18);
+        animation: modalRise .25s ease;
+      }
+      .apoio-box::after {
+        content: ""; position: absolute; left: -15%; right: -15%; bottom: -45px; height: 120px;
+        background: radial-gradient(ellipse, rgba(55,135,74,.30), transparent 68%);
+        filter: blur(16px); pointer-events: none;
+      }
+      .apoio-logo { width: 92px; height: 92px; object-fit: contain; margin-bottom: 5px;
+        filter: drop-shadow(0 0 15px rgba(50,130,69,.48)); }
+      .apoio-box h2 { margin: 4px 0 10px; font-family: "Cinzel", serif; color: #d8e1d9;
+        letter-spacing: .09em; text-transform: uppercase; font-size: 1.35rem; }
+      .apoio-box p { margin: 0 auto 20px; max-width: 390px; color: #aeb9b0; line-height: 1.6; font-size: .93rem; }
+      .apoio-qrcode-wrap {
+        width: min(260px, 72vw); aspect-ratio: 1; margin: 0 auto 18px; padding: 12px;
+        display: grid; place-items: center; background: #f5f7f5; border: 1px solid #789681; border-radius: 8px;
+        box-shadow: 0 0 24px rgba(45,120,63,.25);
+      }
+      .apoio-qrcode { width: 100%; height: 100%; object-fit: contain; display: block; }
+      .apoio-legenda { font-family: "Cinzel", serif; color: #86a98e !important; font-size: .72rem !important;
+        letter-spacing: .06em; margin-bottom: 0 !important; }
+      .apoio-close {
+        position: absolute; right: 14px; top: 14px; z-index: 4; width: 36px; height: 36px;
+        border: 1px solid #55715c; background: #071009; color: #dce3dd; border-radius: 50%;
+        font-size: 1.15rem; cursor: pointer;
+      }
+      .apoio-close:hover { background: #173d24; border-color: #86a98e; }
+      @keyframes apoioMacula { from { opacity: .65; transform: scale(1); } to { opacity: 1; transform: scale(1.04); } }
+      @media (prefers-reduced-motion: reduce) { .apoio-modal::before { animation: none; } }
+
     </style>
 
     <link rel="icon" href="./favicon.ico" sizes="any" />
@@ -1210,6 +1259,7 @@
         <a href="./regras.html" target="_blank">Regras</a>
         <a href="./itens.html" target="_blank">Itens</a>
         <a href="./herois.html" target="_blank">Heróis</a>
+        <a href="#" id="ajudeProjetoLink">Ajude o Projeto</a>
         <a class="btn" href="./login.html">Entrar</a>
       </div>
     </nav>
@@ -1550,6 +1600,20 @@
       <button class="modal-close" type="button" aria-label="Fechar">×</button
       ><img src="" alt="" />
     </div>
+
+    <div class="apoio-modal" id="apoioModal" role="dialog" aria-modal="true" aria-labelledby="apoioTitulo">
+      <div class="apoio-box">
+        <button class="apoio-close" type="button" aria-label="Fechar">×</button>
+        <img class="apoio-logo" src="./icone.png" alt="Logo NIHIL" />
+        <h2 id="apoioTitulo">Ajude o Projeto</h2>
+        <p>Se você gosta de NIHIL e deseja apoiar o desenvolvimento do projeto, escaneie o QR Code abaixo para contribuir.</p>
+        <div class="apoio-qrcode-wrap">
+          <img class="apoio-qrcode" src="./pix.jpeg" alt="QR Code para apoiar o projeto NIHIL" />
+        </div>
+        <p class="apoio-legenda">Aponte a câmera do celular para o QR Code</p>
+      </div>
+    </div>
+
     <footer class="footer">© 2026 NIHIL - Todos os direitos reservados.</footer>
 
     <script>
@@ -1576,8 +1640,25 @@
           if (e.target === modal) close();
         });
         document.addEventListener("keydown", (e) => {
-          if (e.key === "Escape") close();
+          if (e.key === "Escape") { close(); fecharApoio(); }
         });
+
+        const apoioModal = document.getElementById("apoioModal");
+        const apoioLink = document.getElementById("ajudeProjetoLink");
+        const fecharApoio = () => {
+          apoioModal.classList.remove("open");
+          document.body.style.overflow = "";
+        };
+        apoioLink.addEventListener("click", (e) => {
+          e.preventDefault();
+          apoioModal.classList.add("open");
+          document.body.style.overflow = "hidden";
+        });
+        apoioModal.querySelector(".apoio-close").addEventListener("click", fecharApoio);
+        apoioModal.addEventListener("click", (e) => {
+          if (e.target === apoioModal) fecharApoio();
+        });
+
         const items = document.querySelectorAll(".reveal");
         if ("IntersectionObserver" in window) {
           const io = new IntersectionObserver(
