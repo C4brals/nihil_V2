@@ -1,0 +1,717 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Portal do Jogador — Nihil</title>
+    
+<style id="nihil-identity-v2">
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Lora:ital,wght@0,400;0,500;1,400&display=swap');
+:root{--nihil-black:#040705;--nihil-panel:#071009;--nihil-red:#173d24;--nihil-red2:#245c35;--nihil-gold:#b8c2b8;--nihil-gold2:#d5ddd5;--nihil-text:#e4e8e4;--nihil-muted:#9ea7a0}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;color:var(--nihil-text);font-family:'Lora',serif;background:radial-gradient(circle at 50% -10%,rgba(23,61,36,.25),transparent 34%),linear-gradient(rgba(3,8,5,.94),rgba(3,8,5,.97)),repeating-linear-gradient(135deg,#050806 0 2px,#040705 2px 7px);background-attachment:fixed}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(circle at 50% 25%,rgba(184,194,184,.055),transparent 24%),radial-gradient(circle at 50% 100%,rgba(23,61,36,.14),transparent 34%)}
+a{color:inherit}.frame{position:fixed;inset:8px;pointer-events:none;z-index:9999;border:1px solid rgba(184,194,184,.38);box-shadow:inset 0 0 0 2px rgba(23,61,36,.18),inset 0 0 28px rgba(0,0,0,.85)}
+.nav{min-height:86px;padding:10px clamp(20px,5vw,72px);display:flex;align-items:center;justify-content:space-between;gap:24px;position:relative;z-index:20;background:linear-gradient(180deg,rgba(4,10,6,.98),rgba(5,12,7,.88));border-bottom:1px solid rgba(184,194,184,.28);box-shadow:0 8px 28px rgba(0,0,0,.45)}
+.brand,.brand-logo{display:inline-flex;align-items:center;text-decoration:none}.brand-logo img{width:68px;height:68px;object-fit:contain;filter:drop-shadow(0 0 12px rgba(23,61,36,.45))}.brand-logo span{font-family:'Cinzel',serif;font-weight:800;letter-spacing:.16em;color:var(--nihil-gold2);font-size:1.15rem;margin-left:8px;text-shadow:0 1px 8px #000}.navlinks,.actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.navlinks a:not(.btn){text-decoration:none;color:#cbd1cc;font-family:'Cinzel',serif;font-size:.82rem;letter-spacing:.08em}.navlinks a:not(.btn):hover{color:var(--nihil-gold2)}
+.btn{appearance:none;border:1px solid rgba(184,194,184,.5);border-radius:5px;padding:11px 18px;background:linear-gradient(#0b110d,#050806);color:#dde2dd;text-decoration:none;font-family:'Cinzel',serif;font-weight:700;letter-spacing:.04em;cursor:pointer;box-shadow:inset 0 0 12px rgba(0,0,0,.55),0 4px 14px rgba(0,0,0,.28)}.btn:hover{border-color:var(--nihil-gold2);transform:translateY(-1px)}.btn.primary{background:linear-gradient(180deg,#1f4f2e,#102d1a);border-color:#aeb9af;color:#f0f3f0;box-shadow:inset 0 0 0 1px rgba(255,205,120,.14),0 0 20px rgba(23,61,36,.2)}
+.hero{min-height:610px;display:grid;place-items:center;text-align:center;padding:90px 24px;position:relative;overflow:hidden}.hero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 42%,rgba(23,61,36,.25),transparent 28%),linear-gradient(180deg,transparent 50%,#040705 100%);z-index:-1}.hero>div{max-width:820px}.hero h2,.section h2,.card h3,.auth-card h1{font-family:'Cinzel',serif;color:var(--nihil-gold2);text-transform:uppercase;letter-spacing:.1em}.hero h2{font-size:clamp(.8rem,2vw,1.1rem);color:#aab3ac}.hero h1{font-family:'Cinzel',serif;font-size:clamp(4rem,12vw,8.5rem);line-height:.85;margin:18px 0;color:#cbd4cc;text-shadow:0 3px 0 #15261a,0 0 25px rgba(23,61,36,.5);letter-spacing:.08em}.hero p{font-size:1.08rem;line-height:1.75;color:#bbc2bc;max-width:690px;margin:0 auto 28px}.hero .actions{justify-content:center}
+.section{max-width:1120px;margin:auto;padding:58px 24px}.section>h2{text-align:center;font-size:1.7rem}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}.card,.auth-card{background:linear-gradient(145deg,rgba(25,16,16,.96),rgba(4,10,6,.98));border:1px solid rgba(184,194,184,.35);border-left:3px solid #163b22;border-radius:7px;padding:24px;box-shadow:inset 0 0 30px rgba(0,0,0,.45),0 14px 35px rgba(0,0,0,.28)}.card h3{margin-top:0}.price,.badge{font-family:'Cinzel',serif;color:var(--nihil-gold2)}.muted{color:var(--nihil-muted)}.footer{text-align:center;padding:32px;color:#78827a;border-top:1px solid rgba(184,194,184,.16);font-family:'Cinzel',serif;letter-spacing:.08em}
+.auth-wrap{min-height:calc(100vh - 86px);display:grid;place-items:center;padding:42px 20px}.auth-card{width:min(440px,100%);position:relative}.auth-card:before{content:"";display:block;width:108px;height:108px;margin:-4px auto 12px;background:url('./icone.png') center/contain no-repeat;filter:drop-shadow(0 0 12px rgba(23,61,36,.38))}.auth-card h1{text-align:center;margin-top:4px}.field{margin:16px 0}.field label,.admin-grid label{display:grid;gap:7px;color:#b9c1ba;font-family:'Cinzel',serif;font-size:.78rem}.field input,.admin-input{width:100%;background:#090707;border:1px solid #39463c;color:#f0e4d4;border-radius:4px;padding:12px;outline:none}.field input:focus,.admin-input:focus{border-color:var(--nihil-gold);box-shadow:0 0 0 2px rgba(184,194,184,.08)}.msg{margin-top:12px}.msg.error{color:#e7a3a3}.portal{max-width:1180px;margin:auto;padding:42px 24px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:20px;border-bottom:1px solid rgba(184,194,184,.25);padding-bottom:20px}.badge{border:1px solid rgba(184,194,184,.4);background:#100a0a;padding:9px 13px;border-radius:999px}.admin-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}.admin-list-head{display:flex;justify-content:space-between;gap:18px;align-items:flex-start}.admin-search{margin:16px 0}.admin-users{display:grid;gap:12px}
+@media(max-width:650px){.nav{padding:10px 18px}.brand-logo img{width:54px;height:54px}.brand-logo span{display:none}.hero{min-height:520px;padding-top:65px}.navlinks a:not(.btn){display:none}.portal{padding:28px 16px}.topbar{align-items:flex-start;flex-direction:column}}
+
+/* ===== Correções de espaçamento / legibilidade do Portal ===== */
+.portal .section{padding-top:42px;padding-bottom:42px}
+.portal .section + .section{margin-top:10px;border-top:1px solid rgba(184,194,184,.12)}
+.portal h1{margin:0 0 8px;line-height:1.2}
+.portal .section>h2{margin:0 0 12px;line-height:1.25}
+.portal .section>p{margin:0 0 22px;line-height:1.65;max-width:900px}
+.portal .actions{margin-top:18px;gap:12px;align-items:center}
+.portal .grid{margin-top:22px}
+.portal .card{min-width:0;overflow:hidden}
+.portal .card h3{margin:0 0 12px;line-height:1.3}
+/* Campanhas: separa visualmente o status ATIVA/INATIVA do nome */
+#listaCampanhas .card > .badge{display:inline-flex;width:max-content;margin:0 0 16px 0;}
+#listaCampanhas .card > h3{margin:0 0 14px 0;padding-top:2px;}
+.portal .card p{margin:0 0 18px;line-height:1.6}
+.portal .card .btn,.portal .card button.btn{display:inline-flex;align-items:center;justify-content:center;line-height:1.25;min-height:44px;white-space:normal;text-align:center}
+.admin-card{margin-top:22px}
+.admin-grid{margin-top:18px;gap:18px 16px;align-items:end}
+.admin-grid label,.admin-user-fields label{line-height:1.35;min-width:0}
+.admin-input{min-height:44px;line-height:1.25}
+.admin-list-head{gap:24px;align-items:center;margin-bottom:18px}
+.admin-list-head>div{min-width:0;flex:1}.admin-list-head h3{margin-bottom:8px}.admin-list-head p{margin:0;line-height:1.55}
+.admin-search{margin:18px 0 22px}
+.admin-users{gap:18px}
+.admin-user{padding:20px;border:1px solid rgba(184,194,184,.26);border-left:3px solid #163b22;border-radius:7px;background:linear-gradient(145deg,rgba(20,13,13,.94),rgba(4,10,6,.98));overflow:hidden}
+.admin-user-title{display:flex;flex-direction:column;gap:5px;margin-bottom:18px;min-width:0}.admin-user-title strong{font-family:'Cinzel',serif;color:var(--nihil-gold2);font-size:1rem}.admin-user-title span,.admin-user-title small{overflow-wrap:anywhere;line-height:1.4}.admin-user-title small{color:var(--nihil-muted)}
+.admin-user-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:18px}
+.admin-user-actions{display:flex;align-items:center;justify-content:flex-end;gap:12px;flex-wrap:wrap;padding-top:16px;border-top:1px solid rgba(184,194,184,.14)}
+.admin-user-actions .badge{margin-right:auto}
+.msg{line-height:1.5;margin-top:14px;overflow-wrap:anywhere}.msg:empty{display:none}
+.modal-nihil[hidden]{display:none}.modal-nihil{position:fixed;inset:0;z-index:10000;display:grid;place-items:center;padding:20px;background:rgba(0,0,0,.78)}
+.modal-nihil-card{position:relative;width:min(520px,100%);padding:28px;background:#071009;border:1px solid rgba(184,194,184,.45);border-radius:7px;box-shadow:0 18px 60px #000}.modal-nihil-card h2{margin:0 40px 12px 0;font-family:'Cinzel',serif;color:var(--nihil-gold2)}.modal-nihil-card p{line-height:1.6;margin:0 0 18px}.modal-x{position:absolute;right:14px;top:12px;border:0;background:transparent;color:#d8c7b0;font-size:1.7rem;cursor:pointer}.codigo-convite{margin:16px 0;padding:14px;background:#090707;border:1px solid #39463c;border-radius:4px;font-family:monospace;overflow-wrap:anywhere}
+@media(max-width:650px){.portal .section{padding-top:32px;padding-bottom:32px}.admin-list-head{align-items:stretch;flex-direction:column}.admin-list-head .btn{align-self:flex-start}.admin-user{padding:16px}.admin-user-fields{grid-template-columns:1fr}.admin-user-actions{align-items:stretch;flex-direction:column}.admin-user-actions .badge{margin-right:0;align-self:flex-start}.admin-user-actions .btn{width:100%}.portal .actions{align-items:stretch}.portal .actions .btn{flex:1 1 100%}}
+
+
+      .campanha-cabecalho{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:8px}.campanha-cabecalho h3{margin:0;min-width:0}.solicitacoes-campanha{margin-top:16px;padding-top:12px;border-top:1px solid rgba(184,194,184,.28)}.solicitacoes-campanha h4{font-family:Cinzel;color:#b8c2b8;margin:0 0 10px}.pedido-entrada{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px;background:rgba(0,0,0,.22);border:1px solid rgba(184,194,184,.18);margin-top:7px}.pedido-entrada span{display:flex;flex-direction:column;gap:2px}.pedido-entrada small{color:#9e9183}.btn-encerrar{border-color:#31533a!important;color:#d9aaaa!important}.btn-aceitar{border-color:#4d7750!important}.btn-recusar{border-color:#31533a!important}@media(max-width:620px){.campanha-cabecalho,.pedido-entrada{align-items:flex-start;flex-direction:column}}
+
+/* ===== HOVER MACULA: contraste e legibilidade ===== */
+.navlinks a:not(.btn), .btn, .card, .auth-card { transition: color .22s ease, background .22s ease, border-color .22s ease, box-shadow .22s ease, transform .22s ease, filter .22s ease; }
+.navlinks a:not(.btn):hover, .navlinks a:not(.btn):focus-visible {
+    color:#f1f5f1 !important;
+    text-shadow:0 0 8px rgba(77,150,91,.7);
+}
+.btn:hover, .btn:focus-visible {
+    color:#f7faf7 !important;
+    background:linear-gradient(180deg,#173d24,#0b2112) !important;
+    border-color:#5c916a !important;
+    box-shadow:inset 0 0 14px rgba(73,139,87,.16),0 0 13px rgba(42,105,57,.28),0 5px 16px rgba(0,0,0,.34);
+    text-shadow:0 1px 2px #000;
+}
+.btn.primary:hover, .btn.primary:focus-visible {
+    background:linear-gradient(180deg,#2c6a3d,#153b21) !important;
+    border-color:#8aaa91 !important;
+    color:#fff !important;
+}
+.card:hover {
+    border-color:rgba(92,145,106,.72);
+    box-shadow:inset 0 0 34px rgba(37,88,49,.13),0 0 18px rgba(35,83,48,.16),0 16px 38px rgba(0,0,0,.34);
+}
+
+.admin-user, .pedido-entrada { transition: border-color .22s ease, background .22s ease, box-shadow .22s ease; }
+.admin-user:hover, .pedido-entrada:hover { border-color:rgba(92,145,106,.65); background:linear-gradient(145deg,rgba(12,31,17,.96),rgba(4,10,6,.99)); box-shadow:0 0 15px rgba(35,83,48,.14); }
+.check-ilimitado{display:flex;align-items:center;gap:8px;margin-top:7px;font-family:'Lora',serif;font-size:.78rem;color:#b8c2b8}.check-ilimitado input{accent-color:#2f6b3e}.btn-excluir-campanha{border-color:#713d3d!important;color:#f0b4b4!important}.btn-excluir-campanha:hover{background:linear-gradient(180deg,#5a2020,#2b0d0d)!important;border-color:#a65a5a!important}
+</style>
+  
+    <link rel="icon" href="./favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" href="./favicon-32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="./favicon-192.png" sizes="192x192">
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+  </head>
+  <body>
+    <div class="frame"></div>
+    <nav class="nav">
+      <a class="brand-logo" href="./index.html" aria-label="Nihil"><img src="./icone.png" alt="Nihil"><span>NIHIL</span></a><button id="sair" class="btn">Sair</button>
+    </nav>
+    <main class="portal">
+      <div class="topbar">
+        <div>
+          <h1 style="font-family: Cinzel; color: #b8c2b8">Portal do Jogador</h1>
+          <p id="usuario" class="muted">Carregando...</p>
+        </div>
+        <div id="plano" class="badge">...</div>
+      </div>
+      <div id="alerta" class="msg error"></div>
+      <section class="section" style="padding-left: 0; padding-right: 0">
+        <h2 style="text-align: left">Campanhas novas</h2>
+        <p class="muted">
+          Crie uma mesa isolada ou entre em uma campanha usando o código enviado
+          pelo Mestre. Cada participante precisa ter sua própria assinatura
+          ativa.
+        </p>
+        <div class="actions" style="justify-content: flex-start">
+          <button id="novaCampanha" class="btn primary">+ Nova campanha</button
+          ><button id="entrarCampanha" class="btn">Entrar com código</button>
+        </div>
+        <div id="listaCampanhas" class="grid"></div>
+      </section>
+
+      <section
+        id="areaAdmin"
+        class="section"
+        style="padding-left: 0; padding-right: 0; display: none"
+      >
+        <h2 style="text-align: left">Administração de usuários</h2>
+        <p class="muted">
+          Modo Spark híbrido: crie primeiro a conta em Firebase Authentication,
+          copie o UID e depois cadastre o perfil comercial aqui. Plano,
+          validade, bloqueio e status são gerenciados diretamente pelo Portal.
+        </p>
+        <article class="card admin-card">
+          <h3>Vincular conta do Authentication</h3>
+          <div class="admin-grid">
+            <label
+              >UID do Authentication<input
+                id="admUid"
+                class="admin-input"
+                autocomplete="off"
+                placeholder="Cole o UID criado no Authentication" /></label
+            ><label
+              >Nome<input
+                id="admNome"
+                class="admin-input"
+                autocomplete="off"
+                placeholder="Nome do cliente"
+            /></label>
+            <label
+              >E-mail<input
+                id="admEmail"
+                class="admin-input"
+                type="email"
+                autocomplete="off"
+                placeholder="cliente@email.com"
+            /></label>
+
+            <label
+              >Plano<select id="admPlano" class="admin-input">
+                <option value="iniciante">Iniciante — ATO 1</option>
+                <option value="experiente">Experiente — ATO 1 + ATO 2</option>
+              </select></label
+            >
+            <label>Validade
+              <input id="admValidade" class="admin-input" type="date" />
+              <span class="check-ilimitado"><input id="admIlimitado" type="checkbox" /> Ilimitado</span>
+            </label>
+            <label
+              >Status<select id="admAtivo" class="admin-input">
+                <option value="true">Ativo</option>
+                <option value="false">Inativo</option>
+              </select></label
+            >
+          </div>
+          <div class="actions" style="justify-content: flex-start">
+            <button id="admCriar" class="btn primary">Cadastrar perfil</button>
+          </div>
+          <div id="admMsg" class="msg"></div>
+        </article>
+        <article class="card admin-card" style="margin-top: 20px">
+          <div class="admin-list-head">
+            <div>
+              <h3>Assinantes cadastrados</h3>
+              <p class="muted">
+                Edite plano, validade, status e bloqueio diretamente no Realtime
+                Database. No modo Spark, isso controla o acesso ao Portal e às
+                campanhas; a conta do Authentication continua existindo.
+              </p>
+            </div>
+            <button id="admAtualizarLista" class="btn">Atualizar lista</button>
+          </div>
+          <div class="admin-search">
+            <input
+              id="admBusca"
+              class="admin-input"
+              placeholder="Buscar por nome ou e-mail"
+            />
+          </div>
+          <div id="admListaMsg" class="msg"></div>
+          <div id="admLista" class="admin-users"></div>
+        </article>
+        <article class="card admin-card" style="margin-top: 20px">
+          <div class="admin-list-head">
+            <div>
+              <h3>Campanhas encerradas</h3>
+              <p class="muted">Somente campanhas encerradas podem ser excluídas definitivamente.</p>
+            </div>
+            <button id="admAtualizarCampanhas" class="btn">Atualizar lista</button>
+          </div>
+          <div id="admCampanhasMsg" class="msg"></div>
+          <div id="admCampanhas" class="admin-users"></div>
+        </article>
+      </section>
+      <section class="section" style="padding-left: 0; padding-right: 0">
+        <div class="grid">
+          <article id="card2" class="card">
+            <h3>ATO II</h3>
+            <p id="txt2">Disponível no plano Experiente.</p>
+            <a id="ato2" class="btn" href="./ato2.html">Entrar no ATO II</a>
+          </article>
+        </div>
+      </section>
+    </main>
+    <div id="modalConvite" class="modal-nihil" hidden>
+      <div class="modal-nihil-card">
+        <button id="fecharConvite" class="modal-x" aria-label="Fechar">
+          ×
+        </button>
+        <h2>Código de convite</h2>
+        <p>
+          Compartilhe este código com os jogadores. Cada pessoa deverá entrar
+          com sua própria conta Nihil e possuir assinatura ativa.
+        </p>
+        <div id="codigoConvite" class="codigo-convite"></div>
+        <button id="copiarConvite" class="btn primary">Copiar código</button>
+        <div id="msgConvite" class="msg ok"></div>
+      </div>
+    </div>
+    <script type="module">
+      import { auth, db } from "./firebase-config.js";
+      import {
+        onAuthStateChanged,
+        signOut,
+      } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+      import {
+        ref,
+        get,
+        set,
+        push,
+        update,
+      } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-database.js";
+      const u = document.querySelector("#usuario"),
+        b = document.querySelector("#plano"),
+        a = document.querySelector("#alerta"),
+        c2 = document.querySelector("#card2"),
+        bt2 = document.querySelector("#ato2"),
+        lista = document.querySelector("#listaCampanhas"),
+        btnNova = document.querySelector("#novaCampanha"),
+        btnEntrar = document.querySelector("#entrarCampanha");
+      let usuarioAtual = null,
+        perfilAtual = null;
+      document.querySelector("#sair").onclick = async () => {
+        await signOut(auth);
+        location.replace("./login.html");
+      };
+      function esc(v = "") {
+        return String(v).replace(
+          /[&<>"']/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[c],
+        );
+      }
+      function assinaturaValida(p) {
+        const hoje = new Date().toISOString().slice(0, 10);
+        return (
+          !!p &&
+          p.ativo === true &&
+          p.bloqueado !== true &&
+          (p.ilimitado === true || (!!p.validade && p.validade >= hoje)) &&
+          ["iniciante", "experiente"].includes(p.plano)
+        );
+      }
+      function segredo() {
+        const bytes = new Uint8Array(6);
+        crypto.getRandomValues(bytes);
+        return Array.from(bytes, (b) => b.toString(36).padStart(2, "0"))
+          .join("")
+          .toUpperCase()
+          .slice(0, 10);
+      }
+      function codigo(id, secret) {
+        return `${id}.${secret}`;
+      }
+      function abrirConvite(cod) {
+        document.querySelector("#codigoConvite").textContent = cod;
+        document.querySelector("#msgConvite").textContent = "";
+        document.querySelector("#modalConvite").hidden = false;
+      }
+      document.querySelector("#fecharConvite").onclick = () =>
+        (document.querySelector("#modalConvite").hidden = true);
+      document.querySelector("#copiarConvite").onclick = async () => {
+        const cod = document.querySelector("#codigoConvite").textContent;
+        try {
+          await navigator.clipboard.writeText(cod);
+          document.querySelector("#msgConvite").textContent = "Código copiado.";
+        } catch {
+          document.querySelector("#msgConvite").textContent =
+            "Selecione e copie o código acima.";
+        }
+      };
+      window.addEventListener("click", (e) => {
+        if (e.target.id === "modalConvite") e.target.hidden = true;
+      });
+      async function carregarCampanhas() {
+        lista.innerHTML = '<p class="muted">Carregando campanhas...</p>';
+        const idx = await get(
+          ref(db, `campanhasPorUsuario/${usuarioAtual.uid}`),
+        );
+        const ids = Object.keys(idx.val() || {});
+        const cards = [];
+        for (const id of ids) {
+          try {
+            const snap = await get(ref(db, `campanhas/${id}/meta`));
+            const m = snap.val();
+            if (!m) continue;
+            const membro = m.membros?.[usuarioAtual.uid];
+            const participa =
+              m.ownerUid === usuarioAtual.uid ||
+              membro === true ||
+              membro?.ativo === true;
+            if (!participa) continue;
+            const dono = m.ownerUid === usuarioAtual.uid;
+            const cod = m.inviteSecret ? codigo(id, m.inviteSecret) : "";
+            let solicitacoesHtml = '';
+            if (dono) {
+              const ss = await get(ref(db, `campanhas/${id}/solicitacoes`));
+              const pedidos = Object.entries(ss.val() || {}).filter(([,v]) => v && v.status === 'pendente');
+              if (pedidos.length) solicitacoesHtml = `<div class="solicitacoes-campanha"><h4>Solicitações de entrada (${pedidos.length})</h4>${pedidos.map(([uid,p]) => `<div class="pedido-entrada"><span><strong>${esc(p.nome || p.email || 'Jogador')}</strong><small>${esc(p.email || '')}</small></span><div class="actions"><button class="btn btn-aceitar" data-campanha="${esc(id)}" data-uid="${esc(uid)}">Aceitar</button><button class="btn btn-recusar" data-campanha="${esc(id)}" data-uid="${esc(uid)}">Recusar</button></div></div>`).join('')}</div>`;
+            }
+            let acoesHtml = '';
+            if (m.ativa === false) {
+              if (dono) acoesHtml = `<button class="btn btn-reativar" data-campanha="${esc(id)}">Reabrir Campanha</button>`;
+            } else {
+              acoesHtml = `<a class="btn primary" href="./ato1.html?campanha=${encodeURIComponent(id)}">Entrar no ATO I</a>`;
+              if (dono && cod) acoesHtml += `<button class="btn btn-convite" data-codigo="${esc(cod)}">Convidar jogadores</button><button class="btn btn-encerrar" data-campanha="${esc(id)}">Encerrar Campanha</button>`;
+            }
+            cards.push(`<article class="card campanha-card"><div class="campanha-cabecalho"><h3>${esc(m.nome || "Campanha sem nome")}</h3><div class="badge">${m.ativa === false ? "INATIVA" : "ATIVA"}</div></div><p>${dono ? "Você é o Mestre/proprietário desta campanha." : "Você participa desta campanha."}</p>${acoesHtml ? `<div class="actions" style="justify-content:flex-start">${acoesHtml}</div>` : ''}${solicitacoesHtml}</article>`);
+          } catch (e) {
+            console.warn("Campanha indisponível", id, e);
+          }
+        }
+        lista.innerHTML = cards.length
+          ? cards.join("")
+          : '<article class="card"><h3>Nenhuma campanha nova</h3><p>Crie sua primeira campanha isolada ou entre usando um código de convite.</p></article>';
+        document
+          .querySelectorAll(".btn-convite")
+          .forEach((x) => (x.onclick = () => abrirConvite(x.dataset.codigo)));
+        document.querySelectorAll('.btn-encerrar').forEach(x => x.onclick = async () => {
+          if (!confirm('Encerrar esta campanha? Os dados serão preservados, mas convidados não poderão entrar até que ela seja reaberta.')) return;
+          await set(ref(db, `campanhas/${x.dataset.campanha}/meta/ativa`), false);
+          await carregarCampanhas();
+        });
+        document.querySelectorAll('.btn-reativar').forEach(x => x.onclick = async () => {
+          await set(ref(db, `campanhas/${x.dataset.campanha}/meta/ativa`), true);
+          await carregarCampanhas();
+        });
+        document.querySelectorAll('.btn-aceitar').forEach(x => x.onclick = async () => {
+          const id=x.dataset.campanha, uid=x.dataset.uid;
+          await set(ref(db, `campanhas/${id}/meta/membros/${uid}`), {ativo:true, entrouEm:Date.now(), aprovadoPor:usuarioAtual.uid});
+          await set(ref(db, `campanhasPorUsuario/${uid}/${id}`), true);
+          await set(ref(db, `campanhas/${id}/solicitacoes/${uid}/status`), 'aceita');
+          await carregarCampanhas();
+        });
+        document.querySelectorAll('.btn-recusar').forEach(x => x.onclick = async () => {
+          const id=x.dataset.campanha, uid=x.dataset.uid;
+          await set(ref(db, `campanhas/${id}/solicitacoes/${uid}/status`), 'recusada');
+          await carregarCampanhas();
+        });
+      }
+      btnNova.onclick = async () => {
+        if (!usuarioAtual || !assinaturaValida(perfilAtual)) return;
+        const nome = (prompt("Nome da nova campanha:") || "").trim();
+        if (!nome) return;
+        btnNova.disabled = true;
+        try {
+          const nova = push(ref(db, "campanhas"));
+          const secret = segredo();
+          await set(ref(db, `campanhas/${nova.key}/meta`), {
+            nome,
+            ownerUid: usuarioAtual.uid,
+            ativa: true,
+            criadaEm: Date.now(),
+            inviteSecret: secret,
+            membros: { [usuarioAtual.uid]: true },
+          });
+          await set(
+            ref(db, `campanhasPorUsuario/${usuarioAtual.uid}/${nova.key}`),
+            true,
+          );
+          abrirConvite(codigo(nova.key, secret));
+          await carregarCampanhas();
+        } catch (e) {
+          console.error(e);
+          a.textContent =
+            "Não foi possível criar a campanha. Publique as novas regras do Firebase.";
+        } finally {
+          btnNova.disabled = false;
+        }
+      };
+      btnEntrar.onclick = async () => {
+        if (!usuarioAtual || !assinaturaValida(perfilAtual)) {
+          a.textContent =
+            "Sua assinatura precisa estar ativa para entrar em uma campanha.";
+          return;
+        }
+        const bruto = (
+          prompt("Cole o código de convite enviado pelo Mestre:") || ""
+        ).trim();
+        if (!bruto) return;
+        const p = bruto.split(".");
+        if (p.length !== 2 || !p[0] || !p[1]) {
+          a.textContent = "Código de convite inválido.";
+          return;
+        }
+        const [id, secret] = p;
+        btnEntrar.disabled = true;
+        a.textContent = "";
+        try {
+          const pedido = {
+            uid: usuarioAtual.uid,
+            nome: perfilAtual?.nome || usuarioAtual.displayName || usuarioAtual.email || 'Jogador',
+            email: usuarioAtual.email || perfilAtual?.email || '',
+            solicitadoEm: Date.now(),
+            status: 'pendente',
+            convite: secret
+          };
+          await set(ref(db, `campanhas/${id}/solicitacoes/${usuarioAtual.uid}`), pedido);
+          a.textContent = 'Solicitação enviada ao Mestre. Aguarde a aprovação antes de entrar na campanha.';
+        } catch (e) {
+          console.error(e);
+          a.textContent = 'Não foi possível enviar a solicitação. Confira o código, o status da campanha e sua assinatura.';
+        } finally {
+          btnEntrar.disabled = false;
+        }
+      };
+      const areaAdmin = document.querySelector("#areaAdmin"),
+        admMsg = document.querySelector("#admMsg"),
+        admCriar = document.querySelector("#admCriar"),
+        admLista = document.querySelector("#admLista"),
+        admListaMsg = document.querySelector("#admListaMsg"),
+        admBusca = document.querySelector("#admBusca"),
+        admCampanhas = document.querySelector("#admCampanhas"),
+        admCampanhasMsg = document.querySelector("#admCampanhasMsg");
+      let assinantesAdmin = [];
+      function ehAdmin(p) {
+        return !!p && (p.role === "admin" || p.admin === true);
+      }
+      function validadePadrao() {
+        const d = new Date();
+        d.setMonth(d.getMonth() + 1);
+        return d.toISOString().slice(0, 10);
+      }
+      const admValidade = document.querySelector("#admValidade");
+      const admIlimitado = document.querySelector("#admIlimitado");
+      admValidade.value = validadePadrao();
+      admIlimitado.addEventListener("change", () => {
+        admValidade.disabled = admIlimitado.checked;
+        if (admIlimitado.checked) admValidade.value = "";
+        else if (!admValidade.value) admValidade.value = validadePadrao();
+      });
+      admCriar.onclick = async () => {
+        if (!usuarioAtual || !ehAdmin(perfilAtual)) {
+          admMsg.className = "msg error";
+          admMsg.textContent = "Acesso administrativo não autorizado.";
+          return;
+        }
+        const uid = document.querySelector("#admUid").value.trim(),
+          nome = document.querySelector("#admNome").value.trim(),
+          email = document
+            .querySelector("#admEmail")
+            .value.trim()
+            .toLowerCase(),
+          plano = document.querySelector("#admPlano").value,
+          ilimitado = document.querySelector("#admIlimitado").checked,
+          validade = ilimitado ? "" : document.querySelector("#admValidade").value,
+          ativo = document.querySelector("#admAtivo").value === "true";
+        if (!uid || !nome || !email || (!ilimitado && !validade)) {
+          admMsg.className = "msg error";
+          admMsg.textContent =
+            "Preencha UID, nome, e-mail e a validade, ou marque Ilimitado. O UID deve vir de Authentication > Users.";
+          return;
+        }
+        admCriar.disabled = true;
+        admMsg.className = "msg";
+        admMsg.textContent = "Cadastrando perfil...";
+        try {
+          const existente = await get(ref(db, `usuarios/${uid}`));
+          if (existente.exists())
+            throw new Error("Já existe um perfil cadastrado para este UID.");
+          await set(ref(db, `usuarios/${uid}`), {
+            email,
+            nome,
+            plano,
+            ativo,
+            bloqueado: false,
+            validade,
+            ilimitado,
+            role: "user",
+            criadoEm: Date.now(),
+            criadoPor: usuarioAtual.uid,
+          });
+          admMsg.className = "msg ok";
+          admMsg.textContent =
+            "Perfil cadastrado. A conta já pode usar o login criado no Authentication.";
+          document.querySelector("#admUid").value = "";
+          document.querySelector("#admNome").value = "";
+          document.querySelector("#admEmail").value = "";
+          admIlimitado.checked = false;
+          admValidade.disabled = false;
+          admValidade.value = validadePadrao();
+          await carregarAssinantesAdmin();
+        } catch (e) {
+          console.error(e);
+          admMsg.className = "msg error";
+          admMsg.textContent =
+            e?.message || "Não foi possível cadastrar o perfil.";
+        } finally {
+          admCriar.disabled = false;
+        }
+      };
+
+      async function carregarAssinantesAdmin() {
+        if (!ehAdmin(perfilAtual)) return;
+        admListaMsg.className = "msg";
+        admListaMsg.textContent = "Carregando assinantes...";
+        try {
+          const snap = await get(ref(db, "usuarios"));
+          const obj = snap.val() || {};
+          assinantesAdmin = Object.entries(obj).map(([uid, p]) => ({
+            uid,
+            ...(p || {}),
+          }));
+          renderAssinantes();
+        } catch (e) {
+          console.error(e);
+          admListaMsg.className = "msg error";
+          admListaMsg.textContent =
+            e?.message ||
+            "Não foi possível carregar os assinantes. Confirme se publicou o database.rules.json da V5.1.";
+        }
+      }
+      function renderAssinantes() {
+        const q = (admBusca.value || "").trim().toLowerCase();
+        const arr = assinantesAdmin.filter(
+          (x) => !q || `${x.nome} ${x.email}`.toLowerCase().includes(q),
+        );
+        admListaMsg.textContent = `${arr.length} conta(s) exibida(s).`;
+        admLista.innerHTML =
+          arr
+            .map(
+              (x) =>
+                `<div class="admin-user" data-uid="${esc(x.uid)}"><div class="admin-user-title"><strong>${esc(x.nome || "Sem nome")}</strong><span>${esc(x.email)}</span><small>UID: ${esc(x.uid)}</small></div><div class="admin-user-fields"><label>Nome<input class="admin-input au-nome" value="${esc(x.nome)}"></label><label>Plano<select class="admin-input au-plano" ${x.role === "admin" ? "disabled" : ""}><option value="iniciante" ${x.plano === "iniciante" ? "selected" : ""}>Iniciante</option><option value="experiente" ${x.plano === "experiente" ? "selected" : ""}>Experiente</option></select></label><label>Validade<input class="admin-input au-validade" type="date" value="${esc(x.validade)}" ${x.ilimitado === true ? "disabled" : ""}><span class="check-ilimitado"><input class="au-ilimitado" type="checkbox" ${x.ilimitado === true ? "checked" : ""}> Ilimitado</span></label><label>Status<select class="admin-input au-ativo"><option value="true" ${x.ativo ? "selected" : ""}>Ativo</option><option value="false" ${!x.ativo ? "selected" : ""}>Inativo</option></select></label><label>Bloqueio<select class="admin-input au-bloqueado"><option value="false" ${!x.bloqueado ? "selected" : ""}>Desbloqueado</option><option value="true" ${x.bloqueado ? "selected" : ""}>Bloqueado</option></select></label></div><div class="admin-user-actions"><span class="badge">${x.role === "admin" ? "ADMIN" : x.bloqueado ? "BLOQUEADO" : x.ativo ? "ATIVO" : "INATIVO"}</span><button class="btn primary au-salvar">Salvar alterações</button></div><div class="msg au-msg"></div></div>`,
+            )
+            .join("") || '<p class="muted">Nenhum usuário encontrado.</p>';
+        admLista
+          .querySelectorAll(".au-salvar")
+          .forEach(
+            (btn) =>
+              (btn.onclick = () => salvarAssinante(btn.closest(".admin-user"))),
+          );
+        admLista.querySelectorAll(".au-ilimitado").forEach((chk) => {
+          chk.addEventListener("change", () => {
+            const el = chk.closest(".admin-user");
+            const campo = el.querySelector(".au-validade");
+            campo.disabled = chk.checked;
+            if (chk.checked) campo.value = "";
+            else if (!campo.value) campo.value = validadePadrao();
+          });
+        });
+      }
+      async function salvarAssinante(el) {
+        const uid = el.dataset.uid,
+          msg = el.querySelector(".au-msg"),
+          btn = el.querySelector(".au-salvar");
+        const ilimitado = el.querySelector(".au-ilimitado").checked;
+        const payload = {
+          nome: el.querySelector(".au-nome").value.trim(),
+          plano: el.querySelector(".au-plano").value,
+          validade: ilimitado ? "" : el.querySelector(".au-validade").value,
+          ilimitado,
+          ativo: el.querySelector(".au-ativo").value === "true",
+          bloqueado: el.querySelector(".au-bloqueado").value === "true",
+        };
+        if (!payload.nome || (!ilimitado && !payload.validade)) {
+          msg.className = "msg error";
+          msg.textContent = "Nome e validade são obrigatórios, exceto quando Ilimitado estiver marcado.";
+          return;
+        }
+        if (uid === usuarioAtual.uid && (!payload.ativo || payload.bloqueado)) {
+          msg.className = "msg error";
+          msg.textContent =
+            "Você não pode bloquear ou desativar a própria conta administrativa.";
+          return;
+        }
+        btn.disabled = true;
+        msg.className = "msg";
+        msg.textContent = "Salvando...";
+        try {
+          await update(ref(db, `usuarios/${uid}`), {
+            ...payload,
+            atualizadoEm: Date.now(),
+            atualizadoPor: usuarioAtual.uid,
+          });
+          msg.className = "msg ok";
+          msg.textContent = "Conta atualizada no Realtime Database.";
+          await carregarAssinantesAdmin();
+        } catch (e) {
+          console.error(e);
+          msg.className = "msg error";
+          msg.textContent = e?.message || "Não foi possível atualizar.";
+        } finally {
+          btn.disabled = false;
+        }
+      }
+      async function carregarCampanhasEncerradasAdmin() {
+        if (!ehAdmin(perfilAtual)) return;
+        admCampanhasMsg.className = "msg";
+        admCampanhasMsg.textContent = "Carregando campanhas encerradas...";
+        try {
+          const snap = await get(ref(db, "campanhas"));
+          const todas = Object.entries(snap.val() || {})
+            .filter(([id, c]) => id !== "ato1" && c?.meta && c.meta.ativa === false)
+            .map(([id, c]) => ({ id, ...(c.meta || {}) }));
+          admCampanhasMsg.textContent = `${todas.length} campanha(s) encerrada(s).`;
+          admCampanhas.innerHTML = todas.map(c =>
+            `<div class="admin-user" data-campanha="${esc(c.id)}"><div class="admin-user-title"><strong>${esc(c.nome || "Campanha sem nome")}</strong><span>ENCERRADA</span><small>ID: ${esc(c.id)}</small></div><div class="admin-user-actions"><span class="badge">INATIVA</span><button class="btn btn-excluir-campanha">Excluir campanha definitivamente</button></div><div class="msg au-msg"></div></div>`
+          ).join("") || '<p class="muted">Nenhuma campanha encerrada.</p>';
+          admCampanhas.querySelectorAll(".btn-excluir-campanha").forEach(btn => btn.onclick = async () => {
+            const el = btn.closest(".admin-user");
+            const id = el.dataset.campanha;
+            const msg = el.querySelector(".au-msg");
+            if (!confirm("Excluir definitivamente esta campanha encerrada? Esta ação remove todos os dados da campanha e não pode ser desfeita.")) return;
+            btn.disabled = true;
+            try {
+              const campanhaSnap = await get(ref(db, `campanhas/${id}`));
+              const campanha = campanhaSnap.val();
+              if (!campanha?.meta || campanha.meta.ativa !== false) throw new Error("A campanha não está encerrada e não pode ser excluída.");
+              const uids = new Set([campanha.meta.ownerUid, ...Object.keys(campanha.meta.membros || {})].filter(Boolean));
+              const alteracoes = { [`campanhas/${id}`]: null };
+              uids.forEach(uid => { alteracoes[`campanhasPorUsuario/${uid}/${id}`] = null; });
+              await update(ref(db), alteracoes);
+              await carregarCampanhasEncerradasAdmin();
+              await carregarCampanhas();
+            } catch (e) {
+              console.error(e);
+              msg.className = "msg error";
+              msg.textContent = e?.message || "Não foi possível excluir a campanha.";
+              btn.disabled = false;
+            }
+          });
+        } catch (e) {
+          console.error(e);
+          admCampanhasMsg.className = "msg error";
+          admCampanhasMsg.textContent = e?.message || "Não foi possível carregar as campanhas encerradas.";
+        }
+      }
+      document.querySelector("#admAtualizarCampanhas").onclick = carregarCampanhasEncerradasAdmin;
+
+      document.querySelector("#admAtualizarLista").onclick =
+        carregarAssinantesAdmin;
+      admBusca.addEventListener("input", renderAssinantes);
+
+      onAuthStateChanged(auth, async (user) => {
+        if (!user) {
+          location.replace("./login.html");
+          return;
+        }
+        usuarioAtual = user;
+        const s = await get(ref(db, `usuarios/${user.uid}`)),
+          p = s.val();
+        perfilAtual = p;
+        u.textContent = user.email;
+        if (ehAdmin(p)) {
+          areaAdmin.style.display = "block";
+          b.textContent = "ADMINISTRADOR";
+          await carregarAssinantesAdmin();
+          await carregarCampanhasEncerradasAdmin();
+        }
+        if (!assinaturaValida(p) && !ehAdmin(p)) {
+          a.textContent =
+            "Seu acesso não está liberado. Verifique a assinatura com o administrador.";
+          btnNova.style.display = "none";
+          btnEntrar.style.display = "none";
+          c2.classList.add("locked");
+          bt2.style.display = "none";
+          b.textContent = "SEM ACESSO";
+          return;
+        }
+        if (!ehAdmin(p))
+          b.textContent =
+            (p.plano || "").toUpperCase() +
+            (p.ilimitado === true ? " • ILIMITADO" : (p.validade ? " • até " + p.validade : ""));
+        if (p.plano !== "experiente") {
+          c2.classList.add("locked");
+          bt2.style.display = "none";
+        } else {
+          document.querySelector("#txt2").textContent =
+            "Seu plano inclui o ATO II.";
+        }
+        await carregarCampanhas();
+      });
+    </script>
+  </body>
+</html>
